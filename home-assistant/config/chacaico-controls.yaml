@@ -1,0 +1,46 @@
+# Confirmed-state switches in front of each MQTT valve; UI dashboards stay separate.
+- switch:
+    - name: Chacaico válvula 1
+      default_entity_id: switch.chacaico_node_1_valve
+      unique_id: chacaico_node_1_valve_toggle
+      icon: mdi:valve
+      optimistic: false
+      availability: >-
+        {{ state_attr('valve.chacaico_node_1', 'supported_features') is not none
+           and not is_state('valve.chacaico_node_1', 'unavailable') }}
+      state: >-
+        {% set valve_state = states('valve.chacaico_node_1') %}
+        {{ true if valve_state == 'open' else false if valve_state == 'closed' else none }}
+      turn_on:
+        action: valve.open_valve
+        target:
+          entity_id: valve.chacaico_node_1
+      turn_off:
+        action: valve.close_valve
+        target:
+          entity_id: valve.chacaico_node_1
+      attributes:
+        confirmation: "{{ state_attr('valve.chacaico_node_1', 'confirmation') }}"
+        confirmed_at: "{{ state_attr('valve.chacaico_node_1', 'confirmed_at') }}"
+    - name: Chacaico válvula 2
+      default_entity_id: switch.chacaico_node_2_valve
+      unique_id: chacaico_node_2_valve_toggle
+      icon: mdi:valve
+      optimistic: false
+      availability: >-
+        {{ state_attr('valve.chacaico_node_2', 'supported_features') is not none
+           and not is_state('valve.chacaico_node_2', 'unavailable') }}
+      state: >-
+        {% set valve_state = states('valve.chacaico_node_2') %}
+        {{ true if valve_state == 'open' else false if valve_state == 'closed' else none }}
+      turn_on:
+        action: valve.open_valve
+        target:
+          entity_id: valve.chacaico_node_2
+      turn_off:
+        action: valve.close_valve
+        target:
+          entity_id: valve.chacaico_node_2
+      attributes:
+        confirmation: "{{ state_attr('valve.chacaico_node_2', 'confirmation') }}"
+        confirmed_at: "{{ state_attr('valve.chacaico_node_2', 'confirmed_at') }}"

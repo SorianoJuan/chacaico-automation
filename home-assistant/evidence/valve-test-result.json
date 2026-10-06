@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-06",
+  "node": 1,
+  "board": "HTCC-AB01 PCB V1.2 ASR6501",
+  "firmware_version": "0.2.0",
+  "compiled_bytes": 51576,
+  "upload_checksum_verified": true,
+  "gpio": {
+    "open": "GPIO2",
+    "close": "GPIO1",
+    "pulse_ms": 50,
+    "after_pulse": "both LOW",
+    "startup_pulse": false
+  },
+  "led": {
+    "open_flashes": 1,
+    "close_flashes": 2,
+    "flash_ms": 200,
+    "final_state": "off"
+  },
+  "software_tests": {
+    "bridge_tests": 4,
+    "firmware_gpio_timing_dedup_and_led": "passed"
+  },
+  "startup_query": {
+    "operation": 3,
+    "value": 2,
+    "meaning": "unknown",
+    "sequence": 949336107,
+    "rssi_dbm": -48.0,
+    "snr_db": 12.5
+  },
+  "user_button_tests": [
+    {
+      "command": "OPEN",
+      "operation": 2,
+      "value": 1,
+      "ack_sequence": 949336111,
+      "rssi_dbm": -49.0,
+      "snr_db": 12.5
+    },
+    {
+      "command": "CLOSE",
+      "operation": 2,
+      "value": 0,
+      "ack_sequence": 949336112,
+      "rssi_dbm": -48.0,
+      "snr_db": 12.8
+    }
+  ],
+  "user_observed_leds": true,
+  "home_assistant": {
+    "entity_id": "valve.chacaico_node_1",
+    "enabled": true,
+    "dashboard": "http://pi5.chacaico/chacaico-valves/valvula-1",
+    "configuration_check": "passed",
+    "http_status": 200
+  },
+  "bridge": {
+    "version": "0.2.0",
+    "state": "started",
+    "memory_bytes_observed": 20811776
+  },
+  "physical_valve_actuation": "pending user test; GPIO pulse ACK is not position feedback",
+  "limitations": [
+    "bench power 0 dBm and continuous RX",
+    "node replay/deduplication RAM-only",
+    "no position sensor",
+    "no automatic closure timer"
+  ]
+}

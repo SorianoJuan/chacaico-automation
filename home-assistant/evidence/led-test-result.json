@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "steps": [
+    "ON",
+    "OFF"
+  ],
+  "physical_led_confirmed_by_user": true
+}

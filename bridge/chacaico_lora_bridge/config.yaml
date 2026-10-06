@@ -1,0 +1,30 @@
+name: Chacaico LoRa bridge
+version: "0.3.0"
+slug: chacaico_lora_bridge
+description: Control de electroválvulas CubeCell por LoRa con confirmación de ejecución.
+arch:
+  - aarch64
+machine:
+  - raspberrypi5-64
+startup: application
+boot: manual
+init: false
+services:
+  - mqtt:need
+devices:
+  - /dev/spidev0.0
+  - /dev/gpiochip0
+map:
+  - type: app_config
+    read_only: false
+    path: /config
+options:
+  frequency: 916800000
+  nodes: []
+  self_test: false
+schema:
+  frequency: int(915000000,928000000)
+  nodes:
+    - id: int(1,65534)
+      key: password
+  self_test: bool

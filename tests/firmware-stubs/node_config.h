@@ -1,0 +1,5 @@
+#define CHACAICO_KEY {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+#ifndef CHACAICO_NODE_ID
+#define CHACAICO_NODE_ID 1
+#endif
+#define CHACAICO_FREQUENCY 916800000

@@ -1,0 +1,11 @@
+{
+  "spi_verified": true,
+  "spi_device": "/dev/spidev0.0",
+  "gpio_chip": "/dev/gpiochip0",
+  "gpio_label": "pinctrl-rp1",
+  "nss_bcm": 21,
+  "standby_status": "0x22",
+  "sync_word": "1424",
+  "device_errors": "0000",
+  "rf_transmitted": false
+}

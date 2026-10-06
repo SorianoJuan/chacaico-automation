@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "test_count": 3,
+  "real_driver_source_sha256": "8dbf0bc6c535dde9e2fd2d54235e6b7464810a53436e36db9df78f35f6991683",
+  "spi_gpio_scheduler_simulated": true,
+  "raspberry_latency_measured": false,
+  "hardware_used": false,
+  "cases": {
+    "healthy": {
+      "simulated_scheduler_pause_seconds": 0,
+      "tx_done_at": 0.056576,
+      "rx_switch_at": 0.058,
+      "tx_to_rx_seconds": 0.001424,
+      "led_ack_start": 0.08157600000000001,
+      "led_ack_end": 0.138152,
+      "entire_led_ack_precedes_rx": false,
+      "tx_timed_out": false,
+      "finally_returned_to_rx": true
+    },
+    "injected_200ms_stall": {
+      "simulated_scheduler_pause_seconds": 0.2,
+      "tx_done_at": 0.056576,
+      "rx_switch_at": 0.258,
+      "tx_to_rx_seconds": 0.201424,
+      "led_ack_start": 0.08157600000000001,
+      "led_ack_end": 0.138152,
+      "entire_led_ack_precedes_rx": true,
+      "tx_timed_out": false,
+      "finally_returned_to_rx": true
+    },
+    "tx_timeout": {
+      "simulated_scheduler_pause_seconds": 0,
+      "tx_done_at": 0.056576,
+      "rx_switch_at": 2.202,
+      "tx_to_rx_seconds": 2.145424,
+      "led_ack_start": 0.08157600000000001,
+      "led_ack_end": 0.138152,
+      "entire_led_ack_precedes_rx": true,
+      "tx_timed_out": true,
+      "finally_returned_to_rx": true
+    }
+  }
+}

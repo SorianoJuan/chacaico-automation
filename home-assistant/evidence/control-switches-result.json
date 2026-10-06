@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-06",
+  "dashboard": "http://pi5.chacaico/chacaico-valves/valvula-1",
+  "controls": [
+    {
+      "name": "Válvula",
+      "entity_id": "switch.chacaico_node_1_valve",
+      "platform": "template",
+      "registered": true,
+      "enabled": true,
+      "on_action": "valve.open_valve",
+      "off_action": "valve.close_valve",
+      "optimistic": false
+    },
+    {
+      "name": "LED",
+      "entity_id": "switch.cubecell_1_led_de_prueba",
+      "platform": "mqtt",
+      "registered": true,
+      "enabled": true
+    }
+  ],
+  "preserved": [
+    "last confirmed valve state",
+    "confirmation messages",
+    "RSSI",
+    "SNR"
+  ],
+  "visible_timestamps": [
+    "last communication",
+    "last valve confirmation"
+  ],
+  "configuration_check": "passed",
+  "http_status": 200,
+  "files_match_repository": true,
+  "backup": "/config/chacaico-backups/control-switches-20261006T125847Z-349/",
+  "node_disconnected_by_user": true,
+  "hardware_commands_sent": false,
+  "firmware_modified": false,
+  "firmware_uploaded": false,
+  "pending": "Update firmware for independent persistent LED state after user reconnects node."
+}

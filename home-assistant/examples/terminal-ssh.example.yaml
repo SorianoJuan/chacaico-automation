@@ -1,0 +1,7 @@
+# Agregar la clave PUBLICA completa del equipo autorizado en authorized_keys.
+# La configuración personal terminal-ssh.yaml queda fuera de Git.
+authorized_keys: []
+password: ""
+apks: []
+server:
+  tcp_forwarding: false

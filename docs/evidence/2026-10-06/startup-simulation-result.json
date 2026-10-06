@@ -1,0 +1,2078 @@
+{
+  "date": "2026-10-06",
+  "passed": true,
+  "scenario_count": 7,
+  "real_controller": "Bridge.run() and MQTT command/publication handlers",
+  "node_and_radio": "Explicit application/timing model, not physical emulation",
+  "frontend_simulated": false,
+  "hardware_connected": false,
+  "rf_airtime_seconds_assumed": 0.056576,
+  "source_sha256": {
+    "bridge/chacaico_lora_bridge/bridge.py": "381f238405923ba462f518ac2fef48b3621d366b89300c2c7f408333cd8ea006",
+    "bridge/chacaico_lora_bridge/radio.py": "8dbf0bc6c535dde9e2fd2d54235e6b7464810a53436e36db9df78f35f6991683",
+    "bridge/chacaico_lora_bridge/protocol.py": "6197f7071dde008a18a6109b0083c2efdb75903107868264599d719c95790920",
+    "firmware/libraries/ChacaicoNode/src/ChacaicoNode.h": "c145adbd5b96ac0891f447f382978790eea49eccc22c5d05debd2873f15a7d2d",
+    "firmware/nodes/node_1/node_1.ino": "a88a45d00d2e93e4978b788a453fb4557110979ec5893f579e4269e8b484685d",
+    "firmware/nodes/node_2/node_2.ino": "d744d14d8220c668476b2016d6a2aecb9ab3e9cb1946107ff75a66d0c428b4b0"
+  },
+  "cases": {
+    "late_power_on": {
+      "first_online_at": 60.154488,
+      "power_on_at": 15,
+      "discovery_delay_seconds": 45.154488,
+      "publications": [
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/led/state",
+          "payload": "OFF"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/2/led/state",
+          "payload": "OFF"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "None"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/valve/availability",
+          "payload": "offline"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "offline"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/2/valve/state",
+          "payload": "None"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/2/valve/availability",
+          "payload": "offline"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/2/availability",
+          "payload": "offline"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/bridge/availability",
+          "payload": "online"
+        },
+        {
+          "at": 60.154488,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "None"
+        },
+        {
+          "at": 60.154488,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 5,
+            "confirmation": "unknown",
+            "state_source": "gpio_pulse",
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300060.154488
+          }
+        },
+        {
+          "at": 60.154488,
+          "topic": "chacaico/lora/node/1/valve/availability",
+          "payload": "online"
+        },
+        {
+          "at": 60.154488,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 7,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300066.612792,
+            "valve": "unknown",
+            "led": false
+          }
+        },
+        {
+          "at": 60.154488,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        },
+        {
+          "at": 66.612792,
+          "topic": "chacaico/lora/node/1/led/state",
+          "payload": "OFF"
+        },
+        {
+          "at": 66.612792,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 7,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300066.612792,
+            "valve": "unknown",
+            "led": false
+          }
+        },
+        {
+          "at": 66.612792,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        }
+      ],
+      "radio": [
+        {
+          "event": "request",
+          "at": 0.0,
+          "node": 1,
+          "sequence": 1,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 1.059576,
+          "node": 1,
+          "sequence": 1,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 2.119152,
+          "node": 1,
+          "sequence": 1,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 3.198728,
+          "node": 2,
+          "sequence": 2,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 4.278304,
+          "node": 2,
+          "sequence": 2,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 5.35788,
+          "node": 2,
+          "sequence": 2,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 6.457456,
+          "node": 1,
+          "sequence": 3,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 7.537032,
+          "node": 1,
+          "sequence": 3,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 8.616608,
+          "node": 1,
+          "sequence": 3,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 9.716184,
+          "node": 2,
+          "sequence": 4,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 10.79576,
+          "node": 2,
+          "sequence": 4,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 11.875336,
+          "node": 2,
+          "sequence": 4,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 60.014912,
+          "node": 1,
+          "sequence": 5,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "ack_received",
+          "at": 60.153064,
+          "node": 1,
+          "sequence": 5,
+          "op": 3,
+          "value": 2
+        },
+        {
+          "event": "request",
+          "at": 63.214488,
+          "node": 2,
+          "sequence": 6,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 64.274064,
+          "node": 2,
+          "sequence": 6,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 65.35364,
+          "node": 2,
+          "sequence": 6,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 66.473216,
+          "node": 1,
+          "sequence": 7,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "ack_received",
+          "at": 66.611368,
+          "node": 1,
+          "sequence": 7,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 69.732792,
+          "node": 2,
+          "sequence": 8,
+          "op": 0,
+          "value": 0
+        }
+      ],
+      "nodes": {
+        "1": {
+          "power_on": 15,
+          "led": false,
+          "valve": 2,
+          "pulses": [],
+          "led_changes": []
+        }
+      }
+    },
+    "offline_peer_delay": {
+      "click_at": 0.3,
+      "led_confirmed_at": 3.47788,
+      "delay_seconds": 3.17788,
+      "publications": [
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/led/state",
+          "payload": "OFF"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/2/led/state",
+          "payload": "OFF"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "None"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/valve/availability",
+          "payload": "offline"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "offline"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/2/valve/state",
+          "payload": "None"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/2/valve/availability",
+          "payload": "offline"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/2/availability",
+          "payload": "offline"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/bridge/availability",
+          "payload": "online"
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "None"
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 1,
+            "confirmation": "unknown",
+            "state_source": "gpio_pulse",
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300000.139576
+          }
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/valve/availability",
+          "payload": "online"
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 3,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300003.47788,
+            "valve": "unknown",
+            "led": true
+          }
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        },
+        {
+          "at": 3.47788,
+          "topic": "chacaico/lora/node/1/led/state",
+          "payload": "ON"
+        },
+        {
+          "at": 3.47788,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 3,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300003.47788,
+            "valve": "unknown",
+            "led": true
+          }
+        },
+        {
+          "at": 3.47788,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        }
+      ],
+      "radio": [
+        {
+          "event": "request",
+          "at": 0.0,
+          "node": 1,
+          "sequence": 1,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "ack_received",
+          "at": 0.138152,
+          "node": 1,
+          "sequence": 1,
+          "op": 3,
+          "value": 2
+        },
+        {
+          "event": "request",
+          "at": 0.139576,
+          "node": 2,
+          "sequence": 2,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 1.199152,
+          "node": 2,
+          "sequence": 2,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 2.258728,
+          "node": 2,
+          "sequence": 2,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 3.338304,
+          "node": 1,
+          "sequence": 3,
+          "op": 1,
+          "value": 1
+        },
+        {
+          "event": "ack_received",
+          "at": 3.476456,
+          "node": 1,
+          "sequence": 3,
+          "op": 1,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 3.47788,
+          "node": 2,
+          "sequence": 4,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 4.557456,
+          "node": 2,
+          "sequence": 4,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 5.637032,
+          "node": 2,
+          "sequence": 4,
+          "op": 0,
+          "value": 0
+        }
+      ],
+      "nodes": {
+        "1": {
+          "power_on": 0,
+          "led": true,
+          "valve": 2,
+          "pulses": [],
+          "led_changes": [
+            {
+              "at": 3.39488,
+              "value": 1,
+              "sequence": 3
+            }
+          ]
+        }
+      }
+    },
+    "lost_first_led_request": {
+      "publications": [
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/led/state",
+          "payload": "OFF"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "None"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/valve/availability",
+          "payload": "offline"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "offline"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/bridge/availability",
+          "payload": "online"
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "None"
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 1,
+            "confirmation": "unknown",
+            "state_source": "gpio_pulse",
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300000.139576
+          }
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/valve/availability",
+          "payload": "online"
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 4,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300005.157456,
+            "valve": "unknown",
+            "led": true
+          }
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        },
+        {
+          "at": 0.279152,
+          "topic": "chacaico/lora/node/1/led/state",
+          "payload": "OFF"
+        },
+        {
+          "at": 0.279152,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 4,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300005.157456,
+            "valve": "unknown",
+            "led": true
+          }
+        },
+        {
+          "at": 0.279152,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        },
+        {
+          "at": 5.157456,
+          "topic": "chacaico/lora/node/1/led/state",
+          "payload": "ON"
+        },
+        {
+          "at": 5.157456,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 4,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300005.157456,
+            "valve": "unknown",
+            "led": true
+          }
+        },
+        {
+          "at": 5.157456,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        }
+      ],
+      "radio": [
+        {
+          "event": "request",
+          "at": 0.0,
+          "node": 1,
+          "sequence": 1,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "ack_received",
+          "at": 0.138152,
+          "node": 1,
+          "sequence": 1,
+          "op": 3,
+          "value": 2
+        },
+        {
+          "event": "request",
+          "at": 0.139576,
+          "node": 1,
+          "sequence": 2,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "ack_received",
+          "at": 0.277728,
+          "node": 1,
+          "sequence": 2,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 1.019152,
+          "node": 1,
+          "sequence": 3,
+          "op": 1,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 2.078728,
+          "node": 1,
+          "sequence": 3,
+          "op": 1,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 3.138304,
+          "node": 1,
+          "sequence": 3,
+          "op": 1,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 5.01788,
+          "node": 1,
+          "sequence": 4,
+          "op": 1,
+          "value": 1
+        },
+        {
+          "event": "ack_received",
+          "at": 5.156032,
+          "node": 1,
+          "sequence": 4,
+          "op": 1,
+          "value": 1
+        }
+      ],
+      "nodes": {
+        "1": {
+          "power_on": 0,
+          "led": true,
+          "valve": 2,
+          "pulses": [],
+          "led_changes": [
+            {
+              "at": 5.074456,
+              "value": 1,
+              "sequence": 4
+            }
+          ]
+        }
+      }
+    },
+    "lost_led_ack_no_immediate_reconciliation": {
+      "modeled_rx_turnaround_seconds": 0.2,
+      "node_led_on_at": 1.075728,
+      "mqtt_on_at": 60.428032,
+      "state_delay_seconds": 59.352304,
+      "publications": [
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/led/state",
+          "payload": "OFF"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "None"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/valve/availability",
+          "payload": "offline"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "offline"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/bridge/availability",
+          "payload": "online"
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "None"
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 1,
+            "confirmation": "unknown",
+            "state_source": "gpio_pulse",
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300000.139576
+          }
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/valve/availability",
+          "payload": "online"
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 5,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300060.428032,
+            "valve": "unknown",
+            "led": true
+          }
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        },
+        {
+          "at": 0.279152,
+          "topic": "chacaico/lora/node/1/led/state",
+          "payload": "OFF"
+        },
+        {
+          "at": 0.279152,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 5,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300060.428032,
+            "valve": "unknown",
+            "led": true
+          }
+        },
+        {
+          "at": 0.279152,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        },
+        {
+          "at": 60.288456,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "None"
+        },
+        {
+          "at": 60.288456,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 4,
+            "confirmation": "unknown",
+            "state_source": "gpio_pulse",
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300060.288456
+          }
+        },
+        {
+          "at": 60.288456,
+          "topic": "chacaico/lora/node/1/valve/availability",
+          "payload": "online"
+        },
+        {
+          "at": 60.288456,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 5,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300060.428032,
+            "valve": "unknown",
+            "led": true
+          }
+        },
+        {
+          "at": 60.288456,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        },
+        {
+          "at": 60.428032,
+          "topic": "chacaico/lora/node/1/led/state",
+          "payload": "ON"
+        },
+        {
+          "at": 60.428032,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 5,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300060.428032,
+            "valve": "unknown",
+            "led": true
+          }
+        },
+        {
+          "at": 60.428032,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        }
+      ],
+      "radio": [
+        {
+          "event": "request",
+          "at": 0.0,
+          "node": 1,
+          "sequence": 1,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "ack_received",
+          "at": 0.138152,
+          "node": 1,
+          "sequence": 1,
+          "op": 3,
+          "value": 2
+        },
+        {
+          "event": "request",
+          "at": 0.139576,
+          "node": 1,
+          "sequence": 2,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "ack_received",
+          "at": 0.277728,
+          "node": 1,
+          "sequence": 2,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 1.019152,
+          "node": 1,
+          "sequence": 3,
+          "op": 1,
+          "value": 1
+        },
+        {
+          "event": "ack_lost",
+          "at": 1.157304,
+          "node": 1,
+          "sequence": 3,
+          "op": 1,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 2.275728,
+          "node": 1,
+          "sequence": 3,
+          "op": 1,
+          "value": 1
+        },
+        {
+          "event": "ack_lost",
+          "at": 2.41388,
+          "node": 1,
+          "sequence": 3,
+          "op": 1,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 3.532304,
+          "node": 1,
+          "sequence": 3,
+          "op": 1,
+          "value": 1
+        },
+        {
+          "event": "ack_lost",
+          "at": 3.670456,
+          "node": 1,
+          "sequence": 3,
+          "op": 1,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 60.14888,
+          "node": 1,
+          "sequence": 4,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "ack_received",
+          "at": 60.287032,
+          "node": 1,
+          "sequence": 4,
+          "op": 3,
+          "value": 2
+        },
+        {
+          "event": "request",
+          "at": 60.288456,
+          "node": 1,
+          "sequence": 5,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "ack_received",
+          "at": 60.426608,
+          "node": 1,
+          "sequence": 5,
+          "op": 0,
+          "value": 1
+        }
+      ],
+      "nodes": {
+        "1": {
+          "power_on": 0,
+          "led": true,
+          "valve": 2,
+          "pulses": [],
+          "led_changes": [
+            {
+              "at": 1.075728,
+              "value": 1,
+              "sequence": 3
+            }
+          ]
+        }
+      }
+    },
+    "lost_valve_ack_then_query": {
+      "confirmation_phases": [
+        "confirmed",
+        "pending",
+        "unconfirmed",
+        "confirmed"
+      ],
+      "gpio_pulses_in_model": 1,
+      "publications": [
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/led/state",
+          "payload": "OFF"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "None"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/valve/availability",
+          "payload": "offline"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "offline"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/bridge/availability",
+          "payload": "online"
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "closed"
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 1,
+            "confirmation": "confirmed",
+            "state_source": "gpio_pulse",
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300000.139576
+          }
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/valve/availability",
+          "payload": "online"
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 4,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300004.968456,
+            "valve": "open",
+            "led": false
+          }
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        },
+        {
+          "at": 0.279152,
+          "topic": "chacaico/lora/node/1/led/state",
+          "payload": "OFF"
+        },
+        {
+          "at": 0.279152,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 4,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300004.968456,
+            "valve": "open",
+            "led": false
+          }
+        },
+        {
+          "at": 0.279152,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        },
+        {
+          "at": 1.019152,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 3,
+            "command": "OPEN",
+            "confirmation": "pending",
+            "state_source": "gpio_pulse"
+          }
+        },
+        {
+          "at": 4.80888,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "None"
+        },
+        {
+          "at": 4.80888,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 3,
+            "confirmation": "unconfirmed",
+            "state_source": "gpio_pulse"
+          }
+        },
+        {
+          "at": 4.968456,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "open"
+        },
+        {
+          "at": 4.968456,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 4,
+            "confirmation": "confirmed",
+            "state_source": "gpio_pulse",
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300004.968456
+          }
+        },
+        {
+          "at": 4.968456,
+          "topic": "chacaico/lora/node/1/valve/availability",
+          "payload": "online"
+        },
+        {
+          "at": 4.968456,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 4,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300004.968456,
+            "valve": "open",
+            "led": false
+          }
+        },
+        {
+          "at": 4.968456,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        }
+      ],
+      "radio": [
+        {
+          "event": "request",
+          "at": 0.0,
+          "node": 1,
+          "sequence": 1,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "ack_received",
+          "at": 0.138152,
+          "node": 1,
+          "sequence": 1,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 0.139576,
+          "node": 1,
+          "sequence": 2,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "ack_received",
+          "at": 0.277728,
+          "node": 1,
+          "sequence": 2,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 1.019152,
+          "node": 1,
+          "sequence": 3,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "ack_lost",
+          "at": 1.207304,
+          "node": 1,
+          "sequence": 3,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 2.275728,
+          "node": 1,
+          "sequence": 3,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "ack_lost",
+          "at": 2.41388,
+          "node": 1,
+          "sequence": 3,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 3.532304,
+          "node": 1,
+          "sequence": 3,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "ack_lost",
+          "at": 3.670456,
+          "node": 1,
+          "sequence": 3,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 4.82888,
+          "node": 1,
+          "sequence": 4,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "ack_received",
+          "at": 4.967032,
+          "node": 1,
+          "sequence": 4,
+          "op": 3,
+          "value": 1
+        }
+      ],
+      "nodes": {
+        "1": {
+          "power_on": 0,
+          "led": false,
+          "valve": 1,
+          "pulses": [
+            {
+              "at": 1.075728,
+              "value": 1,
+              "sequence": 3
+            }
+          ],
+          "led_changes": []
+        }
+      }
+    },
+    "three_reclicks_repeat_gpio": {
+      "distinct_pulse_sequences": [
+        3,
+        5,
+        7
+      ],
+      "publications": [
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/led/state",
+          "payload": "OFF"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "None"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/valve/availability",
+          "payload": "offline"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "offline"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/bridge/availability",
+          "payload": "online"
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "closed"
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 1,
+            "confirmation": "confirmed",
+            "state_source": "gpio_pulse",
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300000.139576
+          }
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/valve/availability",
+          "payload": "online"
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 8,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300012.947064,
+            "valve": "open",
+            "led": false
+          }
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        },
+        {
+          "at": 0.279152,
+          "topic": "chacaico/lora/node/1/led/state",
+          "payload": "OFF"
+        },
+        {
+          "at": 0.279152,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 8,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300012.947064,
+            "valve": "open",
+            "led": false
+          }
+        },
+        {
+          "at": 0.279152,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        },
+        {
+          "at": 1.019152,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 3,
+            "command": "OPEN",
+            "confirmation": "pending",
+            "state_source": "gpio_pulse"
+          }
+        },
+        {
+          "at": 4.80888,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "None"
+        },
+        {
+          "at": 4.80888,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 3,
+            "confirmation": "unconfirmed",
+            "state_source": "gpio_pulse"
+          }
+        },
+        {
+          "at": 4.968456,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "open"
+        },
+        {
+          "at": 4.968456,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 4,
+            "confirmation": "confirmed",
+            "state_source": "gpio_pulse",
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300004.968456
+          }
+        },
+        {
+          "at": 4.968456,
+          "topic": "chacaico/lora/node/1/valve/availability",
+          "payload": "online"
+        },
+        {
+          "at": 4.968456,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 8,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300012.947064,
+            "valve": "open",
+            "led": false
+          }
+        },
+        {
+          "at": 4.968456,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        },
+        {
+          "at": 4.968456,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 5,
+            "command": "OPEN",
+            "confirmation": "pending",
+            "state_source": "gpio_pulse"
+          }
+        },
+        {
+          "at": 8.798184,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "None"
+        },
+        {
+          "at": 8.798184,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 5,
+            "confirmation": "unconfirmed",
+            "state_source": "gpio_pulse"
+          }
+        },
+        {
+          "at": 8.95776,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "open"
+        },
+        {
+          "at": 8.95776,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 6,
+            "confirmation": "confirmed",
+            "state_source": "gpio_pulse",
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300008.95776
+          }
+        },
+        {
+          "at": 8.95776,
+          "topic": "chacaico/lora/node/1/valve/availability",
+          "payload": "online"
+        },
+        {
+          "at": 8.95776,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 8,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300012.947064,
+            "valve": "open",
+            "led": false
+          }
+        },
+        {
+          "at": 8.95776,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        },
+        {
+          "at": 8.95776,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 7,
+            "command": "OPEN",
+            "confirmation": "pending",
+            "state_source": "gpio_pulse"
+          }
+        },
+        {
+          "at": 12.787488,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "None"
+        },
+        {
+          "at": 12.787488,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 7,
+            "confirmation": "unconfirmed",
+            "state_source": "gpio_pulse"
+          }
+        },
+        {
+          "at": 12.947064,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "open"
+        },
+        {
+          "at": 12.947064,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 8,
+            "confirmation": "confirmed",
+            "state_source": "gpio_pulse",
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300012.947064
+          }
+        },
+        {
+          "at": 12.947064,
+          "topic": "chacaico/lora/node/1/valve/availability",
+          "payload": "online"
+        },
+        {
+          "at": 12.947064,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 8,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300012.947064,
+            "valve": "open",
+            "led": false
+          }
+        },
+        {
+          "at": 12.947064,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        }
+      ],
+      "radio": [
+        {
+          "event": "request",
+          "at": 0.0,
+          "node": 1,
+          "sequence": 1,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "ack_received",
+          "at": 0.138152,
+          "node": 1,
+          "sequence": 1,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 0.139576,
+          "node": 1,
+          "sequence": 2,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "ack_received",
+          "at": 0.277728,
+          "node": 1,
+          "sequence": 2,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 1.019152,
+          "node": 1,
+          "sequence": 3,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "ack_lost",
+          "at": 1.207304,
+          "node": 1,
+          "sequence": 3,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 2.275728,
+          "node": 1,
+          "sequence": 3,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "ack_lost",
+          "at": 2.41388,
+          "node": 1,
+          "sequence": 3,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 3.532304,
+          "node": 1,
+          "sequence": 3,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "ack_lost",
+          "at": 3.670456,
+          "node": 1,
+          "sequence": 3,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 4.82888,
+          "node": 1,
+          "sequence": 4,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "ack_received",
+          "at": 4.967032,
+          "node": 1,
+          "sequence": 4,
+          "op": 3,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 4.968456,
+          "node": 1,
+          "sequence": 5,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "ack_lost",
+          "at": 5.156608,
+          "node": 1,
+          "sequence": 5,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 6.245032,
+          "node": 1,
+          "sequence": 5,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "ack_lost",
+          "at": 6.383184,
+          "node": 1,
+          "sequence": 5,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 7.521608,
+          "node": 1,
+          "sequence": 5,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "ack_lost",
+          "at": 7.65976,
+          "node": 1,
+          "sequence": 5,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 8.818184,
+          "node": 1,
+          "sequence": 6,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "ack_received",
+          "at": 8.956336,
+          "node": 1,
+          "sequence": 6,
+          "op": 3,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 8.95776,
+          "node": 1,
+          "sequence": 7,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "ack_lost",
+          "at": 9.145912,
+          "node": 1,
+          "sequence": 7,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 10.234336,
+          "node": 1,
+          "sequence": 7,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "ack_lost",
+          "at": 10.372488,
+          "node": 1,
+          "sequence": 7,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 11.510912,
+          "node": 1,
+          "sequence": 7,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "ack_lost",
+          "at": 11.649064,
+          "node": 1,
+          "sequence": 7,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 12.807488,
+          "node": 1,
+          "sequence": 8,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "ack_received",
+          "at": 12.94564,
+          "node": 1,
+          "sequence": 8,
+          "op": 3,
+          "value": 1
+        }
+      ],
+      "nodes": {
+        "1": {
+          "power_on": 0,
+          "led": false,
+          "valve": 1,
+          "pulses": [
+            {
+              "at": 1.075728,
+              "value": 1,
+              "sequence": 3
+            },
+            {
+              "at": 5.025032,
+              "value": 1,
+              "sequence": 5
+            },
+            {
+              "at": 9.014336,
+              "value": 1,
+              "sequence": 7
+            }
+          ],
+          "led_changes": []
+        }
+      }
+    },
+    "healthy_first_commands": {
+      "publications": [
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/led/state",
+          "payload": "OFF"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "None"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/valve/availability",
+          "payload": "offline"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "offline"
+        },
+        {
+          "at": 0.0,
+          "topic": "chacaico/lora/bridge/availability",
+          "payload": "online"
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "None"
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 1,
+            "confirmation": "unknown",
+            "state_source": "gpio_pulse",
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300000.139576
+          }
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/valve/availability",
+          "payload": "online"
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 4,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300001.218304,
+            "valve": "open",
+            "led": true
+          }
+        },
+        {
+          "at": 0.139576,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        },
+        {
+          "at": 0.279152,
+          "topic": "chacaico/lora/node/1/led/state",
+          "payload": "OFF"
+        },
+        {
+          "at": 0.279152,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 4,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300001.218304,
+            "valve": "open",
+            "led": true
+          }
+        },
+        {
+          "at": 0.279152,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        },
+        {
+          "at": 0.458728,
+          "topic": "chacaico/lora/node/1/led/state",
+          "payload": "ON"
+        },
+        {
+          "at": 0.458728,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 4,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300001.218304,
+            "valve": "open",
+            "led": true
+          }
+        },
+        {
+          "at": 0.458728,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        },
+        {
+          "at": 1.018728,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 4,
+            "command": "OPEN",
+            "confirmation": "pending",
+            "state_source": "gpio_pulse"
+          }
+        },
+        {
+          "at": 1.218304,
+          "topic": "chacaico/lora/node/1/valve/state",
+          "payload": "open"
+        },
+        {
+          "at": 1.218304,
+          "topic": "chacaico/lora/node/1/valve/status",
+          "payload": {
+            "sequence": 4,
+            "confirmation": "confirmed",
+            "state_source": "gpio_pulse",
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300001.218304
+          }
+        },
+        {
+          "at": 1.218304,
+          "topic": "chacaico/lora/node/1/valve/availability",
+          "payload": "online"
+        },
+        {
+          "at": 1.218304,
+          "topic": "chacaico/lora/node/1/status",
+          "payload": {
+            "node": 1,
+            "sequence": 4,
+            "rssi": -55,
+            "snr": 9,
+            "confirmed_at": 1791300001.218304,
+            "valve": "open",
+            "led": true
+          }
+        },
+        {
+          "at": 1.218304,
+          "topic": "chacaico/lora/node/1/availability",
+          "payload": "online"
+        }
+      ],
+      "radio": [
+        {
+          "event": "request",
+          "at": 0.0,
+          "node": 1,
+          "sequence": 1,
+          "op": 3,
+          "value": 0
+        },
+        {
+          "event": "ack_received",
+          "at": 0.138152,
+          "node": 1,
+          "sequence": 1,
+          "op": 3,
+          "value": 2
+        },
+        {
+          "event": "request",
+          "at": 0.139576,
+          "node": 1,
+          "sequence": 2,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "ack_received",
+          "at": 0.277728,
+          "node": 1,
+          "sequence": 2,
+          "op": 0,
+          "value": 0
+        },
+        {
+          "event": "request",
+          "at": 0.319152,
+          "node": 1,
+          "sequence": 3,
+          "op": 1,
+          "value": 1
+        },
+        {
+          "event": "ack_received",
+          "at": 0.457304,
+          "node": 1,
+          "sequence": 3,
+          "op": 1,
+          "value": 1
+        },
+        {
+          "event": "request",
+          "at": 1.018728,
+          "node": 1,
+          "sequence": 4,
+          "op": 2,
+          "value": 1
+        },
+        {
+          "event": "ack_received",
+          "at": 1.20688,
+          "node": 1,
+          "sequence": 4,
+          "op": 2,
+          "value": 1
+        }
+      ],
+      "nodes": {
+        "1": {
+          "power_on": 0,
+          "led": true,
+          "valve": 1,
+          "pulses": [
+            {
+              "at": 1.075304,
+              "value": 1,
+              "sequence": 4
+            }
+          ],
+          "led_changes": [
+            {
+              "at": 0.375728,
+              "value": 1,
+              "sequence": 3
+            }
+          ]
+        }
+      }
+    }
+  }
+}

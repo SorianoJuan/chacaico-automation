@@ -1,0 +1,50 @@
+title: Chacaico
+views:
+  - title: Electroválvula 1
+    path: valvula-1
+    icon: mdi:valve
+    cards:
+      - type: entities
+        title: CubeCell 1
+        show_header_toggle: false
+        entities:
+          - entity: switch.chacaico_node_1_valve
+            name: Válvula
+            icon: mdi:valve
+          - entity: switch.cubecell_1_led_de_prueba
+            name: LED
+            icon: mdi:led-on
+      - type: entity
+        entity: valve.chacaico_node_1
+        name: Última orden confirmada
+      - type: markdown
+        content: >-
+          {% set result = state_attr('valve.chacaico_node_1', 'confirmation') %}
+          {% if result == 'pending' %}
+          **Esperando confirmación del nodo.**
+          {% elif result == 'unconfirmed' %}
+          **No llegó la confirmación.** La orden pudo haberse ejecutado.
+          {% elif states('valve.chacaico_node_1') == 'unavailable' %}
+          **Nodo sin comunicación.**
+          {% elif states('valve.chacaico_node_1') == 'unknown' %}
+          **Todavía no hay una orden confirmada desde el arranque del nodo.**
+          {% else %}
+          El nodo confirmó el pulso de control. Para comprobar la posición
+          física de la válvula se necesita un sensor.
+          {% endif %}
+      - type: markdown
+        title: Comunicación
+        content: |-
+          {% set last_seen = state_attr('switch.cubecell_1_led_de_prueba', 'confirmed_at') %}
+          {% set valve_ack = state_attr('valve.chacaico_node_1', 'confirmed_at') %}
+          **Última comunicación:** {{ last_seen | timestamp_custom('%d/%m/%Y %H:%M:%S', true) if last_seen is number else 'Sin datos' }}
+
+          **Última confirmación de válvula:** {{ valve_ack | timestamp_custom('%d/%m/%Y %H:%M:%S', true) if valve_ack is number else 'Sin datos' }}
+      - type: entities
+        title: Enlace LoRa
+        show_header_toggle: false
+        entities:
+          - entity: sensor.cubecell_1_rssi
+            name: Señal recibida por el HAT
+          - entity: sensor.cubecell_1_snr
+            name: Relación señal/ruido

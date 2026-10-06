@@ -1,0 +1,105 @@
+{
+  "date": "2026-10-06",
+  "node": 2,
+  "only_node_connected_confirmed_by_user": true,
+  "antenna_connected_confirmed_by_user": true,
+  "usb": {
+    "port": "/dev/serial/by-path/pci-0000:06:00.1-usb-0:3:1.0-port0",
+    "vendor": "10c4",
+    "product": "ea60",
+    "serial": "0001"
+  },
+  "previous_boot": "CHACAICO bench node=1 ASR6501 frequency=916800000 LED only",
+  "previous_firmware_origin": "not determined",
+  "firmware": {
+    "version": "0.3.0",
+    "compiled_bytes": 51672,
+    "upload_checksum_verified": true,
+    "boot_identity_verified": 2,
+    "node_1_flashed": false,
+    "distinct_node_key_verified": true,
+    "node_1_key_preserved_by_live_comparison": true,
+    "valve_gpio": {
+      "open": "GPIO2",
+      "close": "GPIO1",
+      "pulse_ms": 50,
+      "after_pulse": "both LOW"
+    },
+    "independent_led_restore_after_valve_indication": "verified in software simulation"
+  },
+  "software_tests": {
+    "bridge_tests_passed": 5,
+    "firmware_simulated_ids": [
+      1,
+      2
+    ],
+    "foreign_id_and_invalid_tag_rejected": true,
+    "cmac_in_firmware_simulator": "stub",
+    "aes_cmac_and_distinct_keys": "real cryptography library in Python tests"
+  },
+  "radio_mqtt": {
+    "passed": true,
+    "node": 2,
+    "led_on": {
+      "node": 2,
+      "sequence": 949336244,
+      "rssi": -48.0,
+      "snr": 12.5,
+      "confirmed_at": 1791292960.1816633,
+      "valve": "unknown",
+      "led": true
+    },
+    "led_off": {
+      "node": 2,
+      "sequence": 949336249,
+      "rssi": -48.0,
+      "snr": 13.25,
+      "confirmed_at": 1791293023.6996868,
+      "valve": "unknown",
+      "led": false
+    },
+    "isolation": {
+      "command": "LED OFF addressed to node 1",
+      "node_1_no_ack": "2026-10-06 10:23:18,512 WARNING No ACK from node=1 sequence=949336247",
+      "node_2_fresh_get_led_still_on": "2026-10-06 10:23:40,539 INFO ACK node=2 sequence=949336248 op=0 value=1 RSSI=-48.0 SNR=12.8"
+    },
+    "valve_commands_sent": false,
+    "final_led": "OFF"
+  },
+  "home_assistant": {
+    "configuration_check": "passed",
+    "http_status": 200,
+    "registered_enabled_entities": [
+      "switch.chacaico_node_2_valve",
+      "switch.cubecell_2_led_de_prueba",
+      "valve.chacaico_node_2",
+      "sensor.cubecell_2_rssi",
+      "sensor.cubecell_2_snr"
+    ],
+    "ui_dashboard_hash_unchanged": true,
+    "ui_registry_hash_unchanged": true,
+    "controls_sha256": "3a408a756fb91e83e21d84ba7880bf28c861867a3ca873588fc0f5c16954e555"
+  },
+  "bridge": {
+    "version": "0.2.0",
+    "configured_node_ids": [
+      1,
+      2
+    ],
+    "state": "started",
+    "rebuilt": false,
+    "self_test": false
+  },
+  "backups": [
+    "/config/chacaico-backups/register-node-2-20261006T132044Z-493/",
+    "/config/chacaico-backups/control-switches-20261006T132148Z-530/"
+  ],
+  "valve_hardware_commands_sent": false,
+  "valve_initial_state": "unknown; no physical actuation performed",
+  "limitations": [
+    "node 1 still firmware 0.2.0 until USB update",
+    "sequence replay protection still RAM-only",
+    "no position or flow feedback",
+    "field radio/power/sleep/OTA profile not implemented"
+  ]
+}

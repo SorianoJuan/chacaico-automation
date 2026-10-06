@@ -1,0 +1,26 @@
+name: Chacaico SPI setup
+version: "0.1.4"
+slug: chacaico_bootstrap
+description: Configurador temporal de SPI y de la integración MQTT de esta Pi.
+arch:
+  - aarch64
+machine:
+  - raspberrypi5-64
+startup: once
+boot: manual_only
+init: false
+hassio_api: true
+hassio_role: default
+homeassistant_api: true
+apparmor: false
+privileged:
+  - SYS_ADMIN
+# HA hides the protection switch for an app with only a block-device mapping.
+# This temporary app needs boot-device access; remove it after the one-time run.
+full_access: true
+map:
+  - type: app_config
+    read_only: false
+    path: /config
+options: {}
+schema: false

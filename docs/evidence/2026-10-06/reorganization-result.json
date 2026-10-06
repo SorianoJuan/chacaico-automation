@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-06",
+  "nodes_compiled": [
+    {
+      "node_id": 1,
+      "firmware_version": "0.3.0",
+      "core": "CubeCell:CubeCell@1.6.0",
+      "fqbn": "CubeCell:CubeCell:CubeCell-Board:LORAWAN_REGION=2,LORAWAN_AT_SUPPORT=1,LORAWAN_RGB=1",
+      "frequency_hz": 916800000,
+      "reported_flash_bytes": 51672,
+      "maximum_flash_bytes": 131072,
+      "cyacd_text_bytes": 89959,
+      "upload_performed": false
+    },
+    {
+      "node_id": 2,
+      "firmware_version": "0.3.0",
+      "core": "CubeCell:CubeCell@1.6.0",
+      "fqbn": "CubeCell:CubeCell:CubeCell-Board:LORAWAN_REGION=2,LORAWAN_AT_SUPPORT=1,LORAWAN_RGB=1",
+      "frequency_hz": 916800000,
+      "reported_flash_bytes": 51672,
+      "maximum_flash_bytes": 131072,
+      "cyacd_text_bytes": 89959,
+      "upload_performed": false
+    }
+  ],
+  "node_1_image_identical_to_previous": true,
+  "bridge_modules_unchanged": true,
+  "shared_node_execution_body_unchanged": true,
+  "all_private_settings_preserved": true,
+  "device_access_performed": false,
+  "startup_behavior_fix_deployed": false,
+  "offline_unittest_count": 20,
+  "bridge_startup_scenarios": 7,
+  "actual_sketch_async_radio_test_node_ids": [
+    1,
+    2
+  ],
+  "build_identity_guard_tests": 6
+}

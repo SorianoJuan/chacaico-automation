@@ -1,0 +1,87 @@
+{
+  "date": "2026-10-06",
+  "node": 1,
+  "only_node_connected_confirmed_by_user": true,
+  "antenna_connected_confirmed_by_user": true,
+  "usb": {
+    "port": "/dev/serial/by-path/pci-0000:06:00.1-usb-0:3:1.0-port0",
+    "vendor": "10c4",
+    "product": "ea60",
+    "serial": "0001"
+  },
+  "previous_boot": "CHACAICO valve-0.2.0 node=1 ASR6501 frequency=916800000 GPIO1=OFF GPIO2=ON pulse=50ms state=unknown",
+  "firmware": {
+    "version": "0.3.0",
+    "compiled_bytes": 51672,
+    "upload_checksum_verified": true,
+    "boot_identity_verified": 1,
+    "existing_private_identities_1_and_2_unchanged": true,
+    "node_2_flashed": false,
+    "latest_local_compilation_node_id": 1,
+    "valve_gpio": {
+      "open": "GPIO2",
+      "close": "GPIO1",
+      "pulse_ms": 50,
+      "after_pulse": "both LOW"
+    }
+  },
+  "software_validation": "Unchanged 0.3.0 sketch previously simulated for IDs 1 and 2; no new source change or repeated tests",
+  "radio_mqtt": {
+    "passed": true,
+    "node": 1,
+    "led_on": {
+      "node": 1,
+      "sequence": 949336277,
+      "rssi": -54.0,
+      "snr": 12.0,
+      "confirmed_at": 1791293410.8416314,
+      "valve": "unknown",
+      "led": true
+    },
+    "led_off": {
+      "node": 1,
+      "sequence": 949336280,
+      "rssi": -52.0,
+      "snr": 12.0,
+      "confirmed_at": 1791293444.1398196,
+      "valve": "unknown",
+      "led": false
+    },
+    "isolation": {
+      "command": "LED OFF addressed to node 2",
+      "node_2_no_ack": "2026-10-06 10:30:15,936 WARNING No ACK from node=2 sequence=949336278",
+      "node_1_fresh_get_led_still_on": "2026-10-06 10:30:41,019 INFO ACK node=1 sequence=949336279 op=0 value=1 RSSI=-52.0 SNR=11.8"
+    },
+    "valve_commands_sent": false,
+    "final_led": "OFF"
+  },
+  "home_assistant": {
+    "http_status": 200,
+    "configuration_modified": false,
+    "dashboard_modified": false,
+    "dashboard_sha256_before_and_after": "9acf6fded867b81b7c32eb2a6d5b109cd4f36b8cc48511ad430ebd7a5f67baa0",
+    "dashboard_registry_sha256_before_and_after": "139ffc27bb4aa3b5039a68649558167508925ec4cbc1f6d3da73826b8f322849",
+    "controls_sha256_before_and_after": "3a408a756fb91e83e21d84ba7880bf28c861867a3ca873588fc0f5c16954e555"
+  },
+  "bridge": {
+    "version": "0.2.0",
+    "configured_node_ids": [
+      1,
+      2
+    ],
+    "configuration_modified": false,
+    "rebuilt": false,
+    "restarted": false
+  },
+  "current_firmware_versions": {
+    "1": "0.3.0",
+    "2": "0.3.0"
+  },
+  "valve_hardware_commands_sent": false,
+  "final_led": "OFF",
+  "valve_state_after_reset": "unknown",
+  "limitations": [
+    "Valve indication restoring steady LED state verified in prior software simulation; no physical valve action in this update",
+    "Sequence replay protection remains RAM-only; no position/flow feedback or field sleep/OTA profile"
+  ]
+}

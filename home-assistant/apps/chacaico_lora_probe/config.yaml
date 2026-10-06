@@ -1,0 +1,20 @@
+name: Chacaico LoRa hardware check
+version: "0.1.1"
+slug: chacaico_lora_probe
+description: Verifica el SX1262 por SPI y GPIO sin transmitir por radio.
+arch:
+  - aarch64
+machine:
+  - raspberrypi5-64
+startup: once
+boot: manual_only
+init: false
+devices:
+  - /dev/spidev0.0
+  - /dev/gpiochip0
+map:
+  - type: app_config
+    read_only: false
+    path: /config
+options: {}
+schema: false

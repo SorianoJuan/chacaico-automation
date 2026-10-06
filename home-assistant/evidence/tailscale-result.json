@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-06",
+  "host": "pi5.chacaico",
+  "supervisor_machine_id": "2e21da3405714e0cba2d890984d6dfa8",
+  "tailscale": {
+    "slug": "a0d7b954_tailscale",
+    "version": "0.30.1",
+    "authenticated_by_user": true,
+    "ipv4": "100.117.24.7",
+    "dns_name": "homeassistant.tail3610a7.ts.net",
+    "boot": "auto",
+    "watchdog": true,
+    "protected": true,
+    "full_access": false,
+    "accept_dns": false,
+    "accept_routes": false,
+    "advertise_routes": [],
+    "advertise_exit_node": false,
+    "share_homeassistant": "disabled",
+    "userspace_networking": false,
+    "memory_bytes_observed": 51822592,
+    "key_expiry_observed": "2027-04-04T13:59:29Z",
+    "key_expiry_policy_changed": false
+  },
+  "ssh": {
+    "alias": "pi5.chacaico.remoto",
+    "host_key_alias": "pi5.chacaico",
+    "user": "root",
+    "port": 22,
+    "existing_key_path": "~/.ssh/torce_arch",
+    "private_key_modified": false,
+    "vpn_ip_test": "passed",
+    "alias_test": "passed",
+    "correct_pi_verified": true,
+    "local_alias_preserved": true,
+    "config_backup": "/home/torce/.ssh/config.chacaico-backup-20261006T140323Z"
+  },
+  "http": {
+    "vpn_ip_status": 200,
+    "magicdns_status": 200
+  },
+  "preserved": {
+    "ha_configuration_hash": true,
+    "controls_hash": true,
+    "ui_dashboard_hash": true,
+    "ui_registry_hash": true,
+    "ssh_options": true,
+    "lora_bridge_options": true,
+    "bridge_version": "0.3.0"
+  },
+  "pi_backup": "/config/chacaico-backups/tailscale-20261006T135712Z-1550/",
+  "validation_limits": {
+    "tested_over_vpn_while_devices_in_same_lan": true,
+    "external_network_tested": false,
+    "field_internet_tested": false,
+    "pi_reboot_tested": false
+  },
+  "node_firmware_modified": false,
+  "node_sleep_changed": false,
+  "ota_implemented": false
+}

@@ -1,0 +1,16 @@
+.tools/
+.secrets/
+firmware/nodes/*/node_config.h
+firmware/nodes/*/build/
+firmware/build-legacy-node-1/
+__pycache__/
+**/terminal-ssh.yaml
+**/.storage/
+**/tailscaled.state
+home-assistant/private/
+*.pyc
+*.cyacd
+*.elf
+*.hex
+*.bin
+*.o

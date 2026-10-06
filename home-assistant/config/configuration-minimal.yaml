@@ -1,0 +1,51 @@
+# Perfil de la Pi de campo: dashboard, automatizaciones y nodos MQTT/LoRa.
+# Las integraciones MQTT se configuran desde la interfaz de Home Assistant.
+api:
+config:
+system_health:
+persistent_notification:
+my:
+mobile_app:
+
+frontend:
+  themes: !include_dir_merge_named themes
+
+# Paneles administrados desde la interfaz de Home Assistant.
+lovelace:
+  mode: storage
+
+# BEGIN CHACAICO CONTROL SWITCHES
+template: !include chacaico-controls.yaml
+# END CHACAICO CONTROL SWITCHES
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+input_boolean:
+input_number:
+input_select:
+input_button:
+input_text:
+input_datetime:
+counter:
+timer:
+schedule:
+
+history:
+logbook:
+recorder:
+  purge_keep_days: 3
+  commit_interval: 30
+  include:
+    domains:
+      - sensor
+      - binary_sensor
+      - switch
+      - number
+      - select
+      - input_boolean
+      - input_number
+      - input_select
+      - counter
+      - timer

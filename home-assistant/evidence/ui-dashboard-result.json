@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-06",
+  "host": "pi5.chacaico",
+  "supervisor_machine_id": "2e21da3405714e0cba2d890984d6dfa8",
+  "removed_dashboard": "chacaico-valves",
+  "removed_file": "/config/chacaico-valves.yaml",
+  "preserved_dashboard": {
+    "id": "dashboard_chacaico",
+    "title": "Chacaico",
+    "mode": "storage",
+    "url": "http://pi5.chacaico/dashboard-chacaico/",
+    "storage_sha256": "32d0a7c01a17b08d4f1143e2a369acdf901b7671fc49c047b3a668b6ab55840e",
+    "registry_sha256": "139ffc27bb4aa3b5039a68649558167508925ec4cbc1f6d3da73826b8f322849",
+    "hashes_unchanged": true
+  },
+  "controls": {
+    "file": "/config/chacaico-controls.yaml",
+    "sha256": "d0d5a0f63088a38e7791a50aa97f887d898236a65a50b43b2359bd93d5e9a696",
+    "hash_unchanged": true,
+    "registered_and_enabled": [
+      "switch.chacaico_node_1_valve",
+      "switch.cubecell_1_led_de_prueba",
+      "valve.chacaico_node_1"
+    ]
+  },
+  "home_assistant_config_check": "passed",
+  "home_assistant_http_status": 200,
+  "bridge": {"version": "0.2.0", "state": "started", "modified": false},
+  "backup": "/config/chacaico-backups/remove-yaml-dashboard-20261006T130927Z-412/",
+  "firmware_modified": false,
+  "hardware_commands_sent": false
+}

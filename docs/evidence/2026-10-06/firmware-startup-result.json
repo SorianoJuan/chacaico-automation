@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "nodes_tested": [
+    1,
+    2
+  ],
+  "uses_real_sketch": true,
+  "real_cube_cell_cmac_and_aes": true,
+  "async_fake_radio": true,
+  "public_test_keys_only": true,
+  "hardware_used": false,
+  "outputs": [
+    "PASS node=1: first LED/valve accepted; real AES-CMAC agrees with Python; async TX returns to RX; 50ms GPIO; identical retries produce one pulse; new sequence repeats pulse",
+    "PASS node=2: first LED/valve accepted; real AES-CMAC agrees with Python; async TX returns to RX; 50ms GPIO; identical retries produce one pulse; new sequence repeats pulse"
+  ]
+}

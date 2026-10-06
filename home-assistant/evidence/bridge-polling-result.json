@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-06",
+  "bridge_version": "0.3.0",
+  "changes": [
+    "Independent GET_VALVE and GET_LED deadlines",
+    "Due polls alternate with queued commands",
+    "Immediate GET_VALVE after LED link recovery or MQTT reconnect",
+    "Failed valve SET triggers status query without repeating GPIO"
+  ],
+  "timings_unchanged": {
+    "poll_seconds_per_status": 60,
+    "offline_seconds": 90,
+    "ack_timeout_seconds": 1,
+    "max_tries": 3,
+    "command_ttl_seconds": 15
+  },
+  "offline_tests_passed": 11,
+  "radio_mqtt_test": {
+    "passed": true,
+    "bridge_version": "0.3.0",
+    "duration_seconds": 226,
+    "led_command_checks": 40,
+    "valve_availability_stayed_online": true,
+    "valve_state_unchanged": true,
+    "valve_commands_sent": false,
+    "nodes": [
+      {
+        "id": 1,
+        "valve_before": {
+          "sequence": 949336344,
+          "confirmation": "confirmed",
+          "state_source": "gpio_pulse",
+          "rssi": -49.0,
+          "snr": 11.25,
+          "confirmed_at": 1791294210.9951088
+        },
+        "valve_after": {
+          "sequence": 949336388,
+          "confirmation": "confirmed",
+          "state_source": "gpio_pulse",
+          "rssi": -60.0,
+          "snr": 12.5,
+          "confirmed_at": 1791294451.6876276
+        },
+        "led_restored": "OFF"
+      },
+      {
+        "id": 2,
+        "valve_before": {
+          "sequence": 949336345,
+          "confirmation": "confirmed",
+          "state_source": "gpio_pulse",
+          "rssi": -53.0,
+          "snr": 12.75,
+          "confirmed_at": 1791294211.1683943
+        },
+        "valve_after": {
+          "sequence": 949336389,
+          "confirmation": "confirmed",
+          "state_source": "gpio_pulse",
+          "rssi": -51.0,
+          "snr": 12.0,
+          "confirmed_at": 1791294451.874977
+        },
+        "led_restored": "OFF"
+      }
+    ]
+  },
+  "observed_valve_ack_intervals": {
+    "1": {
+      "ack_count": 5,
+      "maximum_seconds_between_valve_acks": 60.17900013923645
+    },
+    "2": {
+      "ack_count": 5,
+      "maximum_seconds_between_valve_acks": 60.1800000667572
+    }
+  },
+  "availability_observation": {
+    "event_monitor_seconds_in_this_run": 180,
+    "online_snapshot_checks": "Every traffic cycle throughout 226 seconds",
+    "future_test_monitor_limit_seconds": 360
+  },
+  "home_assistant": {
+    "http_status": 200,
+    "ui_dashboard_hash_unchanged": true,
+    "ui_registry_hash_unchanged": true,
+    "controls_hash_unchanged": true
+  },
+  "private_options_and_node_keys_preserved": true,
+  "bridge_source_sha256": "381f238405923ba462f518ac2fef48b3621d366b89300c2c7f408333cd8ea006",
+  "bridge_memory_bytes_observed": 20910080,
+  "bridge_cpu_percent_observed": 0.07,
+  "backup": "/config/chacaico-backups/bridge-polling-20261006T134153Z-911/",
+  "firmware_modified": false,
+  "node_firmware_versions": {
+    "1": "0.3.0",
+    "2": "0.3.0"
+  },
+  "node_sleep_enabled": false,
+  "new_timing_configuration_entities_added": false,
+  "valve_commands_sent": false,
+  "brainstorm_document": "docs/node-timing-brainstorm.md"
+}
