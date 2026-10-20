@@ -10,6 +10,11 @@ contiene una sección por nodo. La vista original de válvulas y LED se conserva
 3. Esperar **Confirmada** y comprobar los valores, revisión y hora reportados.
 4. **Consultar al nodo** pide una lectura nueva; si duerme, espera su anuncio.
 
+La vista principal muestra **Orden de válvula** debajo de cada control: Pendiente,
+Confirmada, Sin confirmación; consultando, o Vencida sin confirmar. Es exclusiva
+de esa válvula y las órdenes de LED no la sobrescriben. Tras reiniciar el puente
+empieza en Sin órdenes pendientes. Los parámetros siguen en Configuración LoRa.
+
 Los valores confirmados son los que devolvió el nodo, no una copia optimista de
 lo solicitado. Permanecen visibles durante el reposo. La hora permite distinguir
 una lectura reciente de otra anterior. Un error de escritura permanece visible

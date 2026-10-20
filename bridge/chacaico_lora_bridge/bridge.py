@@ -44,6 +44,9 @@ def discovery(node):
                payload_open="OPEN", payload_close="CLOSE", optimistic=False, retain=False,
                availability=online + [{"topic": base + "/valve/availability"}],
                icon="mdi:valve", json_attributes_topic=base + "/valve/status")
+    yield item("sensor", "valve_command_status", "Orden de válvula",
+               default_entity_id=f"sensor.chacaico_node_{node}_valve_command_status",
+               state_topic=base + "/valve/command/status", icon="mdi:list-status")
     for key, unit, name in (("rssi", "dBm", "RSSI"), ("snr", "dB", "SNR")):
         yield item("sensor", key, name, state_topic=base + "/status",
                    value_template="{{ value_json." + key + " }}", unit_of_measurement=unit,
@@ -181,7 +184,7 @@ class Bridge:
 
 def main():
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    LOG.info("Chacaico bridge 0.4.0; authenticated configuration and wake windows")
+    LOG.info("Chacaico bridge 0.4.1; authenticated configuration and wake windows")
     options = json.loads(Path("/data/options.json").read_text())
     if options.get("self_test"):
         LOG.warning("Legacy self_test ignored: explicit tests only")

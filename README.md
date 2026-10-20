@@ -39,7 +39,7 @@ claves y **no se publican**.
 | --- | --- | --- |
 | Nodo 1 | Firmware0.4.0, ID1, HTCC-AB01/ASR6501, PCB V1.2 confirmada | [firmware/nodes/node_1](firmware/nodes/node_1/README.md) |
 | Nodo 2 | Firmware0.4.0, ID2, HTCC-AB01/ASR6501; revisión de PCB por verificar | [firmware/nodes/node_2](firmware/nodes/node_2/README.md) |
-| Puente | App0.4.0, Python, MQTT ↔ LoRa | [bridge](bridge/README.md) |
+| Puente | App0.4.1, Python, MQTT ↔ LoRa | [bridge](bridge/README.md) |
 | Home Assistant | Core2026.9.4, verificación20/10/2026 | [home-assistant](home-assistant/README.md) |
 
 La versión 0.4.0 incorpora configuración remota confirmada y persistente, ventanas

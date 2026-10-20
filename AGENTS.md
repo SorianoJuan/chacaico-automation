@@ -9,7 +9,7 @@ Guardar aquí desarrollo, configuración reproducible, documentación y evidenci
 - `firmware/nodes/node_2/`: sketch/perfil públicos del ID2, firmware0.4.0.
 - `firmware/libraries/ChacaicoNode/`: lógica compartida; conservar comportamiento
   consistente entre nodos. Cambiar versión en perfiles/librería/banner cuando proceda.
-- `bridge/chacaico_lora_bridge/`: app0.4.0 de HAOS, driver SX1262 y protocolo MQTT/LoRa.
+- `bridge/chacaico_lora_bridge/`: app0.4.1 de HAOS, driver SX1262 y protocolo MQTT/LoRa.
 - `home-assistant/config/`, `scripts/`, `apps/`, `evidence/`: HAOS y auxiliares.
 - `home-assistant/legacy/`: panel retirado; no ejecutarlo ni reinstalarlo.
 - `tests/`: pruebas offline; `docs/`: operación, ideas y diagnósticos.
@@ -40,7 +40,9 @@ Verificar Supervisor machine_id **2e21da3405714e0cba2d890984d6dfa8** antes de ca
 SSH entra en la app Terminal & SSH, no en el host HAOS.
 
 El panel Chacaico es de almacenamiento y lo administra el usuario desde la UI.
-Preservar la vista original. El usuario autorizó una pestaña aparte
+Preservar los controles y demás contenido de la vista original. El usuario autorizó
+la fila Orden de válvula inmediatamente después de cada válvula en esa vista,
+con su estado de orden independiente del LED. También autorizó una pestaña aparte
 Configuración LoRa (`configuracion-lora`) para parámetros/confirmaciones;
 no mezclarla con los controles de válvula ni reemplazar otras vistas. No sustituir estado desconocido por
 cerrado para cambiar la apariencia. Mantener estado pendiente/confirmado separado.
@@ -50,7 +52,7 @@ construir apps con Core detenido y reactivarlo. Puente usa libgpiod2 sobre RP1;
 NSSBCM21; SPI_NO_CS no está soportado. Las rutas `/local_apps/` en la Pi no cambian
 porque el código local esté ahora en `bridge/` y `home-assistant/apps/`.
 
-Puente/nodos0.4.0 usan protocolo v2; actualizar juntos, no compatibles con0.3.0.
+Puente0.4.1 y nodos0.4.0 usan protocolo v2; actualizar juntos, no compatibles con0.3.0.
 Reposo0 significa RX continuo; positivo usa READY y ventana inicial3s renovable
 con presupuesto máximo10s, END para dormir antes. Configuración SET_CONFIG separada,
 revisión/ACK/consulta, flash persistente con lectura de verificación y sesión de

@@ -69,6 +69,7 @@ class Node:
     radio_fault: bool = False
     pending: dict | None = None
     actions: dict = field(default_factory=dict)
+    action_status: dict = field(default_factory=dict)
     backoff: float = 0
     last_tx: float = -math.inf
 
@@ -121,6 +122,13 @@ class Engine:
             self.publish(topic, value)
             self.published[topic] = serialized
 
+    def action_view(self, n, op, status):
+        # Last actuator command is independent from telemetry and the other actuator.
+        n.action_status[op] = status
+        resource = "valve" if op == SET_VALVE else "led"
+        self.emit(n.ident, resource + "/command/status", status)
+        self.emit(n.ident, "command/status", status)
+
     def config_view(self, n):
         draft = n.draft or n.confirmed or {"sleep_s": 0, "pulse_ms": 50}
         self.emit(n.ident, "config/draft", {k: draft[k] for k in ("sleep_s", "pulse_ms")})
@@ -133,6 +141,9 @@ class Engine:
         for n in self.nodes.values():
             n.need_query = True
             self.config_view(n)
+            for op, resource in ((SET_VALVE, "valve"), (SET_LED, "led")):
+                self.emit(n.ident, resource + "/command/status",
+                          n.action_status.get(op, "Sin órdenes pendientes"))
             self.emit(n.ident, "command/status", n.command_status)
         self.tick()
 
@@ -195,7 +206,7 @@ class Engine:
             n.pending = None  # Old ACK is no longer evidence for the current intent.
         self.emit(node, "valve/status" if op == SET_VALVE else "led/status",
                   {"confirmation": "pending", "command": payload, "state_source": "gpio_pulse" if op == SET_VALVE else "led"})
-        self.emit(node, "command/status", "Pendiente")
+        self.action_view(n, op, "Pendiente")
 
     def receive(self, packet, rssi, snr):
         try:
@@ -287,7 +298,7 @@ class Engine:
             actual = f.led if f.op == SET_LED else f.valve
             if job and job["value"] == actual:
                 del n.actions[f.op]
-                self.emit(n.ident, "command/status", "Confirmada")
+                self.action_view(n, f.op, "Confirmada")
         if f.op == END and f.sleep_s:
             n.closed = True
         LOG.info("ACK node=%d boot=%d wake=%d seq=%d op=%d result=%d revision=%d sleep=%d pulse=%d",
@@ -319,7 +330,7 @@ class Engine:
             job = n.actions.get(op)
             if job and job["value"] == actual:
                 del n.actions[op]
-                self.emit(n.ident, "command/status", "Confirmada")
+                self.action_view(n, op, "Confirmada")
         self.config_view(n)
         self.emit(n.ident, "led/state", "ON" if f.led else "OFF")
         self.emit(n.ident, "valve/state", {0: "closed", 1: "open", UNKNOWN: "None"}[f.valve])
@@ -344,7 +355,7 @@ class Engine:
                     del n.actions[op]
                     if n.pending and n.pending["frame"].op == op:
                         n.pending = None
-                    self.emit(n.ident, "command/status", "Vencida sin confirmar")
+                    self.action_view(n, op, "Vencida sin confirmar")
                     self.emit(n.ident, "valve/status" if op == SET_VALVE else "led/status",
                               {"confirmation": "unconfirmed", "expired": True})
                     n.need_query = True
@@ -364,7 +375,10 @@ class Engine:
                     n.need_query = True
                     n.reconcile = True
                     n.backoff = now + 1
-                    self.emit(n.ident, "command/status", "Sin confirmación; consultando")
+                    if p["frame"].op in (SET_VALVE, SET_LED):
+                        self.action_view(n, p["frame"].op, "Sin confirmación; consultando")
+                    else:
+                        self.emit(n.ident, "command/status", "Sin confirmación; consultando")
                     if p["frame"].op == SET_CONFIG:
                         n.config_status = "Sin confirmación; consultando"
                         self.config_view(n)

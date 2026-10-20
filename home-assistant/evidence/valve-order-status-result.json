@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-20",
+  "bridge_version": "0.4.1",
+  "firmware_version_unchanged": "0.4.0",
+  "unit_tests_passed": 43,
+  "main_view_rows_added": 2,
+  "configuration_view_unchanged": true,
+  "existing_main_controls_unchanged": true,
+  "ui_verified": true,
+  "observed_initial_status": "Sin órdenes pendientes",
+  "valve_status_isolated_from_led_tested": true,
+  "expiration_survives_unrelated_ack_tested": true,
+  "valve_commands_sent_for_validation": false,
+  "firmware_reflashed": false
+}

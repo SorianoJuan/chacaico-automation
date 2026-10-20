@@ -1,4 +1,4 @@
-# Puente LoRa ↔ MQTT 0.4.0
+# Puente LoRa ↔ MQTT 0.4.1
 
 - `chacaico_lora_bridge/bridge.py`: MQTT, discovery y transporte.
 - `engine.py`: scheduler, ventanas, colas, confirmaciones y persistencia.
@@ -16,3 +16,6 @@ detenido mediante el instalador de `../home-assistant/scripts/`. La copia de
 seguridad de Home Assistant debe hacerse antes de detener Core.
 
 Operación, tiempos, límites y recuperación: [configuración de nodos](../docs/node-configuration.md).
+
+0.4.1 agrega un estado exclusivo de la última orden de válvula por nodo.
+Las confirmaciones de LED y consultas de fondo no lo sobrescriben.

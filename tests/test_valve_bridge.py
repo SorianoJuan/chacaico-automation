@@ -100,6 +100,44 @@ class EngineTest(unittest.TestCase):
         self.ready(wake=2, sleep=5)
         self.assertEqual(self.request().op, GET_CONFIG)
 
+    def test_valve_status_survives_led_ack_and_unrelated_reports(self):
+        self.connect()
+        self.engine.message(1, "valve/set", "OPEN")
+        self.engine.message(1, "led/set", "ON")
+        n = self.engine.nodes[1]
+        f = Frame(RESPONSE, 1, n.boot, n.wake, 1, SET_LED,
+                  revision=1, pulse_ms=50, valve=0, led=1)
+        self.engine.report(n, f, -50, 12)
+        self.assertEqual(n.action_status[SET_VALVE], "Pendiente")
+        self.assertEqual(n.action_status[SET_LED], "Confirmada")
+        self.assertEqual(self.engine.published[f"{ROOT}/node/1/valve/command/status"], "Pendiente")
+        self.engine.reconnect()
+        self.assertEqual(self.engine.published[f"{ROOT}/node/1/valve/command/status"], "Pendiente")
+        self.respond(self.request())
+        self.assertEqual(n.action_status[SET_VALVE], "Confirmada")
+
+    def test_expired_valve_status_survives_telemetry_and_led_command(self):
+        self.connect(sleep=30)
+        self.respond(self.request())  # close listening window
+        self.engine.message(1, "valve/set", "OPEN")
+        self.clock += 51
+        self.engine.tick()
+        n = self.engine.nodes[1]
+        self.assertEqual(n.action_status[SET_VALVE], "Vencida sin confirmar")
+        self.ready(wake=2, sleep=30)
+        self.respond(self.request(), valve=0)
+        self.engine.message(1, "led/set", "ON")
+        self.respond(self.request(), valve=0)
+        self.assertEqual(n.action_status[SET_VALVE], "Vencida sin confirmar")
+        self.engine.message(1, "valve/set", "OPEN")
+        self.assertEqual(n.action_status[SET_VALVE], "Pendiente")
+
+    def test_restart_does_not_replay_or_claim_confirmed_valve_command(self):
+        self.connect();self.engine.message(1, "valve/set", "OPEN")
+        self.engine = self.create();self.engine.reconnect()
+        self.assertFalse(self.engine.nodes[1].actions)
+        self.assertEqual(self.engine.published[f"{ROOT}/node/1/valve/command/status"], "Sin órdenes pendientes")
+
     def test_all_frame_bits_are_authenticated(self):
         packet = encode(self.keys[1], Frame(REQUEST, 1, 1, 1, 1, SET_LED, led=1))
         self.assertEqual(len(packet), 38)

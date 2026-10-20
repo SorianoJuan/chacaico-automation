@@ -54,3 +54,15 @@ no ejecutarla como simple diagnóstico en una instalación de campo.
 
 La prueba adicional del20/10 reinició ambos nodos por USB y detuvo el bridge25s
 con una configuración pendiente; la evidencia está en `../docs/evidence/2026-10-20/`.
+
+## Orden de válvula en la vista principal
+
+`Orden de válvula` aparece inmediatamente debajo del control de cada válvula.
+Usa `sensor.chacaico_node_N_valve_command_status`, publicado por el bridge0.4.1
+sobre `chacaico/lora/node/N/valve/command/status`: Pendiente, Confirmada,
+Sin confirmación; consultando, o Vencida sin confirmar. El LED no cambia este
+estado. Tras reiniciar el puente empieza en Sin órdenes pendientes: no se presume
+éxito ni se reproducen órdenes previas. La pestaña Configuración LoRa se conserva.
+`scripts/main-view-order-status.py` combina únicamente esas dos filas con una
+copia privada del dashboard, preservando el resto y verificando que cada control
+aparece una sola vez. No publicar el JSON privado resultante.
