@@ -1,0 +1,44 @@
+[
+  {
+    "node": 1,
+    "reported": {
+      "revision": 10,
+      "sleep_s": 0,
+      "pulse_ms": 50,
+      "confirmed_at": 1792519191.965834
+    },
+    "draft": {
+      "sleep_s": 0,
+      "pulse_ms": 50
+    },
+    "status": "Confirmada",
+    "limits": {
+      "min": 10,
+      "max": 3000,
+      "unit": "ms"
+    }
+  },
+  {
+    "node": 2,
+    "reported": {
+      "revision": 5,
+      "sleep_s": 0,
+      "pulse_ms": 50,
+      "confirmed_at": 1792519197.433577
+    },
+    "draft": {
+      "sleep_s": 0,
+      "pulse_ms": 50
+    },
+    "status": "Confirmada",
+    "limits": {
+      "min": 10,
+      "max": 3000,
+      "unit": "ms"
+    }
+  },
+  {
+    "bridge_version": "0.4.3",
+    "bridge_state": "started"
+  }
+]

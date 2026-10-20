@@ -25,7 +25,7 @@ wait_cfg() {
  printf 'Timed out confirming node %s\n' "$chacaico_node" >&2;return 1
 }
 
-api http://supervisor/addons/local_chacaico_lora_bridge/info | jq -e '(.data.version == "0.4.0" or .data.version == "0.4.1") and .data.state == "started"' >/dev/null
+api http://supervisor/addons/local_chacaico_lora_bridge/info | jq -e '(.data.version | IN("0.4.0", "0.4.1", "0.4.2", "0.4.3")) and .data.state == "started"' >/dev/null
 # Refuse to overwrite an existing field setup. This fixture starts at 0s/50ms, LED off.
 for n in 1 2; do
  read_topic "$n" config/reported | jq -e '.sleep_s == 0 and .pulse_ms == 50' >/dev/null

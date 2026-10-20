@@ -1,4 +1,4 @@
-# Puente LoRa ↔ MQTT 0.4.2
+# Puente LoRa ↔ MQTT 0.4.3
 
 - `chacaico_lora_bridge/bridge.py`: MQTT, discovery y transporte.
 - `engine.py`: scheduler, ventanas, colas, confirmaciones y persistencia.
@@ -6,7 +6,7 @@
 - `radio.py`: SX1262 SPI/libgpiod2, sin cambios en esta actualización.
 
 El protocolo es compatible con firmware0.4.x. El pulso de banco de hasta3000ms
-solo se admite para nodo1, con firmware0.4.1; nodo2 conserva su límite200ms. No habilitar automatismos de
+se admite en nodos1/2 con firmware0.4.1; ambos quedaron configurados a50ms. No habilitar automatismos de
 prueba: la opción heredada self_test se ignora. Los comandos de configuración son
 independientes de las válvulas; no hay actuación de válvula al instalar/arrancar.
 Las credenciales MQTT se obtienen de Supervisor y las claves de opciones privadas.
@@ -25,3 +25,6 @@ Las confirmaciones de LED y consultas de fondo no lo sobrescriben.
 reserva recepción para su respuesta y difiere un pulso si no cabe antes del
 límite de vigilia. La metadata de versión de firmware es una etiqueta de despliegue
 mantenida en el bridge; la trama v2 no transmite una versión de software.
+
+0.4.3 amplía el máximo configurable a3000ms también para nodo2 y publica el
+mismo límite en Home Assistant. Se conserva50ms como valor predeterminado.

@@ -123,7 +123,7 @@ int main() {
     advance(55);
     assert(!gpio[1]&&!gpio[2] && uint32_t(millis()-start)<=57);
     advance(1500);assert(valve==0 && !sleeping);
-    if(CHACAICO_NODE_ID==1) {
+    {
         assert(MAX_PULSE==3000);
         deliver(request(SET_CONFIG,seq++,0,config.revision+1,30,3000));advance(500);
         assert(config.pulse==3000 && config.sleep==30);
@@ -152,11 +152,10 @@ int main() {
         assert(reply[19]==BUSY && highEdges.size()==count && !gpio[1]&&!gpio[2]);
         ConfigStore persisted;persisted.begin();
         assert(persisted.healthy && persisted.pulse==3000 && persisted.sleep==30);
-    } else {
-        assert(MAX_PULSE==200);
-        const auto revision=config.revision;
-        deliver(request(SET_CONFIG,seq++,0,revision+1,0,3000));advance(500);
-        assert(reply[19]==INVALID && config.revision==revision && config.pulse==50);
+        deliver(request(SET_CONFIG,seq++,0,config.revision+1,0,50));advance(500);
+        assert(config.pulse==50 && config.sleep==0 && highEdges.size()==count);
+        ConfigStore restored;restored.begin();
+        assert(restored.healthy && restored.pulse==50 && restored.sleep==0);
     }
     std::cout<<"PASS node="<<CHACAICO_NODE_ID
              <<" real CMAC; 33 torn-write points; GPIO timing/LED; dedup; sessions; config; sleep; TX timeout\n";

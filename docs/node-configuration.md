@@ -1,11 +1,11 @@
-# Configuración remota y ventanas de escucha — nodos0.4.x / bridge0.4.2
+# Configuración remota y ventanas de escucha — nodos0.4.x / bridge0.4.3
 
 ## Operación desde Home Assistant
 
 La pestaña **Configuración LoRa** de Chacaico (`dashboard-chacaico/configuracion-lora`)
 contiene una sección por nodo. La vista original de válvulas y LED se conserva.
 
-1. Editar reposo en segundos (0–3600) y pulso GPIO en milisegundos (10–200; nodo1 de banco: hasta3000).
+1. Editar reposo en segundos (0–3600) y pulso GPIO en milisegundos (10–3000 en nodos1/2).
 2. Pulsar **Aplicar ambos parámetros**. Editar los campos solo modifica el borrador.
 3. Esperar **Confirmada** y comprobar los valores, revisión y hora reportados.
 4. **Consultar al nodo** pide una lectura nueva; si duerme, espera su anuncio.
@@ -22,7 +22,7 @@ hasta Aplicar o Consultar; una consulta posterior confirma la configuración que
 sigue vigente, no que el intento fallido se haya aplicado.
 
 El reposo predeterminado es **0 s**, escucha continua. El pulso predeterminado es
-**50 ms**. El límite normal es 10–200 ms; nodo1 tiene una excepción de banco hasta3000 ms.
+**50 ms**. El límite configurable es 10–3000 ms en ambos nodos; ambos quedaron aplicados a50 ms.
 Son restricciones del software, no una validación
 eléctrica de cualquier electroválvula. El pulso no representa duración del riego.
 No hay cierre autónomo ni sensor de posición: una confirmación de válvula solo
@@ -51,8 +51,11 @@ El pulso predeterminado de 50 ms y aun 200 ms pueden ser muy breves para un test
 común. El20/10/2026 se habilitó y aplicó **3000 ms al nodo1**, con autorización del
 usuario para probarlo separado de PCB/válvula. Firmware0.4.1 y bridge0.4.2 conservan
 la confirmación después de completar el pulso, deduplicación y retorno a LOW.
-El nodo2 mantiene su límite200 ms y no se reprogramó. El reposo de nodo1 se
-conservó en0 s, valor que tenía justo antes de esta actualización.
+Posteriormente, el usuario pidió ampliar también el máximo del nodo2 a3000 ms
+y restaurar50 ms en ambos. Se programó nodo2 con firmware0.4.1 y se desplegó
+bridge0.4.3. Ambos confirmaron50 ms; el reposo se conservó en0 s.
+La ampliación del límite no cambia por sí sola el pulso aplicado.
+Evidencia: [ampliación y restauración](evidence/2026-10-20/both-pulse-limit/README.md).
 
 **Antes de reconectar la potencia, aplicar50 ms y comprobar el valor confirmado.**
 El parámetro se conserva al reiniciar; no vuelve automáticamente a50 ms. Restaurar
@@ -90,8 +93,8 @@ para ejecutarlas después de reiniciar el puente.
 Protocolo v2: 38 bytes, AES-CMAC truncado a 64 bits con clave individual. Incluye
 ID, sesión de arranque persistente, ventana de despertar, secuencia, operación,
 resultado, revisión, reposo, pulso y estados de LED/válvula. Firmware y puente
-0.4.x son compatibles en protocolo; pulsos largos requieren nodo1 con firmware0.4.1
-y puente0.4.2. No hay compatibilidad de radio con0.3.0.
+0.4.x son compatibles en protocolo; pulsos largos en ambos nodos requieren sus
+perfiles0.4.1 y puente0.4.3 (0.4.2 solo los admitía en nodo1). No hay compatibilidad de radio con0.3.0.
 No se modificó el bootloader y esto no implementa actualización OTA de firmware.
 
 SET_CONFIG es independiente de SET_VALVE y SET_LED. Se aplican ambos parámetros

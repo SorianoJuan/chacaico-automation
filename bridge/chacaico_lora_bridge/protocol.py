@@ -31,8 +31,8 @@ class Frame:
 
 
 def max_pulse_ms(node):
-    # Commissioning exception explicitly requested for the isolated node 1.
-    return 3000 if node == 1 else MAX_PULSE
+    # Nodes 1 and 2 explicitly support long pulses; other profiles keep their limit.
+    return 3000 if node in (1, 2) else MAX_PULSE
 
 
 def valid_config(sleep_s, pulse_ms, node=None):

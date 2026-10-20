@@ -17,7 +17,7 @@ una nueva orden tras recuperar el enlace debe funcionar. No prueba entrega infal
 La prueba nativa compila el firmware real para IDs 1 y 2, con AES/CMAC real del
 core CubeCell 1.6.0 y claves públicas de prueba. Simula radio asíncrona (83 ms),
 RTC, flash y GPIO: arranque sin pulso, sesiones, todos los bits autenticados,
-reintentos, pulsos de50/200 ms y3000 ms en nodo1, destellos, 33 cortes de escritura, error silencioso
+reintentos, pulsos de50/200 ms y3000 ms en ambos nodos, restauración persistente a50 ms, destellos, 33 cortes de escritura, error silencioso
 de flash, sueño/despertar, límite de ventana, timeout de TX y desborde de reloj.
 Requiere g++/cc, cryptography y el core instalado por firmware/setup-toolchain.sh.
 

@@ -338,7 +338,7 @@ class Engine:
                   "state_source": "gpio_pulse", "confirmed_at": self.wall(), "rssi": rssi, "snr": snr})
         self.emit(n.ident, "status", {"node": n.ident, "sequence": f.sequence, "boot": f.boot, "wake": f.wake,
                   "rssi": rssi, "snr": snr, "confirmed_at": self.wall(), "led": bool(f.led),
-                  "valve": {0: "closed", 1: "open", UNKNOWN: "unknown"}[f.valve], "firmware": "0.4.1" if n.ident == 1 else "0.4.0"})
+                  "valve": {0: "closed", 1: "open", UNKNOWN: "unknown"}[f.valve], "firmware": "0.4.1" if n.ident in (1, 2) else "0.4.0"})
 
     def tick(self):
         now = self.now()

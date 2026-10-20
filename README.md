@@ -38,8 +38,8 @@ claves y **no se publican**.
 | Componente | Versión / identidad | Código |
 | --- | --- | --- |
 | Nodo 1 | Firmware0.4.1, ID1, HTCC-AB01/ASR6501, PCB V1.2 confirmada | [firmware/nodes/node_1](firmware/nodes/node_1/README.md) |
-| Nodo 2 | Instalado0.4.0; fuentes0.4.1, ID2, HTCC-AB01/ASR6501; revisión de PCB por verificar | [firmware/nodes/node_2](firmware/nodes/node_2/README.md) |
-| Puente | App0.4.2, Python, MQTT ↔ LoRa | [bridge](bridge/README.md) |
+| Nodo 2 | Firmware0.4.1, ID2, HTCC-AB01/ASR6501; revisión de PCB por verificar | [firmware/nodes/node_2](firmware/nodes/node_2/README.md) |
+| Puente | App0.4.3, Python, MQTT ↔ LoRa | [bridge](bridge/README.md) |
 | Home Assistant | Core2026.9.4, verificación20/10/2026 | [home-assistant](home-assistant/README.md) |
 
 La versión 0.4.0 incorpora configuración remota confirmada y persistente, ventanas
@@ -58,7 +58,7 @@ preámbulo8, CRC, IQ normal, sync privado0x1424 y TX0dBm**.
 - ID y AES-CMAC se validan antes de actuar. Los reintentos de una misma secuencia
   no repiten el pulso. Se validan también sesión persistente de arranque y despertar.
 - El ACK confirma la ejecución lógica/GPIO, no la posición física ni el caudal.
-- Reposo configurable0–3600s:0 es escucha continua. Pulso configurable10–200ms; nodo1 admite hasta3000ms solo para banco aislado.
+- Reposo configurable0–3600s:0 es escucha continua. Pulso configurable10–3000ms en nodos1/2; ambos aplicados a50ms. Pulsos largos solo para banco aislado.
 - Cierre autónomo, sensor de posición y OTA de firmware no están implementados.
 
 ## Home Assistant y acceso

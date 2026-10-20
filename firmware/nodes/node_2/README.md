@@ -1,6 +1,6 @@
 # Nodo 2
 
-Firmware instalado **0.4.0**, fuentes y compilación **0.4.1** (sin flashear en la prueba del nodo1), ID LoRa **2**, placa objetivo **HTCC-AB01 / ASR6501**.
+Firmware **0.4.1**, ID LoRa **2**, placa objetivo **HTCC-AB01 / ASR6501**.
 La revisión impresa de esta PCB debe verificarse por separado; no se infiere de la del nodo 1.
 
 - `node_2.ino`: entrada Arduino; rechaza una configuración de otro ID.
@@ -14,6 +14,9 @@ con los otros nodos. Cada nodo mantiene su propia clave y compilación. GPIO2 ab
 GPIO1 cierra, ambos con pulso configurable (50 ms predeterminado); el LED de prueba
 conserva su estado tras los destellos. Reposo y pulso se configuran desde la pestaña
 Configuración LoRa y se conservan en flash. OTA de firmware no implementado.
+Máximo configurable **3000 ms**, pulso aplicado **50 ms**. Requiere bridge0.4.3.
+Usar pulsos largos solo con el CubeCell separado de la PCB y la válvula.
+
 Ver [operación y límites](../../../docs/node-configuration.md).
 
 Desde la raíz del repo:

@@ -30,7 +30,7 @@ def mqtt_service():
 def discovery(node):
     base = f"{ROOT}/node/{node}"
     device = {"identifiers": [f"chacaico_cubecell_{node}"], "name": f"CubeCell {node}",
-              "manufacturer": "Heltec", "model": "HTCC-AB01", "sw_version": "chacaico-valve-" + ("0.4.1" if node == 1 else "0.4.0")}
+              "manufacturer": "Heltec", "model": "HTCC-AB01", "sw_version": "chacaico-valve-" + ("0.4.1" if node in (1, 2) else "0.4.0")}
     online = [{"topic": ROOT + "/bridge/availability"}]
     common = {"device": device, "availability_mode": "all", "availability": online, "qos": 1}
     def item(component, key, name, **settings):
@@ -185,7 +185,7 @@ class Bridge:
 
 def main():
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
-    LOG.info("Chacaico bridge 0.4.2; authenticated configuration and wake windows")
+    LOG.info("Chacaico bridge 0.4.3; authenticated configuration and wake windows")
     options = json.loads(Path("/data/options.json").read_text())
     if options.get("self_test"):
         LOG.warning("Legacy self_test ignored: explicit tests only")
