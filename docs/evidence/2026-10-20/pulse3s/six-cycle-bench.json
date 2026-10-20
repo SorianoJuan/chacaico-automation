@@ -1,0 +1,222 @@
+[
+  {
+    "time": "2026-10-20T14:40:50.309-03:00",
+    "event": "started",
+    "node": 1,
+    "cycles": 6,
+    "interval_s": 5,
+    "pulse_ms": 3000,
+    "initial_state": "closed"
+  },
+  {
+    "time": "2026-10-20T14:40:50.309-03:00",
+    "event": "command",
+    "index": 1,
+    "command": "OPEN",
+    "node": 1
+  },
+  {
+    "time": "2026-10-20T14:40:53.799-03:00",
+    "event": "confirmed",
+    "index": 1,
+    "command": "OPEN",
+    "node": 1,
+    "latency_s": 3.49,
+    "sequence": 949339859,
+    "state": "open"
+  },
+  {
+    "time": "2026-10-20T14:40:55.310-03:00",
+    "event": "command",
+    "index": 2,
+    "command": "CLOSE",
+    "node": 1
+  },
+  {
+    "time": "2026-10-20T14:40:58.808-03:00",
+    "event": "confirmed",
+    "index": 2,
+    "command": "CLOSE",
+    "node": 1,
+    "latency_s": 3.498,
+    "sequence": 949339860,
+    "state": "closed"
+  },
+  {
+    "time": "2026-10-20T14:41:00.310-03:00",
+    "event": "command",
+    "index": 3,
+    "command": "OPEN",
+    "node": 1
+  },
+  {
+    "time": "2026-10-20T14:41:03.803-03:00",
+    "event": "confirmed",
+    "index": 3,
+    "command": "OPEN",
+    "node": 1,
+    "latency_s": 3.494,
+    "sequence": 949339861,
+    "state": "open"
+  },
+  {
+    "time": "2026-10-20T14:41:05.310-03:00",
+    "event": "command",
+    "index": 4,
+    "command": "CLOSE",
+    "node": 1
+  },
+  {
+    "time": "2026-10-20T14:41:08.945-03:00",
+    "event": "confirmed",
+    "index": 4,
+    "command": "CLOSE",
+    "node": 1,
+    "latency_s": 3.636,
+    "sequence": 949339863,
+    "state": "closed"
+  },
+  {
+    "time": "2026-10-20T14:41:10.310-03:00",
+    "event": "command",
+    "index": 5,
+    "command": "OPEN",
+    "node": 1
+  },
+  {
+    "time": "2026-10-20T14:41:13.792-03:00",
+    "event": "confirmed",
+    "index": 5,
+    "command": "OPEN",
+    "node": 1,
+    "latency_s": 3.482,
+    "sequence": 949339864,
+    "state": "open"
+  },
+  {
+    "time": "2026-10-20T14:41:15.310-03:00",
+    "event": "command",
+    "index": 6,
+    "command": "CLOSE",
+    "node": 1
+  },
+  {
+    "time": "2026-10-20T14:41:18.798-03:00",
+    "event": "confirmed",
+    "index": 6,
+    "command": "CLOSE",
+    "node": 1,
+    "latency_s": 3.488,
+    "sequence": 949339865,
+    "state": "closed"
+  },
+  {
+    "time": "2026-10-20T14:41:20.310-03:00",
+    "event": "command",
+    "index": 7,
+    "command": "OPEN",
+    "node": 1
+  },
+  {
+    "time": "2026-10-20T14:41:23.796-03:00",
+    "event": "confirmed",
+    "index": 7,
+    "command": "OPEN",
+    "node": 1,
+    "latency_s": 3.486,
+    "sequence": 949339867,
+    "state": "open"
+  },
+  {
+    "time": "2026-10-20T14:41:25.310-03:00",
+    "event": "command",
+    "index": 8,
+    "command": "CLOSE",
+    "node": 1
+  },
+  {
+    "time": "2026-10-20T14:41:28.794-03:00",
+    "event": "confirmed",
+    "index": 8,
+    "command": "CLOSE",
+    "node": 1,
+    "latency_s": 3.484,
+    "sequence": 949339868,
+    "state": "closed"
+  },
+  {
+    "time": "2026-10-20T14:41:30.310-03:00",
+    "event": "command",
+    "index": 9,
+    "command": "OPEN",
+    "node": 1
+  },
+  {
+    "time": "2026-10-20T14:41:33.802-03:00",
+    "event": "confirmed",
+    "index": 9,
+    "command": "OPEN",
+    "node": 1,
+    "latency_s": 3.492,
+    "sequence": 949339869,
+    "state": "open"
+  },
+  {
+    "time": "2026-10-20T14:41:35.310-03:00",
+    "event": "command",
+    "index": 10,
+    "command": "CLOSE",
+    "node": 1
+  },
+  {
+    "time": "2026-10-20T14:41:39.286-03:00",
+    "event": "confirmed",
+    "index": 10,
+    "command": "CLOSE",
+    "node": 1,
+    "latency_s": 3.977,
+    "sequence": 949339870,
+    "state": "closed"
+  },
+  {
+    "time": "2026-10-20T14:41:40.310-03:00",
+    "event": "command",
+    "index": 11,
+    "command": "OPEN",
+    "node": 1
+  },
+  {
+    "time": "2026-10-20T14:41:43.800-03:00",
+    "event": "confirmed",
+    "index": 11,
+    "command": "OPEN",
+    "node": 1,
+    "latency_s": 3.49,
+    "sequence": 949339872,
+    "state": "open"
+  },
+  {
+    "time": "2026-10-20T14:41:45.310-03:00",
+    "event": "command",
+    "index": 12,
+    "command": "CLOSE",
+    "node": 1
+  },
+  {
+    "time": "2026-10-20T14:41:48.796-03:00",
+    "event": "confirmed",
+    "index": 12,
+    "command": "CLOSE",
+    "node": 1,
+    "latency_s": 3.486,
+    "sequence": 949339873,
+    "state": "closed"
+  },
+  {
+    "time": "2026-10-20T14:41:48.796-03:00",
+    "event": "completed",
+    "cycles": 6,
+    "commands": 12,
+    "final_state": "closed"
+  }
+]

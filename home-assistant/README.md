@@ -66,3 +66,21 @@ estado. Tras reiniciar el puente empieza en Sin órdenes pendientes: no se presu
 `scripts/main-view-order-status.py` combina únicamente esas dos filas con una
 copia privada del dashboard, preservando el resto y verificando que cada control
 aparece una sola vez. No publicar el JSON privado resultante.
+
+
+## Ciclos de banco solicitados por el usuario
+
+`python3 home-assistant/scripts/cycle-node1-bench.py --cycles 100 --output /tmp/prueba-nodo1.jsonl`
+alterna OPEN/CLOSE del nodo1 con cinco segundos entre el inicio de las órdenes.
+Solo usar con el CubeCell separado de PCB/válvula y autorización explícita para
+accionar. Exige sleep0, pulso3000ms y una confirmación nueva antes de continuar;
+termina después del cierre del último ciclo. Un fallo/intervención de otro control
+interrumpe la tanda. SIGINT/SIGTERM deja de enviar órdenes; un pulso ya iniciado
+termina en el nodo. No instala una automatización permanente ni modifica parámetros.
+
+Usa el alias SSH `pi5.chacaico` y el helper privado `/tmp/mqtt-env.sh` de esa Pi;
+el helper y sus credenciales no están versionados. El `.pid` junto al log permite
+identificar la ejecución; verificar el proceso antes de enviarle una señal.
+Los100 ciclos del20/10/2026 quedaron en ejecución en segundo plano; consultar
+`docs/evidence/2026-10-20/pulse3s/hundred-cycle-start.json` para el registro vivo.
+Ese archivo acredita el inicio y las confirmaciones observadas, no la finalización.

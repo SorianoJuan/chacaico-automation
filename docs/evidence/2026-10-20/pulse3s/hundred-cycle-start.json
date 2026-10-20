@@ -1,0 +1,137 @@
+{
+  "status": "running_at_verification",
+  "started_at": "2026-10-20T14:43:56.118-03:00",
+  "requested_cycles": 100,
+  "commands_per_cycle": 2,
+  "command_interval_s": 5,
+  "node": 1,
+  "pulse_ms": 3000,
+  "sleep_s": 0,
+  "verified_confirmations": [
+    {
+      "time": "2026-10-20T14:43:59.595-03:00",
+      "event": "confirmed",
+      "index": 1,
+      "command": "OPEN",
+      "node": 1,
+      "latency_s": 3.477,
+      "sequence": 949339883,
+      "state": "open"
+    },
+    {
+      "time": "2026-10-20T14:44:04.603-03:00",
+      "event": "confirmed",
+      "index": 2,
+      "command": "CLOSE",
+      "node": 1,
+      "latency_s": 3.485,
+      "sequence": 949339884,
+      "state": "closed"
+    },
+    {
+      "time": "2026-10-20T14:44:09.605-03:00",
+      "event": "confirmed",
+      "index": 3,
+      "command": "OPEN",
+      "node": 1,
+      "latency_s": 3.487,
+      "sequence": 949339885,
+      "state": "open"
+    },
+    {
+      "time": "2026-10-20T14:44:14.603-03:00",
+      "event": "confirmed",
+      "index": 4,
+      "command": "CLOSE",
+      "node": 1,
+      "latency_s": 3.486,
+      "sequence": 949339887,
+      "state": "closed"
+    },
+    {
+      "time": "2026-10-20T14:44:19.602-03:00",
+      "event": "confirmed",
+      "index": 5,
+      "command": "OPEN",
+      "node": 1,
+      "latency_s": 3.484,
+      "sequence": 949339888,
+      "state": "open"
+    },
+    {
+      "time": "2026-10-20T14:44:24.609-03:00",
+      "event": "confirmed",
+      "index": 6,
+      "command": "CLOSE",
+      "node": 1,
+      "latency_s": 3.491,
+      "sequence": 949339889,
+      "state": "closed"
+    },
+    {
+      "time": "2026-10-20T14:44:29.608-03:00",
+      "event": "confirmed",
+      "index": 7,
+      "command": "OPEN",
+      "node": 1,
+      "latency_s": 3.49,
+      "sequence": 949339891,
+      "state": "open"
+    },
+    {
+      "time": "2026-10-20T14:44:34.607-03:00",
+      "event": "confirmed",
+      "index": 8,
+      "command": "CLOSE",
+      "node": 1,
+      "latency_s": 3.489,
+      "sequence": 949339892,
+      "state": "closed"
+    },
+    {
+      "time": "2026-10-20T14:44:39.609-03:00",
+      "event": "confirmed",
+      "index": 9,
+      "command": "OPEN",
+      "node": 1,
+      "latency_s": 3.491,
+      "sequence": 949339893,
+      "state": "open"
+    },
+    {
+      "time": "2026-10-20T14:44:44.608-03:00",
+      "event": "confirmed",
+      "index": 10,
+      "command": "CLOSE",
+      "node": 1,
+      "latency_s": 3.49,
+      "sequence": 949339895,
+      "state": "closed"
+    },
+    {
+      "time": "2026-10-20T14:44:49.605-03:00",
+      "event": "confirmed",
+      "index": 11,
+      "command": "OPEN",
+      "node": 1,
+      "latency_s": 3.487,
+      "sequence": 949339896,
+      "state": "open"
+    },
+    {
+      "time": "2026-10-20T14:44:54.613-03:00",
+      "event": "confirmed",
+      "index": 12,
+      "command": "CLOSE",
+      "node": 1,
+      "latency_s": 3.495,
+      "sequence": 949339897,
+      "state": "closed"
+    }
+  ],
+  "live_event_log": "/tmp/chacaico-node1-100cycles-20261020-144355.jsonl",
+  "stop_pid_file": "/tmp/chacaico-node1-100cycles-20261020-144355.pid",
+  "expected_final_command": "CLOSE",
+  "stop_on_missing_ack": true,
+  "physical_measurement": "User measuring isolated CubeCell; no mechanical valve verification"
+}
