@@ -1,0 +1,80 @@
+{
+  "passed": true,
+  "date": "2026-10-20",
+  "bridge_version": "0.4.0",
+  "firmware_version": "0.4.0",
+  "nodes_programmed": [
+    1,
+    2
+  ],
+  "home_assistant_core": "2026.9.4",
+  "new_view": "/dashboard-chacaico/configuracion-lora",
+  "original_view_unchanged": true,
+  "ui_edit_does_not_apply_until_button": true,
+  "ui_apply_and_report_verified": true,
+  "independent_configurations_verified": true,
+  "duplicate_apply_kept_revision": true,
+  "usb_reset_preserved_config_for_both_nodes": true,
+  "bridge_outage_seconds": 26,
+  "pending_config_survived_bridge_restart": true,
+  "sleeping_led_isolation_verified": true,
+  "reproducible_bench_script_passed": true,
+  "valve_commands_sent": false,
+  "physical_gpio_measured": false,
+  "power_consumption_measured": false,
+  "field_range_tested": false,
+  "memory_snapshot_mb": {
+    "bridge": 27.32421875,
+    "core": 257.17578125
+  },
+  "deployed_sources_match_repository": true,
+  "private_configs_unchanged": true,
+  "final": {
+    "nodes": [
+      {
+        "id": 1,
+        "config": {
+          "revision": 6,
+          "sleep_s": 0,
+          "pulse_ms": 50,
+          "confirmed_at": 1792516029.0034752
+        },
+        "state": {
+          "node": 1,
+          "sequence": 949337834,
+          "boot": 3,
+          "wake": 25,
+          "rssi": -48.0,
+          "snr": 13.25,
+          "confirmed_at": 1792516029.003852,
+          "led": false,
+          "valve": "unknown",
+          "firmware": "0.4.0"
+        }
+      },
+      {
+        "id": 2,
+        "config": {
+          "revision": 5,
+          "sleep_s": 0,
+          "pulse_ms": 50,
+          "confirmed_at": 1792516004.6338305
+        },
+        "state": {
+          "node": 2,
+          "sequence": 949337835,
+          "boot": 3,
+          "wake": 18,
+          "rssi": -47.0,
+          "snr": 12.75,
+          "confirmed_at": 1792516034.4477465,
+          "led": false,
+          "valve": "unknown",
+          "firmware": "0.4.0"
+        }
+      }
+    ],
+    "both_online": true,
+    "leds_off": true
+  }
+}

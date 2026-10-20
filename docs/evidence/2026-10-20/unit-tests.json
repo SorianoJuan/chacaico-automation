@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "tests": 40,
+  "command": "python3 -m unittest discover -s tests -v",
+  "hardware_used": false
+}

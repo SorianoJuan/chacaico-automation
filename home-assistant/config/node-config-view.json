@@ -1,0 +1,156 @@
+{
+  "title": "Configuración LoRa",
+  "path": "configuracion-lora",
+  "icon": "mdi:tune",
+  "type": "sections",
+  "max_columns": 2,
+  "show_icon_and_title": true,
+  "sections": [
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "CubeCell 1",
+          "heading_style": "title",
+          "icon": "mdi:radio-tower"
+        },
+        {
+          "type": "markdown",
+          "content": "**0 s = escucha continua.** Editá ambos valores y pulsá **Aplicar**. Si está dormido, el cambio espera su próximo contacto. El pulso es el impulso eléctrico, no la duración del riego."
+        },
+        {
+          "type": "entities",
+          "title": "Parámetros solicitados",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "number.chacaico_node_1_sleep_s_requested",
+              "name": "Reposo (segundos)"
+            },
+            {
+              "entity": "number.chacaico_node_1_pulse_ms_requested",
+              "name": "Pulso GPIO (milisegundos)"
+            },
+            {
+              "entity": "button.chacaico_node_1_config_apply",
+              "name": "Aplicar ambos parámetros"
+            },
+            {
+              "entity": "button.chacaico_node_1_config_query",
+              "name": "Consultar al nodo"
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "title": "Última configuración confirmada",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "sensor.chacaico_node_1_config_status",
+              "name": "Actualización"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_sleep_s_confirmed",
+              "name": "Reposo"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_pulse_ms_confirmed",
+              "name": "Pulso GPIO"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_config_revision",
+              "name": "Revisión"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_config_confirmed_at",
+              "name": "Confirmada"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_link",
+              "name": "Comunicación"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_command_status",
+              "name": "Última orden"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "CubeCell 2",
+          "heading_style": "title",
+          "icon": "mdi:radio-tower"
+        },
+        {
+          "type": "markdown",
+          "content": "**0 s = escucha continua.** Editá ambos valores y pulsá **Aplicar**. Si está dormido, el cambio espera su próximo contacto. El pulso es el impulso eléctrico, no la duración del riego."
+        },
+        {
+          "type": "entities",
+          "title": "Parámetros solicitados",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "number.chacaico_node_2_sleep_s_requested",
+              "name": "Reposo (segundos)"
+            },
+            {
+              "entity": "number.chacaico_node_2_pulse_ms_requested",
+              "name": "Pulso GPIO (milisegundos)"
+            },
+            {
+              "entity": "button.chacaico_node_2_config_apply",
+              "name": "Aplicar ambos parámetros"
+            },
+            {
+              "entity": "button.chacaico_node_2_config_query",
+              "name": "Consultar al nodo"
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "title": "Última configuración confirmada",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "sensor.chacaico_node_2_config_status",
+              "name": "Actualización"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_sleep_s_confirmed",
+              "name": "Reposo"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_pulse_ms_confirmed",
+              "name": "Pulso GPIO"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_config_revision",
+              "name": "Revisión"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_config_confirmed_at",
+              "name": "Confirmada"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_link",
+              "name": "Comunicación"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_command_status",
+              "name": "Última orden"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -24,8 +24,8 @@ def verify(root, node):
     sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     require(sha(folder/'node_config.h') == manifest['private_header_sha256'], 'Settings changed: rebuild first')
     expected_sources = {f'firmware/nodes/node_{node}/node_{node}.ino',
-                        'firmware/libraries/ChacaicoNode/src/ChacaicoNode.h',
-                        'firmware/libraries/ChacaicoNode/library.properties'}
+                        'firmware/libraries/ChacaicoNode/library.properties',
+                        *(str(p.relative_to(root)) for p in (root/'firmware/libraries/ChacaicoNode/src').glob('*.h'))}
     require(set(manifest['source_sha256']) == expected_sources, 'Missing or unexpected source checks')
     require(all(sha(root/path) == digest for path,digest in manifest['source_sha256'].items()),
             'Sources changed: rebuild first')

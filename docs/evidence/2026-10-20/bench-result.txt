@@ -1,0 +1,7 @@
+{"revision": 5, "sleep_s": 5, "pulse_ms": 60, "confirmed_at": 1792515926.5633075}
+PASS node 1 draft, apply, duplicate, query, sleeping LED and isolation
+{"revision": 4, "sleep_s": 7, "pulse_ms": 70, "confirmed_at": 1792515957.7595983}
+PASS node 2 draft, apply, duplicate, query, sleeping LED and isolation
+{"revision": 6, "sleep_s": 0, "pulse_ms": 50, "confirmed_at": 1792515999.1974094}
+{"revision": 5, "sleep_s": 0, "pulse_ms": 50, "confirmed_at": 1792516004.6338305}
+PASS defaults restored; no valve commands sent

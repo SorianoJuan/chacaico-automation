@@ -1,3 +1,6 @@
+> Brainstorming histórico. Reposo, pulso GPIO, ventanas y configuración confirmada
+> se implementan en 0.4.0; estado actual en [node-configuration.md](node-configuration.md).
+
 # Tiempos, visibilidad y ahorro de energía — ideas, sin implementar
 
 Esta conversación es de diseño. No se modificó el firmware0.3.0 ni se habilitó

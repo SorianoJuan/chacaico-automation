@@ -1,3 +1,7 @@
+> Documento histórico de 0.3.0 (commit `9ddcd459`). Los scripts actuales prueban
+> 0.4.0; ver [configuración y recuperación](node-configuration.md). Las conclusiones
+> de este diagnóstico no son una captura física del episodio original.
+
 # Demora al conectar y switch que vuelve atrás — 6/10/2026
 
 El usuario desconectó Pi/nodos después de observar demora en HA, un primer LED

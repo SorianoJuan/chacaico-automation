@@ -1,192 +1,353 @@
-"""Offline checks: no MQTT connection, radio transmission or physical GPIO."""
-import importlib.util
+"""Fault-injection tests for the actual scheduler and authenticated protocol."""
+import dataclasses
+import json
 from pathlib import Path
-import queue
 import sys
 import tempfile
-import types
 import unittest
 
-BRIDGE_DIR = Path(__file__).resolve().parents[1] / "bridge/chacaico_lora_bridge"
-sys.path.insert(0, str(BRIDGE_DIR))
-if importlib.util.find_spec("paho") is None:
-    for name in ("paho", "paho.mqtt", "paho.mqtt.client"):
-        sys.modules[name] = types.ModuleType(name)
-sys.modules["radio"] = types.SimpleNamespace(Radio=object)
-from bridge import Bridge, ROOT, POLL_INTERVAL
-from protocol import encode, decode, GET_LED, SET_LED, SET_VALVE, GET_VALVE, VALVE_UNKNOWN
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "bridge/chacaico_lora_bridge"))
+from engine import Engine, Sequence, ROOT
+from protocol import *
 
 
-class ValveBridgeTest(unittest.TestCase):
+class EngineTest(unittest.TestCase):
     def setUp(self):
-        self.key = bytes(range(16))
-        self.bridge = Bridge.__new__(Bridge)
-        self.bridge.nodes = {1: self.key}
-        self.bridge.commands = queue.Queue(32)
-        self.bridge.seen = {}
-        self.bridge.valve_seen = {}
-        self.bridge.status = {}
-        self.bridge.last_ack = {}
-        self.bridge.next_poll = {(1, op): 0 for op in (GET_VALVE, GET_LED)}
-        self.bridge.last_was_poll = False
-        self.bridge.pending = None
-        self.bridge.sequence = 0
-        scratch = tempfile.TemporaryDirectory()
-        self.addCleanup(scratch.cleanup)
-        self.bridge.counter_file = Path(scratch.name) / 'sequence.json'
-        self.published = []
-        self.bridge.publish = lambda topic, value: self.published.append((topic, value))
+        self.scratch = tempfile.TemporaryDirectory()
+        self.addCleanup(self.scratch.cleanup)
+        self.clock = 100.
+        self.output = []
+        self.keys = {1: bytes(range(16)), 2: bytes(range(16, 32))}
+        self.engine = self.create()
 
-    def message(self, topic, payload, retain=False):
-        self.bridge.on_message(None, None, types.SimpleNamespace(
-            topic=topic, payload=payload.encode(), retain=retain))
+    def create(self):
+        return Engine(self.keys, self.scratch.name, lambda t, v: self.output.append((t, v)),
+                      lambda: self.clock, lambda: 1800000000 + self.clock)
 
-    def request(self, op=SET_VALVE, value=1):
-        self.bridge.pending = {"node": 1, "seq": 42, "op": op, "value": value}
+    def ready(self, node=1, boot=1, wake=1, sleep=0, revision=1, pulse=50):
+        f = Frame(READY, node, boot, wake, 0, revision=revision, sleep_s=sleep, pulse_ms=pulse, valve=UNKNOWN)
+        self.engine.receive(encode(self.keys[node], f), -50, 12)
+        self.clock += .2
+        return f
 
-    def response(self, op, value, seq=42):
-        self.bridge.accept_response((encode(self.key, 1, 1, seq, op, value), -55, 9), 100)
+    def request(self):
+        outgoing = self.engine.next_frame()
+        self.assertIsNotNone(outgoing)
+        node, packet = outgoing
+        f = decode(self.keys[node], packet)
+        self.engine.sent(node)
+        return f
 
-    def test_commands_are_explicit_and_retained_orders_are_ignored(self):
-        base = ROOT + "/node/1"
-        self.message(base + "/valve/set", "OPEN", retain=True)
-        self.message(base + "/valve/set", "ON")
-        self.message(base + "/other/set", "OPEN")
-        self.message(ROOT + "/node/2/valve/set", "OPEN")
-        self.assertTrue(self.bridge.commands.empty())
-        self.message(base + "/valve/set", "OPEN")
-        self.message(base + "/valve/set", "CLOSE")
-        self.assertEqual(self.bridge.commands.get()[:3], (1, SET_VALVE, 1))
-        self.assertEqual(self.bridge.commands.get()[:3], (1, SET_VALVE, 0))
+    def respond(self, request, **values):
+        n = self.engine.nodes[request.node]
+        reported = {"revision": n.advertised["revision"], "sleep_s": n.advertised["sleep_s"],
+                    "pulse_ms": n.advertised["pulse_ms"], "valve": UNKNOWN, "led": 0}
+        if request.op == SET_CONFIG:
+            reported.update(revision=request.revision, sleep_s=request.sleep_s, pulse_ms=request.pulse_ms)
+        if request.op == SET_VALVE:
+            reported["valve"] = request.valve
+        if request.op == SET_LED:
+            reported["led"] = request.led
+        reported.update(values)
+        f = dataclasses.replace(request, kind=RESPONSE, **reported)
+        self.clock += .3
+        self.engine.receive(encode(self.keys[f.node], f), -50, 12)
+        self.clock += .3
+        return f
 
-    def test_wrong_ack_never_updates_state(self):
+    def connect(self, **kwargs):
+        self.ready(**kwargs)
+        request = self.request()
+        self.assertEqual(request.op, GET_CONFIG)
+        self.respond(request)
+
+    def apply(self, sleep=5, pulse=50, node=1):
+        self.engine.message(node, "config/sleep_s/set", str(sleep))
+        self.engine.message(node, "config/pulse_ms/set", str(pulse))
+        self.engine.message(node, "config/apply", "APPLY")
+
+    def has(self, suffix, value, node=1):
+        return (f"{ROOT}/node/{node}/{suffix}", value) in self.output
+
+    def test_storage_error_remains_visible_until_explicit_query(self):
+        self.connect();self.apply();self.respond(self.request())
+        self.respond(self.request(), status=STORE_FAILED, revision=1, sleep_s=0, pulse_ms=50)
+        self.assertEqual(self.engine.nodes[1].config_status, "Error de memoria")
+        self.clock += 31
+        self.respond(self.request())
+        self.assertEqual(self.engine.nodes[1].config_status, "Error de memoria")
+        self.engine = self.create()
+        self.assertEqual(self.engine.nodes[1].config_status, "Error de memoria")
+        self.ready(wake=2)
+        self.engine.message(1, "config/query", "QUERY")
+        self.respond(self.request())
+        self.assertEqual(self.engine.nodes[1].config_status, "Confirmada")
+
+    def test_reconnect_initializes_command_status(self):
+        self.engine.reconnect()
+        self.assertTrue(self.has("command/status", "Sin órdenes pendientes"))
+        self.engine.message(1, "led/set", "ON")
+        self.engine.reconnect()
+        self.assertEqual(self.engine.nodes[1].command_status, "Pendiente")
+
+    def test_window_end_reconciles_uncertain_actuation(self):
+        self.connect(sleep=5)
+        self.engine.message(1, "led/set", "ON")
         self.request()
-        self.response(SET_LED, 1)
-        self.response(SET_VALVE, 0)
-        self.response(SET_VALVE, 1, seq=41)
-        self.assertEqual(self.published, [])
-        self.assertIsNotNone(self.bridge.pending)
-        self.response(SET_VALVE, 1)
-        self.assertIn((ROOT + "/node/1/valve/state", "open"), self.published)
-        self.assertIsNone(self.bridge.pending)
+        self.clock += 3
+        self.engine.tick()
+        self.assertTrue(self.engine.nodes[1].reconcile)
+        self.ready(wake=2, sleep=5)
+        self.assertEqual(self.request().op, GET_CONFIG)
 
-    def test_reboot_unknown_does_not_claim_valve_closed(self):
-        self.request(GET_VALVE, 0)
-        self.response(GET_VALVE, VALVE_UNKNOWN)
-        self.assertIn((ROOT + "/node/1/valve/state", "None"), self.published)
-        self.assertNotIn((ROOT + "/node/1/valve/state", "closed"), self.published)
-        self.assertNotIn((ROOT + "/node/1/led/state", "ON"), self.published)
+    def test_all_frame_bits_are_authenticated(self):
+        packet = encode(self.keys[1], Frame(REQUEST, 1, 1, 1, 1, SET_LED, led=1))
+        self.assertEqual(len(packet), 38)
+        for bit in range(len(packet)*8):
+            bad = bytearray(packet);bad[bit//8] ^= 1 << (bit%8)
+            with self.assertRaises(ValueError): decode(self.keys[1], bad)
+        with self.assertRaises(ValueError): decode(self.keys[2], packet)
 
-    def test_authenticated_frame_tampering_and_unknown_rules(self):
-        frame = encode(self.key, 0, 1, 42, SET_VALVE, 1)
-        for bit in range(160):
-            damaged = bytearray(frame)
-            damaged[bit // 8] ^= 1 << (bit % 8)
-            with self.assertRaises(ValueError):
-                decode(self.key, damaged)
-        for kind, op, value in ((0, SET_VALVE, 2), (1, SET_VALVE, 2), (0, GET_VALVE, 1)):
-            with self.assertRaises(ValueError):
-                decode(self.key, encode(self.key, kind, 1, 42, op, value))
-        self.assertEqual(decode(self.key, encode(self.key, 1, 1, 42, GET_VALVE, 2))[-1], 2)
+    def test_initial_ready_requires_query_before_confirmed(self):
+        self.ready()
+        self.assertFalse(self.engine.nodes[1].verified)
+        self.assertFalse(self.has("config/status", "Confirmada"))
+        self.respond(self.request())
+        self.assertTrue(self.engine.nodes[1].verified)
+        self.assertTrue(self.has("valve/state", "None"))
+        self.assertFalse(self.has("valve/state", "closed"))
 
-    def test_two_nodes_route_commands_and_reject_each_others_acks(self):
-        key2 = bytes(range(16, 32))
-        self.bridge.nodes[2] = key2
-        for node in (1, 2):
-            self.message(f'{ROOT}/node/{node}/led/set', 'ON')
-            self.message(f'{ROOT}/node/{node}/valve/set', 'CLOSE')
-        self.assertEqual([self.bridge.commands.get()[:3] for _ in range(4)],
-                         [(1, SET_LED, 1), (1, SET_VALVE, 0),
-                          (2, SET_LED, 1), (2, SET_VALVE, 0)])
-        self.bridge.pending = {'node': 2, 'seq': 42, 'op': SET_LED, 'value': 1}
-        for key, node in ((self.key, 1), (self.key, 2), (key2, 1)):
-            self.bridge.accept_response((encode(key, 1, node, 42, SET_LED, 1), -55, 9), 100)
-        self.assertEqual(self.published, [])
-        self.bridge.accept_response((encode(key2, 1, 2, 42, SET_LED, 1), -55, 9), 100)
-        self.assertIn((ROOT + '/node/2/led/state', 'ON'), self.published)
-        self.assertNotIn((ROOT + '/node/1/led/state', 'ON'), self.published)
+    def test_editing_only_changes_draft(self):
+        self.connect()
+        self.engine.message(1, "config/sleep_s/set", "5")
+        self.assertIsNone(self.engine.next_frame())
+        self.assertEqual(self.engine.nodes[1].confirmed["sleep_s"], 0)
+        self.assertEqual(self.engine.nodes[1].draft["sleep_s"], 5)
 
-    def test_led_activity_cannot_postpone_valve_poll(self):
-        self.bridge.seen[1] = self.bridge.valve_seen[1] = 0
-        self.bridge.next_poll[(1, GET_VALVE)] = 60
-        for now in (20, 40, 59):
-            self.request(SET_LED, 1)
-            self.bridge.accept_response((encode(self.key, 1, 1, 42, SET_LED, 1), -55, 9), now)
-            self.assertEqual(self.bridge.next_poll[(1, GET_VALVE)], 60)
-        self.bridge.commands.put((1, SET_LED, 0, 60))
-        self.assertEqual(self.bridge.next_request(60), (1, GET_VALVE, 0))
+    def test_apply_is_atomic_and_confirmed_only_after_matching_ack(self):
+        self.connect();self.apply(5, 75)
+        self.respond(self.request())  # Read baseline before choosing revision.
+        req = self.request()
+        self.assertEqual((req.op, req.revision, req.sleep_s, req.pulse_ms), (SET_CONFIG, 2, 5, 75))
+        self.assertEqual(self.engine.nodes[1].confirmed["sleep_s"], 0)
+        self.respond(req)
+        self.assertEqual(self.engine.nodes[1].confirmed["sleep_s"], 5)
+        self.assertIsNone(self.engine.nodes[1].config_job)
+        self.assertEqual(self.request().op, END)
 
-    def test_continuous_led_commands_keep_both_valves_fresh(self):
-        b = self.bridge
-        b.nodes[2] = bytes(range(16, 32))
-        b.next_poll = {(node, op): 0 for node in b.nodes for op in (GET_VALVE, GET_LED)}
-        valve_polls = {1: [], 2: []}
-        commands = 0
-        for now in range(181):
-            b.commands.put((1 if now % 2 == 0 else 2, SET_LED, now % 2, now))
-            request = b.next_request(now)
-            self.assertIsNotNone(request)
-            node, op, value = request
-            b.start_request(*request, now=now)
-            if op == GET_VALVE:
-                valve_polls[node].append(now)
-                response_value = VALVE_UNKNOWN
-            else:
-                response_value = value
-                commands += op == SET_LED
-            frame = encode(b.nodes[node], 1, node, b.pending['seq'], op, response_value)
-            b.accept_response((frame, -55, 9), now)
-            b.expire_nodes(now)
-        for node, times in valve_polls.items():
-            self.assertGreaterEqual(len(times), 3)
-            self.assertTrue(all(right - left <= POLL_INTERVAL + 4 for left, right in zip(times, times[1:])))
-            self.assertNotIn((f'{ROOT}/node/{node}/valve/availability', 'offline'), self.published)
-        self.assertGreater(commands, 100)
+    def test_lost_config_ack_recovers_via_query_without_new_revision(self):
+        self.connect();self.apply();self.respond(self.request())
+        req = self.request()
+        for _ in range(2):
+            self.clock += 1.6
+            retry = self.request()
+            self.assertEqual(retry, req)
+        self.clock += 1.6
+        self.engine.tick()
+        self.clock += 1.1
+        query = self.request()
+        self.assertEqual(query.op, GET_CONFIG)
+        self.respond(query, revision=2, sleep_s=5)
+        self.assertIsNone(self.engine.nodes[1].config_job)
+        self.assertEqual(self.engine.nodes[1].config_status, "Confirmada")
 
-    def test_led_recovery_queries_valve_without_claiming_its_position(self):
-        self.bridge.seen[1] = self.bridge.valve_seen[1] = 0
-        self.bridge.next_poll[(1, GET_VALVE)] = 500
-        self.request(SET_LED, 1)
-        self.bridge.accept_response((encode(self.key, 1, 1, 42, SET_LED, 1), -55, 9), 100)
-        self.bridge.expire_nodes(100)
-        self.assertIn((ROOT + '/node/1/availability', 'online'), self.published)
-        self.assertIn((ROOT + '/node/1/valve/availability', 'offline'), self.published)
-        self.assertEqual(self.bridge.next_request(100), (1, GET_VALVE, 0))
-        self.request(GET_VALVE, 0)
-        self.response(GET_VALVE, VALVE_UNKNOWN)
-        self.assertIn((ROOT + '/node/1/valve/availability', 'online'), self.published)
-        self.assertIn((ROOT + '/node/1/valve/state', 'None'), self.published)
-        self.assertNotIn((ROOT + '/node/1/valve/state', 'closed'), self.published)
+    def test_pending_config_survives_bridge_restart(self):
+        self.connect();self.apply(7, 60)
+        self.engine = self.create()
+        self.assertEqual(self.engine.nodes[1].config_job["sleep_s"], 7)
+        self.assertFalse(self.engine.nodes[1].verified)
+        self.ready(wake=2)
+        self.respond(self.request())
+        request = self.request()
+        self.assertEqual((request.sleep_s, request.pulse_ms), (7, 60))
 
-    def test_offline_peer_and_failed_led_do_not_delay_other_work(self):
-        b = self.bridge
-        b.commands.put((1, SET_LED, 1, 0))
-        request = b.next_request(0)
-        self.assertEqual(request, (1, GET_VALVE, 0))
-        b.start_request(*request, now=0)
-        b.request_failed(3)
-        self.assertEqual(b.next_request(3), (1, SET_LED, 1))
-        valve_due = b.next_poll[(1, GET_VALVE)]
-        self.request(GET_LED, 0)
-        b.request_failed(4)
-        self.assertEqual(b.next_poll[(1, GET_VALVE)], valve_due)
+    def test_restart_after_lost_ack_reads_effective_config(self):
+        self.connect();self.apply();self.respond(self.request());self.request()
+        self.engine = self.create()
+        self.ready(boot=2, sleep=5, revision=2)
+        self.respond(self.request())
+        self.assertIsNone(self.engine.nodes[1].config_job)
+        self.assertEqual(self.engine.nodes[1].confirmed["revision"], 2)
 
-    def test_valve_timeout_does_not_invent_a_closed_position(self):
-        b = self.bridge
-        self.request(SET_VALVE, 0)
-        b.request_failed(10)
-        self.assertEqual(b.next_poll[(1, GET_VALVE)], 10)
-        self.assertIn((ROOT + '/node/1/valve/state', 'None'), self.published)
-        self.assertNotIn((ROOT + '/node/1/valve/state', 'closed'), self.published)
+    def test_old_session_cannot_confirm_or_reopen_window(self):
+        self.connect(sleep=5)
+        request = self.request()  # END
+        self.respond(request)
+        self.ready(wake=1, sleep=5)
+        self.assertTrue(self.engine.nodes[1].closed)
+        self.ready(wake=2, sleep=5)
+        current = self.request()
+        before = len(self.output)
+        self.respond(dataclasses.replace(current, wake=1))
+        self.assertEqual(len(self.output), before)
+        self.assertIsNotNone(self.engine.nodes[1].pending)
 
-    def test_broker_reconnect_requests_fresh_valve_states(self):
-        b = self.bridge
-        b.next_poll[(1, GET_VALVE)] = 1000
-        client = types.SimpleNamespace(subscribe=lambda *args, **kwargs: None)
-        b.on_connect(client, None, None, types.SimpleNamespace(is_failure=False), None)
-        self.assertEqual(b.next_poll[(1, GET_VALVE)], 0)
-        self.assertIn((ROOT + '/node/1/valve/state', 'None'), self.published)
-        self.assertEqual(b.next_request(100), (1, GET_VALVE, 0))
+    def test_boot_rollback_is_rejected_after_bridge_restart(self):
+        self.connect(boot=4)
+        self.engine = self.create()
+        self.ready(boot=3)
+        self.assertEqual(self.engine.nodes[1].boot, 4)
+        self.assertEqual(self.engine.nodes[1].wake, 0)
+
+    def test_wrong_node_key_sequence_and_operation_never_ack(self):
+        self.connect()
+        self.engine.message(1, "led/set", "ON")
+        req = self.request()
+        before = len(self.output)
+        for change in ({"node": 2}, {"boot": 2}, {"wake": 2}, {"sequence": req.sequence+1}, {"op": SET_VALVE}):
+            f = dataclasses.replace(req, kind=RESPONSE, revision=1, pulse_ms=50, **change)
+            self.engine.receive(encode(self.keys[f.node], f), -50, 12)
+        self.assertEqual(len(self.output), before)
+        self.assertIsNotNone(self.engine.nodes[1].pending)
+
+    def test_invalid_fields_and_retained_commands_do_not_apply(self):
+        self.connect()
+        for value in ("-1", "3601", "nan", "inf", "1.2", "five"):
+            self.engine.message(1, "config/sleep_s/set", value)
+        for value in ("0", "9", "201", "nan"):
+            self.engine.message(1, "config/pulse_ms/set", value)
+        self.engine.message(1, "config/apply", "APPLY", True)
+        self.engine.message(1, "valve/set", "OPEN", True)
+        self.assertIsNone(self.engine.nodes[1].config_job)
+        self.assertEqual(self.engine.nodes[1].draft, {"sleep_s": 0, "pulse_ms": 50})
+        self.assertFalse(self.engine.nodes[1].actions)
+
+    def test_duplicate_clicks_coalesce_and_close_cancels_unsent_open(self):
+        self.connect(sleep=5);self.respond(self.request())
+        for _ in range(5): self.engine.message(1, "valve/set", "OPEN")
+        self.assertEqual(len(self.engine.nodes[1].actions), 1)
+        self.engine.message(1, "valve/set", "CLOSE")
+        self.ready(wake=2, sleep=5)
+        request = self.request()
+        self.assertEqual((request.op, request.valve), (SET_VALVE, 0))
+
+    def test_new_close_supersedes_inflight_open_ack(self):
+        self.connect()
+        self.engine.message(1, "valve/set", "OPEN");old = self.request()
+        self.engine.message(1, "valve/set", "CLOSE")
+        self.respond(old)
+        self.assertFalse(self.has("valve/state", "open"))
+        self.clock += .1  # The maximum-pulse RX guard also covers the superseded request.
+        request = self.request()
+        self.assertEqual((request.op, request.valve), (SET_VALVE, 0))
+        self.assertGreater(request.sequence, old.sequence)
+
+    def test_expired_open_is_not_executed_at_late_wake(self):
+        self.connect(sleep=5);self.respond(self.request())
+        self.engine.message(1, "valve/set", "OPEN")
+        self.clock += 30;self.ready(wake=2, sleep=5)
+        self.engine.tick()
+        self.assertFalse(self.engine.nodes[1].actions)
+        self.assertEqual(self.request().op, GET_CONFIG)
+        self.assertTrue(self.has("command/status", "Vencida sin confirmar"))
+
+    def test_expected_sleep_keeps_last_state_available(self):
+        self.connect(sleep=120);self.respond(self.request())
+        self.clock += 120;self.engine.tick()
+        self.assertTrue(self.has("link/state", "Reposo esperado"))
+        self.assertEqual(self.engine.published[f"{ROOT}/node/1/availability"], "online")
+        self.clock += 400;self.engine.tick()
+        self.assertEqual(self.engine.published[f"{ROOT}/node/1/availability"], "offline")
+
+    def test_lost_end_ack_does_not_send_retries_into_sleep(self):
+        self.connect(sleep=5)
+        end = self.request()
+        self.assertEqual(end.op, END)
+        self.clock += 1.6;self.engine.tick()
+        self.assertTrue(self.engine.nodes[1].closed)
+        self.assertIsNone(self.engine.next_frame())
+
+    def test_config_storage_failure_is_visible_and_not_confirmed(self):
+        self.connect();self.apply();self.respond(self.request())
+        req = self.request()
+        self.respond(req, status=STORE_FAILED, revision=1, sleep_s=0)
+        self.assertEqual(self.engine.nodes[1].config_status, "Error de memoria")
+        self.assertEqual(self.engine.nodes[1].confirmed["revision"], 1)
+        self.assertIsNone(self.engine.nodes[1].config_job)
+
+    def test_conflict_refreshes_revision(self):
+        self.connect();self.apply();self.respond(self.request())
+        self.respond(self.request(), status=CONFLICT, revision=8, sleep_s=0)
+        self.respond(self.request(), revision=8)
+        req = self.request()
+        self.assertEqual((req.op, req.revision), (SET_CONFIG, 9))
+
+    def test_apply_twice_does_not_allocate_second_revision(self):
+        self.connect();self.apply()
+        first = dict(self.engine.nodes[1].config_job)
+        self.clock += 1
+        self.apply()
+        self.assertEqual(self.engine.nodes[1].config_job, first)
+
+    def test_same_configuration_is_a_noop(self):
+        self.connect();self.apply(0, 50)
+        self.assertIsNone(self.engine.nodes[1].config_job)
+        self.assertIsNone(self.engine.next_frame())
+
+    def test_new_apply_during_previous_transaction_preserves_new_intent(self):
+        self.connect();self.apply(5);self.respond(self.request());old = self.request()
+        self.apply(9)
+        self.respond(old)
+        self.assertEqual(self.engine.nodes[1].config_job["sleep_s"], 9)
+        self.respond(self.request())
+        new = self.request()
+        self.assertEqual((new.sleep_s, new.revision), (9, 3))
+
+    def test_zero_sleep_returns_to_continuous_receive(self):
+        self.connect(sleep=5)
+        self.apply(0);self.respond(self.request())
+        self.respond(self.request())
+        n = self.engine.nodes[1]
+        self.assertEqual(n.active_until, float("inf"))
+        self.assertIsNone(self.engine.next_frame())
+
+    def test_lost_led_ack_triggers_readback(self):
+        self.connect();self.engine.message(1, "led/set", "ON")
+        first = self.request()
+        for _ in range(2):
+            self.clock += 1.6;self.assertEqual(self.request(), first)
+        self.clock += 1.6;self.engine.tick();self.clock += 1.1
+        req = self.request();self.assertEqual(req.op, GET_CONFIG)
+        self.respond(req, led=1)
+        self.assertTrue(self.has("led/state", "ON"))
+        self.assertNotIn(SET_LED, self.engine.nodes[1].actions)
+
+    def test_sequence_reservation_survives_restart_without_reuse(self):
+        path = Path(self.scratch.name)/"reserved.json"
+        first = Sequence(path);a = first.next();b = first.next()
+        self.assertEqual(b, a+1)
+        second = Sequence(path)
+        self.assertGreater(second.next(), b)
+        path.write_text('"corrupted"')
+        with self.assertRaises(ValueError): Sequence(path)
+
+    def test_other_node_progresses_during_missing_ack(self):
+        self.connect()
+        self.ready(node=2)
+        req = self.request();self.assertEqual(req.node, 2)
+        self.clock += .5
+        self.engine.message(1, "led/set", "ON")
+        next_req = self.request()
+        self.assertEqual(next_req.node, 1)
+        self.respond(next_req)
+        self.assertTrue(self.has("led/state", "ON"))
+
+    def test_pending_commands_are_not_replayed_after_bridge_restart(self):
+        self.connect();self.engine.message(1, "valve/set", "OPEN")
+        self.engine = self.create()
+        self.assertFalse(self.engine.nodes[1].actions)
+
+    def test_outdated_config_job_expires_without_transmission(self):
+        self.connect();self.apply()
+        self.clock += 86401;self.engine.tick()
+        self.assertIsNone(self.engine.nodes[1].config_job)
+        self.assertEqual(self.engine.nodes[1].config_status, "Vencida sin confirmar")
+
+    def test_sleep_transition_after_long_continuous_run_has_fresh_window(self):
+        self.connect();self.clock += 100
+        self.apply();self.respond(self.request());self.respond(self.request())
+        self.assertGreater(self.engine.nodes[1].active_until, self.clock)
+        self.assertEqual(self.request().op, END)
 
 
 if __name__ == "__main__":

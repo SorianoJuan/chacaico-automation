@@ -51,8 +51,8 @@ def main():
     image = build/'CubeCell_Board_REGION_AU915_RGB_1.cyacd'
     if not image.is_file():
         raise SystemExit('Expected CubeCell upload image is missing')
-    sources = [node_dir/f'node_{args.id}.ino',libraries/'ChacaicoNode/src/ChacaicoNode.h',
-               libraries/'ChacaicoNode/library.properties']
+    sources = [node_dir/f'node_{args.id}.ino', libraries/'ChacaicoNode/library.properties',
+               *sorted((libraries/'ChacaicoNode/src').glob('*.h'))]
     manifest = {'node_id':args.id,'firmware_version':version,'core':profile['core'],
                 'fqbn':profile['fqbn'],'frequency_hz':config['frequency'],
                 'image':image.name,'image_sha256':sha256(image),

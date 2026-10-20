@@ -3,7 +3,7 @@
   "board": "HTCC-AB01",
   "pcb_revision": null,
   "mcu": "ASR6501",
-  "firmware_version": "0.3.0",
+  "firmware_version": "0.4.0",
   "core": "CubeCell:CubeCell@1.6.0",
   "frequency_hz": 916800000,
   "fqbn": "CubeCell:CubeCell:CubeCell-Board:LORAWAN_REGION=2,LORAWAN_AT_SUPPORT=1,LORAWAN_RGB=1"

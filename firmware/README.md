@@ -1,9 +1,8 @@
 # Firmware CubeCell
 
 Entradas separadas en `nodes/node_1/` y `nodes/node_2/`, cada una con su ID,
-perfil público y build privado. Versión0.3.0 para ambas. La aplicación compartida
-está en `libraries/ChacaicoNode/src/ChacaicoNode.h`; el cambio de estructura no
-modifica su lógica de ejecución.
+perfil público y build privado. Versión0.4.0 para ambas. La aplicación compartida
+está en `libraries/ChacaicoNode/src/ChacaicoNode.h`; los encabezados ChacaicoProtocol.h y ChacaicoStorage.h contienen protocolo y persistencia.
 
 `configure-node.py --id N` conserva `.secrets/node-N.json`, verifica ID/clave
 únicos y frecuencia común, y genera solo el encabezado privado del nodo elegido.
@@ -18,6 +17,5 @@ La copia previa de build del nodo1 se conserva en `build-legacy-node-1/`, ignora
 Compilar no programa nodos; la carga se hace solo cuando se autoriza y la placa
 está identificada con su antena conectada. En la raíz están los comandos exactos.
 
-Las pruebas de arranque/reintentos se documentan en
-[el diagnóstico](../docs/startup-diagnosis.md). No se aplicó una corrección
-operativa de ese comportamiento ni cambios de sueño/OTA.
+Configuración remota y sueño implementados en 0.4.0; OTA de firmware no implementado.
+[Operación y límites](../docs/node-configuration.md).

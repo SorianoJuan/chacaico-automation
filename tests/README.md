@@ -1,6 +1,4 @@
-# Pruebas offline
-
-Se ejecutan en esta computadora y no usan la Pi, MQTT real, USB, radio ni GPIO.
+# Pruebas de configuración y comunicación 0.4.0
 
 ```sh
 python3 -m unittest discover -s tests -v
@@ -8,30 +6,22 @@ python3 tests/simulate-startup.py
 python3 tests/run-firmware-startup-test.py
 ```
 
-La suite unittest contiene20 pruebas:11 del puente,3 de TX→RX y6 de identidad/integridad de builds.
-`simulate-startup.py` ejecuta Bridge.run real con reloj virtual y un modelo de
-nodo/enlace: siete escenarios de arranque, vecino ausente, pérdida de petición,
-pérdida de ACK, clics repetidos y operación sana. Sus aserciones caracterizan
-**comportamiento actual, incluyendo defectos**; al corregirlos hay que sustituir
-esas expectativas por el comportamiento deseado, conservando las condiciones de fallo.
+No usan Pi, MQTT real, USB, radio ni GPIO físicos. Unittest verifica el scheduler
+real, autenticación, persistencia, colas, errores, identidad de builds y el driver
+TX→RX. La simulación usa el Engine real con ocho nodos modelados y cinco semillas:
+pérdida de peticiones, ACK y READY, colisiones, reinicio de nodo y puente. Fuerza
+la pérdida del primer ACK de configuración de cada nodo; exige una sola escritura
+por cambio y confirmación posterior. Las órdenes pueden vencer bajo pérdida;
+una nueva orden tras recuperar el enlace debe funcionar. No prueba entrega infalible.
 
-`run-firmware-startup-test.py` requiere el core oficial CubeCell1.6.0 ya instalado
-por `firmware/setup-toolchain.sh`, además de g++/cc y cryptography. Copia las
-entradas y librería reales a una carpeta temporal con encabezados/claves públicos,
-usa AES/CMAC del core y simula TX_DONE57ms después de Send. Comprueba IDs1/2,
-primera orden, pulso50ms, retorno RX, deduplicación y otro clic con nueva secuencia.
-No emula el driver Semtech/interrupciones reales ni la placa física.
+La prueba nativa compila el firmware real para IDs 1 y 2, con AES/CMAC real del
+core CubeCell 1.6.0 y claves públicas de prueba. Simula radio asíncrona (83 ms),
+RTC, flash y GPIO: arranque sin pulso, sesiones, todos los bits autenticados,
+reintentos, pulsos de 50/200 ms, destellos, 33 cortes de escritura, error silencioso
+de flash, sueño/despertar, límite de ventana, timeout de TX y desborde de reloj.
+Requiere g++/cc, cryptography y el core instalado por firmware/setup-toolchain.sh.
 
-La prueba anterior más extensa de GPIO/destellos usa CMAC stub y radio sin demora:
-
-```sh
-g++ -std=c++17 -Wall -Wextra -Itests/firmware-stubs   tests/firmware_valve_test.cpp -o /tmp/chacaico-valve-test
-/tmp/chacaico-valve-test
-g++ -std=c++17 -Wall -Wextra -DCHACAICO_NODE_ID=2 -Itests/firmware-stubs   tests/firmware_valve_test.cpp -o /tmp/chacaico-valve-test-2
-/tmp/chacaico-valve-test-2
-```
-
-También usa solo configuración pública de prueba. Los resultados del6/10/2026
-están en `../docs/evidence/2026-10-06/` y se explican en
-[el diagnóstico](../docs/startup-diagnosis.md). Los JSON se pueden regenerar con
-`--output RUTA` en los tres scripts de caracterización.
+Los ejecutables históricos de 0.3.0 con radio/CMAC simplificados fueron sustituidos
+por esta prueba. La caracterización original del 6/10/2026 se conserva en
+`docs/evidence/2026-10-06/` y en el commit `9ddcd459`.
+Los dos scripts aceptan `--output RUTA` para guardar evidencia pública JSON.

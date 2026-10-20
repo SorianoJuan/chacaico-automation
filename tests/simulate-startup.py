@@ -1,305 +1,156 @@
 #!/usr/bin/env python3
-"""Characterize bridge0.3.0 offline: real Bridge.run, modeled radio/node/MQTT.
-
-No network, credentials, hardware, or Home Assistant frontend are used.
-Assertions describe current behavior, including defects; revisit after fixing it.
-"""
+"""Exercise the real scheduler with eight modeled nodes and deterministic RF loss."""
 import argparse
-import hashlib
+import dataclasses
 import heapq
-import importlib.util
 import json
-import logging
 from pathlib import Path
-import queue
+import random
 import sys
 import tempfile
-import types
-from unittest.mock import patch
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
-APP = ROOT_DIR / 'bridge/chacaico_lora_bridge'
-sys.path.insert(0, str(APP))
-if importlib.util.find_spec('paho') is None:
-    for name in ('paho', 'paho.mqtt', 'paho.mqtt.client'):
-        sys.modules[name] = types.ModuleType(name)
-# Import the controller without importing hardware packages or constructing MQTT.
-sys.modules['radio'] = types.SimpleNamespace(Radio=object)
-import bridge as module
-from protocol import encode, decode, GET_LED, SET_LED, SET_VALVE, GET_VALVE, VALVE_UNKNOWN
-
-# Calculated SF7/BW125/CR4/5, explicit header, CRC, preamble8, payload20.
-AIRTIME = 0.056576
-TEST_KEYS = {1: bytes(range(16)), 2: bytes(range(16, 32))}
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]/"bridge/chacaico_lora_bridge"))
+from engine import Engine
+from protocol import *
 
 
-class Clock:
-    def __init__(self):
-        self.now = 0.0
-        self.events = []
-        self.ordinal = 0
+class ModelNode:
+    def __init__(self, ident, rng):
+        self.ident, self.rng = ident, rng
+        self.boot, self.wake, self.seq = 1, 0, 0
+        self.revision, self.sleep, self.pulse = 1, 5, 50
+        self.led, self.valve = 0, UNKNOWN
+        self.next_wake = ident*.27
+        self.active = False
+        self.until = self.hard = 0
+        self.cached = None
+        self.writes = self.pulses = 0
+        self.opened_at = None
+        self.longest_awake = 0
 
-    def at(self, at, callback):
-        self.ordinal += 1
-        heapq.heappush(self.events, (at, self.ordinal, callback))
+    def frame(self, kind, seq=0, op=GET_STATE, status=OK):
+        return Frame(kind,self.ident,self.boot,self.wake,seq,op,status,self.revision,
+                     self.sleep,self.pulse,self.valve,self.led)
 
-    def advance(self, seconds):
-        target = self.now + seconds
-        while self.events and self.events[0][0] <= target:
-            at, _, callback = heapq.heappop(self.events)
-            self.now = at
-            callback()
-        self.now = target
+    def end(self, now):
+        self.longest_awake = max(self.longest_awake, now-self.opened_at)
+        self.active = False
+        self.next_wake = now+self.sleep+self.rng.random()*.25
 
+    def tick(self, now):
+        if self.active and now >= min(self.until,self.hard):
+            self.end(now)
+        if not self.active and now >= self.next_wake:
+            self.active = True;self.wake += 1
+            self.until = now+3;self.hard = now+10;self.opened_at = now
+            return self.frame(READY)
 
-class Stop:
-    def __init__(self, clock, until):
-        self.clock, self.until = clock, until
-
-    def is_set(self):
-        return self.clock.now >= self.until
-
-    def wait(self, seconds):
-        self.clock.advance(seconds)
-        return self.is_set()
-
-
-class Node:
-    """Application-level counterpart, NOT the MCU/SX1262 driver or PCB."""
-    def __init__(self, node_id, power_on=0, valve=VALVE_UNKNOWN):
-        self.id, self.power_on = node_id, power_on
-        self.valve, self.led = valve, False
-        self.sequence = None
-        self.request = self.cached_ack = None
-        self.rx_ready = power_on
-        self.pulses = []
-        self.led_changes = []
-
-    def receive(self, frame, now):
-        if now < self.power_on or now < self.rx_ready:
+    def receive(self, f, now):
+        if not self.active or (f.boot,f.wake)!=(self.boot,self.wake) or f.sequence<self.seq:
             return None
-        kind, node, seq, op, value = decode(TEST_KEYS[self.id], frame)
-        if kind != 0 or node != self.id:
-            return None
-        if self.sequence is not None:
-            signed_delta = ((seq - self.sequence + (1 << 31)) % (1 << 32)) - (1 << 31)
-            if signed_delta < 0:
-                return None
-            if seq == self.sequence:
-                return (0.025, self.cached_ack) if frame == self.request else None
-        self.sequence, self.request = seq, frame
-        delay = 0.025
-        if op == SET_LED:
-            self.led = bool(value)
-            self.led_changes.append({'at': round(now, 6), 'value': value, 'sequence': seq})
-        elif op == SET_VALVE:
-            delay += 0.050
-            self.valve = value
-            self.pulses.append({'at': round(now, 6), 'value': value, 'sequence': seq})
-        result = int(self.led) if op in (GET_LED, SET_LED) else self.valve
-        self.cached_ack = encode(TEST_KEYS[self.id], 1, self.id, seq, op, result)
-        return delay, self.cached_ack
+        if f.sequence==self.seq:
+            self.until=min(now+3,self.hard)
+            return self.cached
+        self.seq=f.sequence
+        status=OK
+        if f.op==SET_CONFIG:
+            if not valid_config(f.sleep_s,f.pulse_ms):status=INVALID
+            elif f.revision==self.revision and (f.sleep_s,f.pulse_ms)==(self.sleep,self.pulse):pass
+            elif f.revision!=self.revision+1:status=CONFLICT
+            else:
+                self.revision=f.revision;self.sleep=f.sleep_s;self.pulse=f.pulse_ms;self.writes+=1
+        elif f.op==SET_LED:self.led=f.led
+        elif f.op==SET_VALVE:
+            if self.valve!=f.valve:self.pulses+=1;self.valve=f.valve
+        self.until=min(now+3,self.hard)
+        self.cached=self.frame(RESPONSE,f.sequence,f.op,status)
+        if f.op==END:self.end(now+.24)
+        return self.cached
 
 
-class Link:
-    def __init__(self, clock, nodes, turnaround, lose_request, lose_ack):
-        self.clock, self.nodes = clock, nodes
-        self.turnaround, self.lose_request, self.lose_ack = turnaround, lose_request, lose_ack
-        self.inbox, self.trace = [], []
-        self.receiving_since = 0
-        self.transmission = 0
-
-    def send(self, frame):
-        node = int.from_bytes(frame[4:6], 'little')
-        _, _, seq, op, value = decode(TEST_KEYS[node], frame)
-        self.transmission += 1
-        tx = {'at': round(self.clock.now, 6), 'node': node, 'sequence': seq, 'op': op, 'value': value}
-        self.trace.append({'event': 'request', **tx})
-        # The base cannot receive during request TX or the modeled TX->RX gap.
-        self.receiving_since = self.clock.now + AIRTIME + self.turnaround(op, seq)
-        request_end = self.clock.now + AIRTIME
-
-        def deliver_request():
-            if self.lose_request(tx) or node not in self.nodes:
-                return
-            reply = self.nodes[node].receive(frame, self.clock.now)
-            if reply is None:
-                return
-            delay, packet = reply
-            starts, ends = request_end + delay, request_end + delay + AIRTIME
-            self.nodes[node].rx_ready = ends
-            # Require RX by preamble start. Cases use a 200ms gap, longer than
-            # the WHOLE ACK, so they do not rely on modeling late preamble capture.
-            def deliver_ack():
-                missed = self.receiving_since > starts or self.lose_ack(tx)
-                self.trace.append({'event': 'ack_lost' if missed else 'ack_received',
-                                   'at': round(self.clock.now, 6), 'node': node,
-                                   'sequence': seq, 'op': op, 'value': packet[11]})
-                if not missed:
-                    self.inbox.append((packet, -55, 9))
-            self.clock.at(ends, deliver_ack)
-
-        self.clock.at(request_end, deliver_request)
-        self.clock.advance(AIRTIME + self.turnaround(op, seq))
-
-    def poll(self):
-        return self.inbox.pop(0) if self.inbox else None
-
-
-class Simulation:
-    def __init__(self, nodes, until, configured=(1,), turnaround=lambda op, seq: 0.003,
-                 lose_request=lambda tx: False, lose_ack=lambda tx: False):
-        self.scratch = tempfile.TemporaryDirectory(prefix='chacaico-startup-sim-')
-        self.clock = Clock()
-        self.nodes = nodes
-        self.publications = []
-        b = self.bridge = module.Bridge.__new__(module.Bridge)
-        b.nodes = {n: TEST_KEYS[n] for n in configured}
-        b.commands = queue.Queue(32)
-        b.seen, b.valve_seen, b.status, b.last_ack = {}, {}, {}, {}
-        b.next_poll = {(n, op): 0 for n in configured for op in (GET_VALVE, GET_LED)}
-        b.last_was_poll, b.pending, b.sequence = False, None, 0
-        b.counter_file = Path(self.scratch.name) / 'sequence.json'
-        b.client = types.SimpleNamespace(is_connected=lambda: True, subscribe=lambda *a, **kw: None)
-        b.stop = Stop(self.clock, until)
-        b.radio = Link(self.clock, nodes, turnaround, lose_request, lose_ack)
-        b.publish = self.publish
-        # Previous retained OFF is an explicit fixture, like a prior HA session.
-        for n in configured:
-            self.publish(f'{module.ROOT}/node/{n}/led/state', 'OFF')
-
-    def publish(self, topic, value):
-        self.publications.append({'at': round(self.clock.now, 6), 'topic': topic, 'payload': value})
-
-    def command(self, at, node, actuator, payload):
-        def issue():
-            self.bridge.on_message(None, None, types.SimpleNamespace(
-                topic=f'{module.ROOT}/node/{node}/{actuator}/set', payload=payload.encode(), retain=False))
-        self.clock.at(at, issue)
-
-    def run(self):
-        virtual_time = types.SimpleNamespace(monotonic=lambda: self.clock.now,
-                                            time=lambda: 1791300000 + self.clock.now)
-        try:
-            with patch.object(module, 'time', virtual_time):
-                self.bridge.on_connect(self.bridge.client, None, None,
-                                       types.SimpleNamespace(is_failure=False), None)
-                self.bridge.run()
-        finally:
-            self.scratch.cleanup()
-        return self
-
-    def publications_for(self, node, topic, value=None):
-        full = f'{module.ROOT}/node/{node}/{topic}'
-        return [p for p in self.publications if p['topic'] == full
-                and (value is None or p['payload'] == value)]
-
-    def summary(self):
-        return {'publications': [p for p in self.publications if not p['topic'].endswith('/config')],
-                'radio': self.bridge.radio.trace,
-                'nodes': {str(n): {'power_on': node.power_on, 'led': node.led,
-                                  'valve': node.valve, 'pulses': node.pulses,
-                                  'led_changes': node.led_changes}
-                          for n, node in self.nodes.items()}}
-
-
-def characterize():
-    cases = {}
-    # Both initial polls miss a node powered on after the first scan.
-    s = Simulation({1: Node(1, power_on=15)}, until=70, configured=(1, 2)).run()
-    online = s.publications_for(1, 'availability', 'online')[0]['at']
-    assert online - 15 > 40
-    cases['late_power_on'] = {'first_online_at': online, 'power_on_at': 15,
-                             'discovery_delay_seconds': round(online - 15, 6), **s.summary()}
-
-    # UI can use the LED while a missing peer monopolizes one retry transaction.
-    s = Simulation({1: Node(1)}, until=8, configured=(1, 2))
-    s.command(0.3, 1, 'led', 'ON')
-    s.run()
-    led_on = s.publications_for(1, 'led/state', 'ON')[0]['at']
-    assert led_on - 0.3 > 2
-    cases['offline_peer_delay'] = {'click_at': 0.3, 'led_confirmed_at': led_on,
-                                  'delay_seconds': round(led_on - 0.3, 6), **s.summary()}
-
-    # Three commands never reach the node; a later click works with the same loop.
-    s = Simulation({1: Node(1)}, until=8,
-                   lose_request=lambda tx: tx['op'] == SET_LED and tx['at'] < 4)
-    s.command(1, 1, 'led', 'ON')
-    s.command(5, 1, 'led', 'ON')
-    s.run()
-    assert len(s.nodes[1].led_changes) == 1 and s.nodes[1].led_changes[0]['at'] > 5
-    cases['lost_first_led_request'] = s.summary()
-
-    # Request executes but all SET ACKs are lost because RX starts after ACK end.
-    lag = lambda op, seq: 0.2 if op in (SET_LED, SET_VALVE) else 0.003
-    s = Simulation({1: Node(1)}, until=65, turnaround=lag)
-    s.command(1, 1, 'led', 'ON')
-    s.run()
-    physical_at = s.nodes[1].led_changes[0]['at']
-    confirmed_at = s.publications_for(1, 'led/state', 'ON')[0]['at']
-    assert len(s.nodes[1].led_changes) == 1
-    assert confirmed_at - physical_at > 50
-    cases['lost_led_ack_no_immediate_reconciliation'] = {
-        'modeled_rx_turnaround_seconds': 0.2, 'node_led_on_at': physical_at,
-        'mqtt_on_at': confirmed_at, 'state_delay_seconds': round(confirmed_at - physical_at, 6), **s.summary()}
-
-    s = Simulation({1: Node(1, valve=0)}, until=7, turnaround=lag)
-    s.command(1, 1, 'valve', 'OPEN')
-    s.run()
-    pending = s.publications_for(1, 'valve/status')
-    phases = [p['payload']['confirmation'] for p in pending]
-    assert 'pending' in phases and 'unconfirmed' in phases
-    assert s.publications_for(1, 'valve/state', 'open')
-    assert len(s.nodes[1].pulses) == 1
-    cases['lost_valve_ack_then_query'] = {'confirmation_phases': phases,
-                                       'gpio_pulses_in_model': 1, **s.summary()}
-
-    # Re-clicking generates NEW sequence numbers, distinct from radio retries.
-    s = Simulation({1: Node(1, valve=0)}, until=16, turnaround=lag)
-    for at in (1, 1.2, 1.4):
-        s.command(at, 1, 'valve', 'OPEN')
-    s.run()
-    sequences = [p['sequence'] for p in s.nodes[1].pulses]
-    assert len(sequences) == 3 and len(set(sequences)) == 3
-    cases['three_reclicks_repeat_gpio'] = {'distinct_pulse_sequences': sequences, **s.summary()}
-
-    # Healthy first command reaches the modeled node without a warmup gate.
-    s = Simulation({1: Node(1)}, until=3)
-    s.command(0.3, 1, 'led', 'ON')
-    s.command(1, 1, 'valve', 'OPEN')
-    s.run()
-    assert s.publications_for(1, 'led/state', 'ON')[0]['at'] < 0.5
-    assert s.publications_for(1, 'valve/state', 'open')[0]['at'] < 1.3
-    assert len(s.nodes[1].pulses) == 1
-    cases['healthy_first_commands'] = s.summary()
-    return cases
+def scenario(seed):
+    rng=random.Random(seed)
+    keys={i:bytes([i])*16 for i in range(1,9)}
+    nodes={i:ModelNode(i,rng) for i in keys}
+    now=[0.]
+    dropped_config=set();published={}
+    events=[];serial=0;requests=responses=losses=0
+    ready_on=0.
+    with tempfile.TemporaryDirectory(prefix="chacaico-model-") as folder:
+        def create():
+            return Engine(keys,folder,lambda topic,value:published.update({topic:value}),
+                          lambda:now[0],lambda:1800000000+now[0])
+        engine=create()
+        for n in nodes:
+            engine.message(n,"config/sleep_s/set","5")
+            engine.message(n,"config/pulse_ms/set","75")
+            engine.message(n,"config/apply","APPLY")
+        rebooted=bridge_restarted=led_ordered=recovery_ordered=False
+        expirations=0
+        for step in range(9000):
+            now[0]=step*.02;t=now[0]
+            if t>=25 and not rebooted:
+                nodes[3].boot+=1;nodes[3].wake=nodes[3].seq=0
+                nodes[3].active=False;nodes[3].next_wake=t;nodes[3].valve=UNKNOWN
+                rebooted=True
+            if t>=35 and not bridge_restarted:
+                engine=create();bridge_restarted=True
+            if t>=80 and not led_ordered:
+                for ident in nodes:engine.message(ident,"led/set","ON")
+                led_ordered=True
+            if t>=120 and not recovery_ordered:
+                # RF delivery cannot be guaranteed. A missed deadline must be
+                # explicit; a later, new user request must recover when loss ends.
+                for ident,n in nodes.items():
+                    if not n.led:
+                        assert published.get(f"chacaico/lora/node/{ident}/command/status")=="Vencida sin confirmar"
+                        expirations+=1
+                    engine.message(ident,"led/set","ON")
+                recovery_ordered=True
+            announcements=[]
+            for n in nodes.values():
+                announcement=n.tick(t)
+                if announcement:announcements.append(announcement)
+            for announcement in announcements:
+                if t<ready_on or len(announcements)>1 or (t<110 and rng.random()<.1):
+                    losses+=1;continue
+                engine.receive(encode(keys[announcement.node],announcement),-80,5)
+            while events and events[0][0]<=t:
+                _,_,response=heapq.heappop(events)
+                if t<110 and rng.random()<.15:
+                    losses+=1;continue
+                engine.receive(encode(keys[response.node],response),-80,5);responses+=1
+            outgoing=engine.next_frame()
+            if outgoing:
+                ident,payload=outgoing
+                request=decode(keys[ident],payload);requests+=1
+                ready_on=t+.083
+                engine.sent(ident)
+                if t<110 and rng.random()<.15:
+                    losses+=1;continue
+                response=nodes[ident].receive(request,t)
+                if response:
+                    if request.op==SET_CONFIG and ident not in dropped_config:
+                        dropped_config.add(ident);losses+=1;continue
+                    serial+=1;heapq.heappush(events,(t+.30,serial,response))
+        assert all(n.pulse==75 and n.sleep==5 and n.writes==1 for n in nodes.values())
+        assert all(n.led==1 for n in nodes.values()), {i:n.led for i,n in nodes.items()}
+        assert all(n.pulses==0 for n in nodes.values())
+        assert all(n.config_job is None and n.confirmed and n.confirmed["pulse_ms"]==75 for n in engine.nodes.values())
+        assert all(n.longest_awake<=10.3 for n in nodes.values())
+        return {"seed":seed,"nodes":8,"seconds":180,"requests":requests,"responses":responses,
+                "injected_losses":losses,"config_writes_per_node":[n.writes for n in nodes.values()],
+                "all_configurations_confirmed":True,"all_leds_confirmed":all(n.led for n in nodes.values()),
+                "explicit_expirations_during_loss":expirations,"new_user_request_after_rf_recovery":True,
+                "valve_pulses":0,"node_reboot":True,"bridge_restart":True}
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output', type=Path, help='Save public trace JSON')
-    args = parser.parse_args()
-    logging.basicConfig(level=logging.ERROR)
-    cases = characterize()
-    result = {'date': '2026-10-06', 'passed': True, 'scenario_count': len(cases),
-              'real_controller': 'Bridge.run() and MQTT command/publication handlers',
-              'node_and_radio': 'Explicit application/timing model, not physical emulation',
-              'frontend_simulated': False, 'hardware_connected': False,
-              'rf_airtime_seconds_assumed': AIRTIME,
-              'source_sha256': {str(p.relative_to(ROOT_DIR)): hashlib.sha256(p.read_bytes()).hexdigest()
-                                for p in (APP/'bridge.py', APP/'radio.py', APP/'protocol.py',
-                                          ROOT_DIR/'firmware/libraries/ChacaicoNode/src/ChacaicoNode.h',
-                                          ROOT_DIR/'firmware/nodes/node_1/node_1.ino',
-                                          ROOT_DIR/'firmware/nodes/node_2/node_2.ino')},
-              'cases': cases}
-    if args.output:
-        args.output.write_text(json.dumps(result, indent=2) + '\n')
-    print(json.dumps({'passed': True, 'scenarios': list(cases),
-                      'late_power_on_delay': cases['late_power_on']['discovery_delay_seconds'],
-                      'offline_peer_command_delay': cases['offline_peer_delay']['delay_seconds'],
-                      'lost_led_ack_state_delay': cases['lost_led_ack_no_immediate_reconciliation']['state_delay_seconds'],
-                      'reclick_gpio_pulses': len(cases['three_reclicks_repeat_gpio']['distinct_pulse_sequences'])}, indent=2))
+    parser=argparse.ArgumentParser();parser.add_argument("--output",type=Path);args=parser.parse_args()
+    result={"passed":True,"real_scheduler":True,"modeled_nodes_and_radio":True,
+            "scenarios":[scenario(seed) for seed in (1,7,42,91,137)]}
+    print(json.dumps(result,indent=2))
+    if args.output:args.output.write_text(json.dumps(result,indent=2)+"\n")
 
 
-if __name__ == '__main__':
-    main()
+if __name__=="__main__":main()

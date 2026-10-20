@@ -37,27 +37,29 @@ claves y **no se publican**.
 
 | Componente | Versión / identidad | Código |
 | --- | --- | --- |
-| Nodo 1 | Firmware0.3.0, ID1, HTCC-AB01/ASR6501, PCB V1.2 confirmada | [firmware/nodes/node_1](firmware/nodes/node_1/README.md) |
-| Nodo 2 | Firmware0.3.0, ID2, HTCC-AB01/ASR6501; revisión de PCB por verificar | [firmware/nodes/node_2](firmware/nodes/node_2/README.md) |
-| Puente | App0.3.0, Python, MQTT ↔ LoRa | [bridge](bridge/README.md) |
-| Home Assistant | HAOS18.3, Core2026.9.4, Supervisor2026.09.3, última verificación6/10/2026 | [home-assistant](home-assistant/README.md) |
+| Nodo 1 | Firmware0.4.0, ID1, HTCC-AB01/ASR6501, PCB V1.2 confirmada | [firmware/nodes/node_1](firmware/nodes/node_1/README.md) |
+| Nodo 2 | Firmware0.4.0, ID2, HTCC-AB01/ASR6501; revisión de PCB por verificar | [firmware/nodes/node_2](firmware/nodes/node_2/README.md) |
+| Puente | App0.4.0, Python, MQTT ↔ LoRa | [bridge](bridge/README.md) |
+| Home Assistant | Core2026.9.4, verificación20/10/2026 | [home-assistant](home-assistant/README.md) |
 
-La reorganización del 6/10/2026 no desplegó software ni cargó dispositivos.
-Las simulaciones identifican mejoras pendientes; los equipos siguen con la
-última versión probada cuando se vuelvan a conectar.
+La versión 0.4.0 incorpora configuración remota confirmada y persistente, ventanas
+de escucha y recuperación de ACK perdidos. Se actualizan puente y ambos nodos
+juntos. Operación y límites en [configuración de nodos](docs/node-configuration.md).
+[Pruebas offline y hardware del20/10/2026](docs/evidence/2026-10-20/README.md).
 
 El recorrido es Home Assistant → MQTT → puente → HAT SPI → LoRa → CubeCell → ACK.
 El HAT contiene una sola radio; esta implementación usa LoRa directo, no un
 gateway multicanal LoRaWAN. Perfil de banco: **916.8MHz, SF7, BW125kHz, CR4/5,
 preámbulo8, CRC, IQ normal, sync privado0x1424 y TX0dBm**.
 
-- GPIO2 abre y GPIO1 cierra con un pulso de50ms; ambos quedan LOW.
+- GPIO2 abre y GPIO1 cierra con un pulso configurable (50ms por defecto); ambos quedan LOW.
 - No hay pulsos al arrancar. El estado de una válvula biestable empieza desconocido.
 - Un destello verde al abrir, dos al cerrar; luego se restaura el LED de prueba.
 - ID y AES-CMAC se validan antes de actuar. Los reintentos de una misma secuencia
-  no repiten el pulso. La protección de secuencia del nodo sigue en RAM.
+  no repiten el pulso. Se validan también sesión persistente de arranque y despertar.
 - El ACK confirma la ejecución lógica/GPIO, no la posición física ni el caudal.
-- Escucha continua; sueño, parámetros remotos, cierre autónomo y OTA aún no existen.
+- Reposo configurable0–3600s:0 es escucha continua. Pulso configurable10–200ms.
+- Cierre autónomo, sensor de posición y OTA de firmware no están implementados.
 
 ## Home Assistant y acceso
 
@@ -74,8 +76,13 @@ Entidades, con `N` igual a1 o2:
 
 Con estado desconocido la UI estándar puede mostrar dos acciones on/off; con
 estado conocido muestra el toggle. Una orden pendiente no equivale a éxito:
-HA espera la publicación del estado confirmado. La disponibilidad de válvula
-requiere su propio ACK, aunque el LED responda.
+HA espera la publicación del estado confirmado. Todos los ACK incluyen el estado
+de válvula y LED. Tras reiniciar un nodo la posición de válvula es desconocida.
+
+La pestaña **Configuración LoRa** (`dashboard-chacaico/configuracion-lora`) reúne
+reposo y pulso solicitados, **Aplicar**, **Consultar**, configuración confirmada,
+revisión, hora y estado de comunicación. La vista original del usuario se conserva.
+Editar un campo no envía SET_CONFIG hasta pulsar Aplicar.
 
 SSH usa la clave ya existente de Arch. En la LAN: `ssh pi5.chacaico`.
 Por Tailscale: `ssh pi5.chacaico.remoto`, web
@@ -143,11 +150,11 @@ Las pruebas no se conectan a la Pi, MQTT, USB ni radio. La última ejecuta el
 código real del nodo con reloj/GPIO/radio simulados y AES-CMAC del core oficial,
 usando únicamente claves públicas de prueba. Detalles en [tests/README.md](tests/README.md).
 
-El 6/10/2026 se reprodujeron demoras de descubrimiento tras conectar el nodo,
-espera causada por un vecino ausente y desactualización de estado al perder ACK.
-El loop sano acepta la primera orden. La causa física del episodio observado
-requiere una captura cuando se reconecte; **las correcciones operativas quedan
-pendientes**. Diagnóstico, evidencia y pasos siguientes:
+La caracterización histórica de0.3.0 identificó demoras y desactualización al
+perder ACK.0.4.0 incorpora anuncios de arranque, turnos entre nodos, margen RX,
+reconciliación y confirmación del estado completo. Las pruebas actuales verifican
+estas funciones; no demuestran la causa física exacta del episodio original.
+Diagnóstico histórico:
 [docs/startup-diagnosis.md](docs/startup-diagnosis.md).
 
 ## Diseño pendiente y referencias

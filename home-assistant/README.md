@@ -18,12 +18,19 @@ Copiar cada app a `/local_apps/` en la Pi antes del instalador, conservando su
 nombre de carpeta/slug. Para Pi1GB, `scripts/install-local-app.sh` detiene Core
 durante la construcción y lo reactiva al terminar.
 
-El panel Chacaico se edita desde la UI del usuario. Las plantillas de
+El panel Chacaico se edita desde la UI del usuario. La pestaña nueva
+**Configuración LoRa** contiene todos los parámetros y sus confirmaciones.
+La vista original se preserva. El generador reproducible es
+`scripts/node-config-view.py`; el JSON público está en `config/node-config-view.json`.
+`deploy-config-view.sh` instala con respaldo privado y control SHA256 de edición
+concurrente. Ver [operación de configuración](../docs/node-configuration.md). Las plantillas de
 `config/chacaico-controls.yaml` agregan switches para los IDs1/2, sin editarlo.
 El instalador de plantillas es
 `scripts/install-control-switches.sh`. No ejecutar `legacy/install-valve-panel.sh`.
 
-`test-node-1-led.sh` y `test-node-2-led.sh` requieren **solo** el nodo indicado
+Los scripts `test-node-1-led.sh`, `test-node-2-led.sh` y `test-bridge-polling.sh`
+son históricos de0.3.0; no constituyen la suite de configuración0.4.0.
+Los dos primeros requieren **solo** el nodo indicado
 alimentado para su prueba de destino ajeno; si ambos están conectados no usar
 esa expectativa. `test-bridge-polling.sh` prueba ambos con LED/consultas y restaura
 sus LEDs. Ninguno publica órdenes de válvula.
@@ -36,3 +43,14 @@ machine_id **2e21da3405714e0cba2d890984d6dfa8**.
 [Operación y evidencia histórica](../docs/haos-setup.md),
 [acceso remoto](../docs/remote-access.md),
 [diagnóstico de arranque](../docs/startup-diagnosis.md).
+
+## Prueba de banco actual
+
+`scripts/test-node-configuration.sh --bench` se ejecuta dentro de Terminal & SSH,
+con ambos nodos/antenas conectados. Exige empezar en0s/50ms y LEDs apagados;
+verifica borradores, Aplicar, Consultar, deduplicación e independencia durante sueño.
+Restaura0s/50ms y LEDs apagados. No envía órdenes de válvula. Modifica configuración:
+no ejecutarla como simple diagnóstico en una instalación de campo.
+
+La prueba adicional del20/10 reinició ambos nodos por USB y detuvo el bridge25s
+con una configuración pendiente; la evidencia está en `../docs/evidence/2026-10-20/`.
