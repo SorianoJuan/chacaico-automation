@@ -1,0 +1,289 @@
+{
+  "test": "User opens node 1 valve while it sleeps for 30 seconds",
+  "bridge_version": "0.4.1",
+  "node_firmware": "0.4.0",
+  "timezone": "America/Argentina/Buenos_Aires",
+  "node_1_config_before": {
+    "sleep_s": 0,
+    "pulse_ms": 50,
+    "revision": 6
+  },
+  "node_1_config_after": {
+    "sleep_s": 30,
+    "pulse_ms": 50,
+    "revision": 7
+  },
+  "node_2_unchanged": true,
+  "command_source": "User action in Home Assistant; agent did not actuate valves",
+  "request_to_confirmation_s": 9.404,
+  "pending_duration_s": 9.359,
+  "radio_ack": {
+    "sequence": 949338841,
+    "operation": 2,
+    "result": 0,
+    "boot": 3,
+    "wake_before": 25,
+    "wake_after": 26
+  },
+  "ui_observation": "Accessibility snapshots showed Pendiente with switch off, then Confirmada with switch on. Screenshot was captured after confirmation.",
+  "limitation": "ACK confirms firmware GPIO execution; no physical position or flow measurement.",
+  "timestamp_basis": "MQTT receipt timestamps on the observing computer; bridge clock differs by about 14 ms.",
+  "events": [
+    {
+      "time": "2026-10-20T14:20:19.937-03:00",
+      "topic": "chacaico/lora/node/1/config/status",
+      "payload": "Pendiente de contacto"
+    },
+    {
+      "time": "2026-10-20T14:20:20.248-03:00",
+      "topic": "chacaico/lora/node/1/config/status",
+      "payload": "Pendiente"
+    },
+    {
+      "time": "2026-10-20T14:20:20.249-03:00",
+      "topic": "chacaico/lora/node/1/config/reported",
+      "payload": {
+        "revision": 6,
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "confirmed_at": 1792516820.262122
+      }
+    },
+    {
+      "time": "2026-10-20T14:20:20.250-03:00",
+      "topic": "chacaico/lora/node/1/valve/status",
+      "payload": {
+        "sequence": 949338837,
+        "confirmation": "confirmed",
+        "state_source": "gpio_pulse",
+        "confirmed_at": 1792516820.2624285,
+        "rssi": -51.0,
+        "snr": 12.25
+      }
+    },
+    {
+      "time": "2026-10-20T14:20:20.250-03:00",
+      "topic": "chacaico/lora/node/1/status",
+      "payload": {
+        "node": 1,
+        "sequence": 949338837,
+        "boot": 3,
+        "wake": 25,
+        "rssi": -51.0,
+        "snr": 12.25,
+        "confirmed_at": 1792516820.2625341,
+        "led": false,
+        "valve": "closed",
+        "firmware": "0.4.0"
+      }
+    },
+    {
+      "time": "2026-10-20T14:20:20.812-03:00",
+      "topic": "chacaico/lora/node/1/config/status",
+      "payload": "Confirmada"
+    },
+    {
+      "time": "2026-10-20T14:20:20.812-03:00",
+      "topic": "chacaico/lora/node/1/config/reported",
+      "payload": {
+        "revision": 7,
+        "sleep_s": 30,
+        "pulse_ms": 50,
+        "confirmed_at": 1792516820.7984364
+      }
+    },
+    {
+      "time": "2026-10-20T14:20:20.812-03:00",
+      "topic": "chacaico/lora/node/1/valve/status",
+      "payload": {
+        "sequence": 949338838,
+        "confirmation": "confirmed",
+        "state_source": "gpio_pulse",
+        "confirmed_at": 1792516820.8257596,
+        "rssi": -52.0,
+        "snr": 12.5
+      }
+    },
+    {
+      "time": "2026-10-20T14:20:20.813-03:00",
+      "topic": "chacaico/lora/node/1/status",
+      "payload": {
+        "node": 1,
+        "sequence": 949338838,
+        "boot": 3,
+        "wake": 25,
+        "rssi": -52.0,
+        "snr": 12.5,
+        "confirmed_at": 1792516820.8258514,
+        "led": false,
+        "valve": "closed",
+        "firmware": "0.4.0"
+      }
+    },
+    {
+      "time": "2026-10-20T14:20:21.279-03:00",
+      "topic": "chacaico/lora/node/1/config/reported",
+      "payload": {
+        "revision": 7,
+        "sleep_s": 30,
+        "pulse_ms": 50,
+        "confirmed_at": 1792516821.292277
+      }
+    },
+    {
+      "time": "2026-10-20T14:20:21.279-03:00",
+      "topic": "chacaico/lora/node/1/valve/status",
+      "payload": {
+        "sequence": 949338839,
+        "confirmation": "confirmed",
+        "state_source": "gpio_pulse",
+        "confirmed_at": 1792516821.2925494,
+        "rssi": -51.0,
+        "snr": 12.25
+      }
+    },
+    {
+      "time": "2026-10-20T14:20:21.279-03:00",
+      "topic": "chacaico/lora/node/1/status",
+      "payload": {
+        "node": 1,
+        "sequence": 949338839,
+        "boot": 3,
+        "wake": 25,
+        "rssi": -51.0,
+        "snr": 12.25,
+        "confirmed_at": 1792516821.2926614,
+        "led": false,
+        "valve": "closed",
+        "firmware": "0.4.0"
+      }
+    },
+    {
+      "time": "2026-10-20T14:20:21.280-03:00",
+      "topic": "chacaico/lora/node/1/link/state",
+      "payload": "Reposo esperado"
+    },
+    {
+      "time": "2026-10-20T14:20:43.152-03:00",
+      "topic": "chacaico/lora/node/1/valve/set",
+      "payload": "OPEN"
+    },
+    {
+      "time": "2026-10-20T14:20:43.196-03:00",
+      "topic": "chacaico/lora/node/1/valve/status",
+      "payload": {
+        "confirmation": "pending",
+        "command": "OPEN",
+        "state_source": "gpio_pulse"
+      }
+    },
+    {
+      "time": "2026-10-20T14:20:43.197-03:00",
+      "topic": "chacaico/lora/node/1/valve/command/status",
+      "payload": "Pendiente"
+    },
+    {
+      "time": "2026-10-20T14:20:52.019-03:00",
+      "topic": "chacaico/lora/node/1/link/state",
+      "payload": "Escuchando"
+    },
+    {
+      "time": "2026-10-20T14:20:52.556-03:00",
+      "topic": "chacaico/lora/node/1/valve/command/status",
+      "payload": "Confirmada"
+    },
+    {
+      "time": "2026-10-20T14:20:52.557-03:00",
+      "topic": "chacaico/lora/node/1/config/reported",
+      "payload": {
+        "revision": 7,
+        "sleep_s": 30,
+        "pulse_ms": 50,
+        "confirmed_at": 1792516852.570042
+      }
+    },
+    {
+      "time": "2026-10-20T14:20:52.559-03:00",
+      "topic": "chacaico/lora/node/1/valve/state",
+      "payload": "open"
+    },
+    {
+      "time": "2026-10-20T14:20:52.559-03:00",
+      "topic": "chacaico/lora/node/1/valve/status",
+      "payload": {
+        "sequence": 949338841,
+        "confirmation": "confirmed",
+        "state_source": "gpio_pulse",
+        "confirmed_at": 1792516852.5704577,
+        "rssi": -50.0,
+        "snr": 12.25
+      }
+    },
+    {
+      "time": "2026-10-20T14:20:52.559-03:00",
+      "topic": "chacaico/lora/node/1/status",
+      "payload": {
+        "node": 1,
+        "sequence": 949338841,
+        "boot": 3,
+        "wake": 26,
+        "rssi": -50.0,
+        "snr": 12.25,
+        "confirmed_at": 1792516852.570568,
+        "led": false,
+        "valve": "open",
+        "firmware": "0.4.0"
+      }
+    },
+    {
+      "time": "2026-10-20T14:20:53.256-03:00",
+      "topic": "chacaico/lora/node/1/config/reported",
+      "payload": {
+        "revision": 7,
+        "sleep_s": 30,
+        "pulse_ms": 50,
+        "confirmed_at": 1792516853.2696586
+      }
+    },
+    {
+      "time": "2026-10-20T14:20:53.257-03:00",
+      "topic": "chacaico/lora/node/1/valve/status",
+      "payload": {
+        "sequence": 949338842,
+        "confirmation": "confirmed",
+        "state_source": "gpio_pulse",
+        "confirmed_at": 1792516853.2699494,
+        "rssi": -50.0,
+        "snr": 12.25
+      }
+    },
+    {
+      "time": "2026-10-20T14:20:53.257-03:00",
+      "topic": "chacaico/lora/node/1/status",
+      "payload": {
+        "node": 1,
+        "sequence": 949338842,
+        "boot": 3,
+        "wake": 26,
+        "rssi": -50.0,
+        "snr": 12.25,
+        "confirmed_at": 1792516853.2700615,
+        "led": false,
+        "valve": "open",
+        "firmware": "0.4.0"
+      }
+    },
+    {
+      "time": "2026-10-20T14:20:53.257-03:00",
+      "topic": "chacaico/lora/node/1/link/state",
+      "payload": "Reposo esperado"
+    }
+  ],
+  "bridge_ack_lines": [
+    "2026-10-20 14:20:20,262 INFO ACK node=1 boot=3 wake=25 seq=949338837 op=3 result=0 revision=6 sleep=0 pulse=50",
+    "2026-10-20 14:20:20,825 INFO ACK node=1 boot=3 wake=25 seq=949338838 op=4 result=0 revision=7 sleep=30 pulse=50",
+    "2026-10-20 14:20:21,292 INFO ACK node=1 boot=3 wake=25 seq=949338839 op=5 result=0 revision=7 sleep=30 pulse=50",
+    "2026-10-20 14:20:52,570 INFO ACK node=1 boot=3 wake=26 seq=949338841 op=2 result=0 revision=7 sleep=30 pulse=50",
+    "2026-10-20 14:20:53,270 INFO ACK node=1 boot=3 wake=26 seq=949338842 op=5 result=0 revision=7 sleep=30 pulse=50"
+  ]
+}

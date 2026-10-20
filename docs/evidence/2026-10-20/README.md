@@ -26,3 +26,18 @@ nuevamente después de recuperar la radio, no entrega infalible.
 El respaldo de Supervisor y la copia anterior de firmware/bridge se conservan
 privados. La nueva vista Configuración LoRa está separada; se comparó la vista
 original antes/después y quedó idéntica.
+
+
+## Prueba posterior con sleep de30s y puente0.4.1
+
+`sleep30-user-valve-test.json` registra una apertura solicitada por el usuario
+desde Home Assistant a las14:20:43.152 ART. El nodo1 estaba en Reposo esperado;
+la orden pasó a Pendiente y a Confirmada al despertar, a las14:20:52.556:
+9.404s desde la solicitud. ACK de SET_VALVE con secuencia949338841, resultado0,
+sesión3 y despertar26 (el anterior era25). El estado informado pasó a abierto.
+La UI mostró Pendiente junto al switch y después Confirmada con el switch encendido;
+la captura `../../../home-assistant/evidence/sleep30-valve-confirmed.png` muestra
+el resultado confirmado. No se midió posición mecánica ni caudal.
+
+Quedó configurado el nodo1 en30s/50ms, revisión7; no se modificó el nodo2.
+Este ensayo es posterior a los ensayos sin actuación de válvula descritos arriba.
