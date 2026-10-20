@@ -41,3 +41,22 @@ el resultado confirmado. No se midió posición mecánica ni caudal.
 
 Quedó configurado el nodo1 en30s/50ms, revisión7; no se modificó el nodo2.
 Este ensayo es posterior a los ensayos sin actuación de válvula descritos arriba.
+
+
+## Pulso de banco de3s, solo nodo1
+
+`pulse3s/` contiene47 pruebas unitarias, pruebas del firmware real simulado para
+ambos IDs, simulación de8 nodos y el resultado de configuración real por radio.
+Se probó el GPIO en HIGH durante3000ms, regreso a LOW antes del ACK, rechazo de
+pulsos largos en nodo2, deduplicación y presupuesto de vigilia/espera del bridge.
+
+Instalados: bridge0.4.2 y firmware0.4.1 solo en nodo1. Nodo2 no se flasheó y sigue
+con0.4.0; su perfil0.4.1 se compiló para validar el código compartido. El nodo1
+confirmó0s/3000ms, revisión9; nodo2 sigue0s/50ms, revisión5. El reposo de nodo1
+ya era0s antes de esta intervención, por cambio posterior del usuario a la prueba
+anterior de30s. Las claves y vistas se conservaron; respaldo Supervisor5789b21a.
+
+La captura `../../../home-assistant/evidence/node1-pulse3s-confirmed.png` muestra
+el valor confirmado en Home Assistant. No se enviaron órdenes de válvula como
+parte de esta actualización. La medición física queda a cargo del usuario con
+el CubeCell separado de PCB/válvula. Volver a50ms antes de reconectar la potencia.

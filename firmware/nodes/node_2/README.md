@@ -1,6 +1,6 @@
 # Nodo 2
 
-Firmware **0.4.0**, ID LoRa **2**, placa objetivo **HTCC-AB01 / ASR6501**.
+Firmware instalado **0.4.0**, fuentes y compilación **0.4.1** (sin flashear en la prueba del nodo1), ID LoRa **2**, placa objetivo **HTCC-AB01 / ASR6501**.
 La revisión impresa de esta PCB debe verificarse por separado; no se infiere de la del nodo 1.
 
 - `node_2.ino`: entrada Arduino; rechaza una configuración de otro ID.

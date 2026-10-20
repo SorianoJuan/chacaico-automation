@@ -39,6 +39,7 @@ static inline void memset1(uint8_t*d,uint8_t v,uint16_t n){memset(d,v,n);}
             subprocess.run(["cc", "-std=c99", "-I"+str(stage), "-I"+str(CRYPTO), "-c",
                             str(CRYPTO/f"{name}.c"), "-o", str(stage/f"{name}.o")], check=True)
         for node in (1, 2):
+            shutil.copyfile(REPO/f"firmware/nodes/node_{node}/node_{node}.ino", stage/"node_under_test.ino")
             key = bytes(range((node-1)*16, node*16))
             (stage/"node_config.h").write_text(
                 f"#define CHACAICO_NODE_ID {node}\n#define CHACAICO_FREQUENCY 916800000\n"

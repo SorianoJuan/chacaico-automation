@@ -4,6 +4,11 @@ extern "C" {
 #include "cmac.h"
 }
 
+#ifndef CHACAICO_MAX_PULSE_MS
+#define CHACAICO_MAX_PULSE_MS 200
+#endif
+static_assert(CHACAICO_MAX_PULSE_MS >= 10 && CHACAICO_MAX_PULSE_MS <= 3000, "Unsupported pulse limit");
+
 namespace Chacaico {
 static const uint8_t KEY[16] = CHACAICO_KEY;
 static const uint8_t BODY_SIZE = 30, FRAME_SIZE = 38;
@@ -11,7 +16,7 @@ enum Kind : uint8_t { REQUEST, RESPONSE, READY };
 enum Op : uint8_t { GET_STATE, SET_LED, SET_VALVE, GET_CONFIG, SET_CONFIG, END };
 enum Status : uint8_t { OK, INVALID, STORE_FAILED, CONFLICT, BUSY };
 static const uint8_t UNKNOWN = 2;
-static const uint16_t MAX_SLEEP = 3600, MIN_PULSE = 10, MAX_PULSE = 200;
+static const uint16_t MAX_SLEEP = 3600, MIN_PULSE = 10, MAX_PULSE = CHACAICO_MAX_PULSE_MS;
 static uint16_t read16(const uint8_t *p) { return uint16_t(p[0]) | uint16_t(p[1]) << 8; }
 static uint32_t read32(const uint8_t *p) {
     return uint32_t(p[0]) | uint32_t(p[1]) << 8 | uint32_t(p[2]) << 16 | uint32_t(p[3]) << 24;

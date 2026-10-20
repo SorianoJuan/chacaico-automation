@@ -238,11 +238,69 @@ class EngineTest(unittest.TestCase):
         self.assertEqual(len(self.output), before)
         self.assertIsNotNone(self.engine.nodes[1].pending)
 
+    def test_bench_pulse_limit_is_only_for_node_one_and_survives_restart(self):
+        self.connect()
+        self.apply(sleep=30, pulse=3000)
+        self.engine = self.create()
+        self.assertEqual(self.engine.nodes[1].config_job["pulse_ms"], 3000)
+        self.assertEqual(self.engine.nodes[1].draft["pulse_ms"], 3000)
+        self.engine.message(2, "config/pulse_ms/set", "3000")
+        self.assertIsNone(self.engine.nodes[2].draft)
+        self.engine.message(2, "config/pulse_ms/set", "200")
+        self.assertEqual(self.engine.nodes[2].draft["pulse_ms"], 200)
+        for node in (2, 3):
+            self.assertFalse(valid_config(0, 201, node=node))
+            with self.assertRaises(ValueError):
+                decode(self.keys[2], encode(self.keys[2], Frame(
+                    READY, node, 1, 1, 0, revision=1, pulse_ms=3000)))
+
+    def test_long_pulse_ack_keeps_pending_and_radio_receive_window(self):
+        self.connect(sleep=30, pulse=3000)
+        self.engine.message(1, "valve/set", "OPEN")
+        request = self.request()
+        sent_at = self.clock
+        self.clock += 3.1
+        self.engine.tick()
+        self.assertIsNotNone(self.engine.nodes[1].pending)
+        self.assertFalse(self.has("valve/command/status", "Confirmada"))
+        self.assertIsNone(self.engine.next_frame())  # No TX over the delayed valve ACK.
+        self.respond(request)
+        self.assertTrue(self.has("valve/command/status", "Confirmada"))
+        self.assertFalse(self.engine.nodes[1].actions)
+        self.assertGreater(self.engine.nodes[1].active_until, sent_at + 3.4)
+
+    def test_lost_long_pulse_ack_retries_same_transaction(self):
+        self.connect(sleep=30, pulse=3000)
+        self.engine.message(1, "valve/set", "OPEN")
+        first = self.request()
+        self.clock += 4.51
+        retry = self.request()
+        self.assertEqual(first, retry)
+        self.respond(retry)
+        self.assertTrue(self.has("valve/command/status", "Confirmada"))
+
+    def test_long_pulse_waits_for_next_wake_if_budget_is_insufficient(self):
+        self.connect(sleep=30, pulse=3000)
+        n = self.engine.nodes[1]
+        n.hard_until = self.clock + 3.9
+        self.engine.message(1, "valve/set", "OPEN")
+        ending = self.request()
+        self.assertEqual(ending.op, END)
+        self.respond(ending)
+        self.assertIn(SET_VALVE, n.actions)
+        self.clock += 30
+        self.ready(wake=2, sleep=30, pulse=3000)
+        command = self.request()
+        self.assertEqual(command.op, SET_VALVE)
+        self.clock += 3
+        self.respond(command)
+        self.assertTrue(self.has("valve/command/status", "Confirmada"))
+
     def test_invalid_fields_and_retained_commands_do_not_apply(self):
         self.connect()
         for value in ("-1", "3601", "nan", "inf", "1.2", "five"):
             self.engine.message(1, "config/sleep_s/set", value)
-        for value in ("0", "9", "201", "nan"):
+        for value in ("0", "9", "3001", "nan"):
             self.engine.message(1, "config/pulse_ms/set", value)
         self.engine.message(1, "config/apply", "APPLY", True)
         self.engine.message(1, "valve/set", "OPEN", True)

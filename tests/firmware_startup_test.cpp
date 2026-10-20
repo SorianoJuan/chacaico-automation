@@ -1,5 +1,4 @@
-#include "node_config.h"
-#include "ChacaicoNode.h"
+#include "node_under_test.ino"
 #include "test_expected_ack.h"
 #include <iostream>
 using namespace Chacaico;
@@ -79,7 +78,7 @@ int main() {
     assert(config.revision==2 && config.pulse==200 && highEdges.size()==2);
     const int writes=flashWrites;
     deliver(request(SET_CONFIG,7,0,2,0,200));advance(500);assert(flashWrites==writes);
-    deliver(request(SET_CONFIG,8,0,3,0,201));advance(500);
+    deliver(request(SET_CONFIG,8,0,3,0,MAX_PULSE+1));advance(500);
     assert(config.revision==2 && reply[19]==INVALID);
     deliver(request(SET_VALVE,9,1));start=highEdges.back().second;
     while(uint32_t(millis()-start)<199)loop();
@@ -124,6 +123,41 @@ int main() {
     advance(55);
     assert(!gpio[1]&&!gpio[2] && uint32_t(millis()-start)<=57);
     advance(1500);assert(valve==0 && !sleeping);
+    if(CHACAICO_NODE_ID==1) {
+        assert(MAX_PULSE==3000);
+        deliver(request(SET_CONFIG,seq++,0,config.revision+1,30,3000));advance(500);
+        assert(config.pulse==3000 && config.sleep==30);
+        for(uint8_t desired : {1,0}) {
+            const auto count=highEdges.size();
+            const auto packets=Radio.sent.size();
+            auto command=request(SET_VALVE,seq++,desired);
+            deliver(command);start=highEdges.back().second;
+            assert(highEdges.back().first==(desired?GPIO2:GPIO1));
+            // A duplicate during the pulse must not restart or extend it.
+            events.RxDone(command.data(),command.size(),-50,12);loop();
+            while(uint32_t(millis()-start)<2999)loop();
+            assert(pulsing && gpio[desired?GPIO2:GPIO1] && !gpio[desired?GPIO1:GPIO2]);
+            assert(Radio.sent.size()==packets); // Never acknowledge before GPIO LOW.
+            advance(3);
+            assert(!gpio[GPIO1]&&!gpio[GPIO2] && millis()-start<=3003);
+            advance(1200);assert(valve==desired && highEdges.size()==count+1);
+            assert(Radio.sent.back().at-start>=3000 && Radio.sent.back().payload[19]==OK);
+            deliver(command);advance(500);assert(highEdges.size()==count+1);
+            deliver(request(END,seq++));advance(500);assert(sleeping);
+            advance(31500);assert(!sleeping && Radio.state==TestRadio::RX);
+        }
+        const auto count=highEdges.size();
+        hardUntil=millis()+3500;
+        deliver(request(SET_VALVE,seq++,1));advance(500);
+        assert(reply[19]==BUSY && highEdges.size()==count && !gpio[1]&&!gpio[2]);
+        ConfigStore persisted;persisted.begin();
+        assert(persisted.healthy && persisted.pulse==3000 && persisted.sleep==30);
+    } else {
+        assert(MAX_PULSE==200);
+        const auto revision=config.revision;
+        deliver(request(SET_CONFIG,seq++,0,revision+1,0,3000));advance(500);
+        assert(reply[19]==INVALID && config.revision==revision && config.pulse==50);
+    }
     std::cout<<"PASS node="<<CHACAICO_NODE_ID
              <<" real CMAC; 33 torn-write points; GPIO timing/LED; dedup; sessions; config; sleep; TX timeout\n";
 }

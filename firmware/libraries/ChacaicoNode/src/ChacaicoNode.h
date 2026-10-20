@@ -85,7 +85,8 @@ static void processRequest() {
         (unsigned long)config.boot,(unsigned long)wake,(unsigned long)seq,rx[18]);
     if(!config.healthy) { queueResponse(STORE_FAILED);return; }
     // Budget the maximum pulse, flash and response before accepting new work.
-    if(config.sleep && int32_t(hardUntil-millis())<1000 && rx[18]!=END) {
+    const int32_t requiredMs=1000+(rx[18]==SET_VALVE ? config.pulse : 0);
+    if(config.sleep && int32_t(hardUntil-millis())<requiredMs && rx[18]!=END) {
         queueResponse(BUSY);return;
     }
     if(rx[18]!=SET_CONFIG && (read32(rx+20) || read16(rx+24) || read16(rx+26))) {
@@ -134,7 +135,7 @@ static void nodeSetup() {
     Radio.SetTxConfig(MODEM_LORA,0,0,0,7,1,8,false,true,0,0,false,3000);
     Radio.SetRxConfig(MODEM_LORA,0,7,1,0,8,0,false,0,true,0,0,false,true);
     Radio.SetPublicNetwork(false);TimerInit(&wakeTimer,onWake);
-    Serial.printf("CHACAICO valve-0.4.0 node=%u boot=%lu revision=%lu sleep=%u pulse=%u store=%u\r\n",
+    Serial.printf("CHACAICO valve-0.4.1 node=%u boot=%lu revision=%lu sleep=%u pulse=%u store=%u\r\n",
         CHACAICO_NODE_ID,(unsigned long)config.boot,(unsigned long)config.revision,
         config.sleep,config.pulse,config.healthy);
     startWindow();

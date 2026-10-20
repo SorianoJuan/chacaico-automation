@@ -5,11 +5,11 @@ Guardar aquí desarrollo, configuración reproducible, documentación y evidenci
 
 ## Estructura y versiones
 
-- `firmware/nodes/node_1/`: sketch/perfil públicos del ID1, firmware0.4.0.
-- `firmware/nodes/node_2/`: sketch/perfil públicos del ID2, firmware0.4.0.
+- `firmware/nodes/node_1/`: sketch/perfil públicos del ID1, firmware0.4.1; perfil de banco hasta3000ms.
+- `firmware/nodes/node_2/`: sketch/perfil públicos del ID2, fuentes0.4.1; instalado0.4.0, límite200ms.
 - `firmware/libraries/ChacaicoNode/`: lógica compartida; conservar comportamiento
   consistente entre nodos. Cambiar versión en perfiles/librería/banner cuando proceda.
-- `bridge/chacaico_lora_bridge/`: app0.4.1 de HAOS, driver SX1262 y protocolo MQTT/LoRa.
+- `bridge/chacaico_lora_bridge/`: app0.4.2 de HAOS, driver SX1262 y protocolo MQTT/LoRa.
 - `home-assistant/config/`, `scripts/`, `apps/`, `evidence/`: HAOS y auxiliares.
 - `home-assistant/legacy/`: panel retirado; no ejecutarlo ni reinstalarlo.
 - `tests/`: pruebas offline; `docs/`: operación, ideas y diagnósticos.
@@ -21,7 +21,7 @@ Cada ID tiene su propio `node_config.h`, build y clave. El helper verifica ident
 fuentes y checksum antes de subir. Ambos CP2102 tienen serial0001: nunca usar
 ese `by-id` para decidir qué placa programar; identificar físicamente el nodo.
 
-GPIO2 abre, GPIO1 cierra, pulso configurable10–200ms (predeterminado50ms) y ambos LOW al terminar. No pulso al arrancar.
+GPIO2 abre, GPIO1 cierra, pulso configurable10–200ms (predeterminado50ms); excepción de banco del nodo1 hasta3000ms y ambos LOW al terminar. No pulso al arrancar.
 LED: un destello abrir/dos cerrar y restaurar estado del LED independiente.
 ACK significa ejecución GPIO; no afirmar posición/caudal sin medición física.
 No accionar una válvula conectada como parte automática de instalar o validar:
@@ -52,11 +52,16 @@ construir apps con Core detenido y reactivarlo. Puente usa libgpiod2 sobre RP1;
 NSSBCM21; SPI_NO_CS no está soportado. Las rutas `/local_apps/` en la Pi no cambian
 porque el código local esté ahora en `bridge/` y `home-assistant/apps/`.
 
-Puente0.4.1 y nodos0.4.0 usan protocolo v2; actualizar juntos, no compatibles con0.3.0.
+Puente0.4.2 y nodos0.4.x usan protocolo v2, no compatibles con0.3.0.
+Para pulsos largos se requiere firmware0.4.1 en nodo1 y puente0.4.2.
+El usuario autorizó3000ms en nodo1 separado de PCB/válvula; no accionar por nuestra
+cuenta. Volver a50ms y verificar el ACK antes de reconectar la potencia o bajar
+a firmware/bridge que solo acepte200ms. El límite ampliado permanece en su perfil.
+No flashear el nodo2 como parte de esa prueba; conserva su firmware instalado0.4.0.
 Reposo0 significa RX continuo; positivo usa READY y ventana inicial3s renovable
 con presupuesto máximo10s, END para dormir antes. Configuración SET_CONFIG separada,
 revisión/ACK/consulta, flash persistente con lectura de verificación y sesión de
-arranque. Defaults0s/50ms; límites0–3600s/10–200ms. No implican validación eléctrica
+arranque. Defaults0s/50ms; límites0–3600s/10–200ms (nodo1 banco: hasta3000ms). No implican validación eléctrica
 de todas las válvulas. Detalles y límites en `docs/node-configuration.md`.
 El ACK incluye estado/config completos. Mantener error/pendiente/confirmado visibles;
 Reposo esperado no es offline. Las órdenes de válvula vencen y no se persisten para

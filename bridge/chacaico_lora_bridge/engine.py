@@ -95,12 +95,12 @@ class Engine:
             if n.config_error:
                 n.config_status = n.config_error
             for cfg in (n.confirmed, n.draft):
-                if cfg and not valid_config(cfg.get("sleep_s"), cfg.get("pulse_ms")):
+                if cfg and not valid_config(cfg.get("sleep_s"), cfg.get("pulse_ms"), node=ident):
                     raise ValueError("Invalid stored configuration")
             if n.confirmed:
                 n.advertised = dict(n.confirmed)
             if n.config_job:
-                if (not valid_config(n.config_job.get("sleep_s"), n.config_job.get("pulse_ms"))
+                if (not valid_config(n.config_job.get("sleep_s"), n.config_job.get("pulse_ms"), node=ident)
                         or not isinstance(n.config_job.get("deadline"), (int, float))
                         or not math.isfinite(n.config_job["deadline"])
                         or (n.config_job.get("revision") is not None and
@@ -161,7 +161,7 @@ class Engine:
                     return
                 draft = {k: (n.draft or n.confirmed or n.advertised)[k] for k in ("sleep_s", "pulse_ms")}
                 draft[name] = int(value)
-                if not valid_config(**draft):
+                if not valid_config(**draft, node=node):
                     return
             except (ValueError, OverflowError):
                 return
@@ -338,7 +338,7 @@ class Engine:
                   "state_source": "gpio_pulse", "confirmed_at": self.wall(), "rssi": rssi, "snr": snr})
         self.emit(n.ident, "status", {"node": n.ident, "sequence": f.sequence, "boot": f.boot, "wake": f.wake,
                   "rssi": rssi, "snr": snr, "confirmed_at": self.wall(), "led": bool(f.led),
-                  "valve": {0: "closed", 1: "open", UNKNOWN: "unknown"}[f.valve], "firmware": "0.4.0"})
+                  "valve": {0: "closed", 1: "open", UNKNOWN: "unknown"}[f.valve], "firmware": "0.4.1" if n.ident == 1 else "0.4.0"})
 
     def tick(self):
         now = self.now()
@@ -405,7 +405,8 @@ class Engine:
                 if now < n.pending["next"]:
                     continue
             else:
-                if n.advertised["sleep_s"] and n.hard_until - now < 1.2:
+                required = 1.2 + (n.advertised["pulse_ms"] / 1000 if SET_VALVE in n.actions else 0)
+                if n.advertised["sleep_s"] and n.hard_until - now < required:
                     self.start(n, END)
                 elif SET_VALVE in n.actions and n.actions[SET_VALVE]["value"] == 0:
                     self.start(n, SET_VALVE, valve=0)
@@ -443,11 +444,12 @@ class Engine:
             return
         now = self.now()
         p["tries"] += 1
-        p["next"] = now + 1.5 + (n.advertised["pulse_ms"] / 1000 if p["frame"].op == SET_VALVE else 0)
-        # Stay in RX long enough for the earliest response; avoid transmitting over it.
-        self.tx_ready = now + (.65 if p["frame"].op == SET_VALVE else .4)
+        valve_pulse = n.advertised["pulse_ms"] / 1000 if p["frame"].op == SET_VALVE else 0
+        p["next"] = now + 1.5 + valve_pulse
+        # The ACK follows the completed GPIO pulse. Reserve RX through its airtime.
+        self.tx_ready = now + (max(.65, valve_pulse + .4) if p["frame"].op == SET_VALVE else .4)
         if n.advertised["sleep_s"] and p["frame"].op != END:
-            n.active_until = min(now + 2.8, n.hard_until)
+            n.active_until = min(now + valve_pulse + 2.8, n.hard_until)
         if not success:
             n.need_query = True
         if p["frame"].op == END:

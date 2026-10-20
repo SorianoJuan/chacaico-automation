@@ -30,9 +30,14 @@ class Frame:
     led: int = 0
 
 
-def valid_config(sleep_s, pulse_ms):
+def max_pulse_ms(node):
+    # Commissioning exception explicitly requested for the isolated node 1.
+    return 3000 if node == 1 else MAX_PULSE
+
+
+def valid_config(sleep_s, pulse_ms, node=None):
     return (type(sleep_s) is int and type(pulse_ms) is int
-            and 0 <= sleep_s <= MAX_SLEEP and MIN_PULSE <= pulse_ms <= MAX_PULSE)
+            and 0 <= sleep_s <= MAX_SLEEP and MIN_PULSE <= pulse_ms <= max_pulse_ms(node))
 
 
 def tag(key, data):
@@ -62,7 +67,7 @@ def decode(key, packet):
     if f.kind == REQUEST:
         if f.status or not f.boot or not f.wake or not f.sequence or f.valve == UNKNOWN:
             raise ValueError("Invalid request")
-    elif not valid_config(f.sleep_s, f.pulse_ms) or not f.revision:
+    elif not valid_config(f.sleep_s, f.pulse_ms, node=f.node) or not f.revision:
         raise ValueError("Invalid reported configuration")
     return f
 

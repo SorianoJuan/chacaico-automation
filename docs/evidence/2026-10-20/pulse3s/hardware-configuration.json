@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-20",
+  "bridge_version": "0.4.2",
+  "node1_firmware_installed": "0.4.1",
+  "node2_firmware_installed_unchanged": "0.4.0",
+  "built_and_verified_node_ids": [
+    1,
+    2
+  ],
+  "flashed_node_ids": [
+    1
+  ],
+  "node1": {
+    "sleep_s": 0,
+    "pulse_ms": 3000,
+    "revision": 9,
+    "confirmed_at": 1792517732.2492266
+  },
+  "node2": {
+    "sleep_s": 0,
+    "pulse_ms": 50,
+    "revision": 5
+  },
+  "limits_ms": {
+    "node1": [
+      10,
+      3000
+    ],
+    "node2": [
+      10,
+      200
+    ]
+  },
+  "usb_boot": {
+    "port": "/dev/serial/by-path/pci-0000:06:00.1-usb-0:4:1.0-port0",
+    "boot_banner": "CHACAICO valve-0.4.1 node=1 boot=6 revision=8 sleep=0 pulse=50 store=1"
+  },
+  "private_settings_preserved": true,
+  "ui_hashes_preserved": true,
+  "unit_tests_passed": 47,
+  "firmware_mock_test_passed": true,
+  "pulse_measurement": "GPIO timing verified with real firmware in simulation; user will measure physical pins with a multimeter.",
+  "no_agent_valve_actuation": true,
+  "restore_before_driver_connection": "Apply 50 ms and verify the node confirmation. 3000 ms persists after reboot.",
+  "supervisor_backup_slug": "5789b21a",
+  "ack_lines": [
+    "2026-10-20 14:35:32,259 INFO ACK node=1 boot=6 wake=1 seq=949339835 op=4 result=0 revision=9 sleep=0 pulse=3000",
+    "2026-10-20 14:36:02,060 INFO ACK node=1 boot=6 wake=1 seq=949339837 op=3 result=0 revision=9 sleep=0 pulse=3000"
+  ]
+}
