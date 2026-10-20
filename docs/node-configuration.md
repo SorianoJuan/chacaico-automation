@@ -28,6 +28,33 @@ No hay cierre autónomo ni sensor de posición: una confirmación de válvula so
 certifica la ejecución del GPIO. El LED independiente consume energía si se deja
 encendido, también durante el reposo.
 
+## Medir los GPIO con un tester
+
+![Puntos de medición en el CubeCell original](hardware/cubecell-gpio-medicion.png)
+
+En el HTCC-AB01 original, mirando los componentes con el micro USB hacia arriba,
+GPIO2 es el tercer contacto desde abajo de la hilera derecha y GPIO1 el segundo.
+El contacto superior de esa hilera es GND. Son nombres de GPIO, no números de
+patillas del chip. Posiciones verificadas en el
+[pinout oficial de Heltec](https://resource.heltec.cn/download/CubeCell/HTCC-AB01/HTCC-AB01_PinoutDiagram.pdf);
+el [esquemático oficial](https://resource.heltec.cn/download/CubeCell/HTCC-AB01/HTCC-AB01_SchematicDiagram.pdf)
+identifica las mismas señales. No confundir la placa original con la V2 de USB-C.
+
+Usar tensión continua, escala 20 V o automática: punta negra en COM/GND y roja en
+el borne V/Ω y el GPIO que se prueba. GPIO2 sube a aproximadamente 3,3 V al abrir;
+GPIO1 al cerrar. El otro GPIO queda en 0 V y ambos vuelven a0V al terminar el pulso.
+No medir en modo corriente ni continuidad. Esto comprueba la señal lógica del
+CubeCell; la tensión en la salida de potencia depende de la PCB externa.
+
+El pulso predeterminado de 50 ms y aun el máximo configurable de 200 ms pueden ser
+muy breves para un tester común. Un modo de banco con pulsos de varios segundos
+requeriría cambios de software; no se implementó como parte de este esquema.
+Para esa prueba, aislar el CubeCell de la PCB de potencia y de la válvula: no se
+ha comprobado que admitan excitación prolongada. Si se mide con la electrónica
+conectada, conservar sus tiempos admitidos y usar osciloscopio o analizador lógico
+compatible con 3,3 V. Alternar abrir/cerrar para repetir la medición: pedir el estado
+ya confirmado no vuelve a generar un pulso.
+
 ## Ventana de comunicación
 
 Con reposo positivo el nodo despierta, anuncia READY y escucha inicialmente

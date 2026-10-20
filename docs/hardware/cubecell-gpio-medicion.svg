@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1050" viewBox="0 0 1500 1050">
+<title>Medición de GPIO1 y GPIO2 en CubeCell HTCC-AB01</title>
+<desc>Vista superior del CubeCell original con micro USB arriba. GPIO2 es el tercer contacto desde abajo a la derecha y abre la válvula; GPIO1 es el segundo y cierra. Dos diagramas separados muestran el voltímetro entre cada GPIO y GND.</desc>
+<rect width="1500" height="1050" fill="#f4f6f8"/>
+<style>text {font-family:DejaVu Sans, sans-serif; fill:#172d3b} .muted{fill:#536875} .mono{font-family:DejaVu Sans Mono,monospace}</style>
+
+<text x="48" y="64" font-size="36" font-weight="bold">Dónde medir los pulsos de la válvula</text>
+<text x="48" y="104" font-size="23" style="fill:#536875">CubeCell HTCC-AB01 original · GPIO2 abre / GPIO1 cierra</text>
+<rect x="38" y="142" width="670" height="682" rx="12" fill="white" stroke="#dce3e8" stroke-width="2"/>
+<text x="68" y="185" font-size="19" font-weight="bold">UBICACIÓN FÍSICA</text>
+<text x="68" y="218" font-size="20" style="fill:#536875">Vista superior · micro USB hacia arriba</text>
+<rect x="212" y="270" width="242" height="493" rx="16" fill="#204c48" stroke="#123934" stroke-width="2"/>
+<rect x="293" y="247" width="80" height="54" rx="5" fill="#d2d9de" stroke="#6e8590" stroke-width="2"/>
+<rect x="307" y="252" width="52" height="15" rx="3" fill="#4c5961" stroke="none" stroke-width="2"/>
+<text x="333" y="328" font-size="16" style="fill:#eef7f5" text-anchor="middle">micro USB</text>
+<rect x="264" y="484" width="140" height="201" rx="6" fill="#b8cbc9" stroke="#91aaa7" stroke-width="2"/>
+<text x="334" y="546" font-size="22" style="fill:#193d38" font-weight="bold" text-anchor="middle">CubeCell</text>
+<text x="334" y="579" font-size="17" style="fill:#193d38" text-anchor="middle">HTCC-AB01</text>
+<text x="334" y="609" font-size="16" style="fill:#193d38" text-anchor="middle">ASR6501</text>
+<circle cx="278" cy="714" r="12" fill="#d1ad55" stroke="#765e26" stroke-width="2"/>
+<text x="334" y="749" font-size="14" style="fill:#e5f0ed" text-anchor="middle">ANTENA</text>
+<circle cx="230" cy="350" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<circle cx="436" cy="350" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<line x1="207" y1="350" x2="222" y2="350" stroke="#7c8b92" stroke-width="2" stroke-linecap="round"/>
+<text x="195" y="356" font-size="18" style="fill:#667a83" text-anchor="end">GND</text>
+<line x1="444" y1="350" x2="480" y2="350" stroke="#253947" stroke-width="4" stroke-linecap="round"/>
+<circle cx="436" cy="350" r="11" fill="none" stroke="#253947" stroke-width="4"/>
+<rect x="486" y="333" width="198" height="32" rx="6" fill="#e7edf1" stroke="none" stroke-width="2"/>
+<text x="495" y="356" font-size="18" style="fill:#253947" font-weight="bold">GND · punta negra</text>
+<circle cx="230" cy="385" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<circle cx="436" cy="385" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<line x1="207" y1="385" x2="222" y2="385" stroke="#7c8b92" stroke-width="2" stroke-linecap="round"/>
+<text x="195" y="391" font-size="18" style="fill:#667a83" text-anchor="end">VS</text>
+<line x1="444" y1="385" x2="480" y2="385" stroke="#6a7d87" stroke-width="2" stroke-linecap="round"/>
+<text x="495" y="391" font-size="18" style="fill:#6a7d87">VIN</text>
+<circle cx="230" cy="420" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<circle cx="436" cy="420" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<line x1="207" y1="420" x2="222" y2="420" stroke="#7c8b92" stroke-width="2" stroke-linecap="round"/>
+<text x="195" y="426" font-size="18" style="fill:#667a83" text-anchor="end">VDD</text>
+<line x1="444" y1="420" x2="480" y2="420" stroke="#6a7d87" stroke-width="2" stroke-linecap="round"/>
+<text x="495" y="426" font-size="18" style="fill:#6a7d87">MOSI</text>
+<circle cx="230" cy="455" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<circle cx="436" cy="455" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<line x1="207" y1="455" x2="222" y2="455" stroke="#7c8b92" stroke-width="2" stroke-linecap="round"/>
+<text x="195" y="461" font-size="18" style="fill:#667a83" text-anchor="end">VEXT</text>
+<line x1="444" y1="455" x2="480" y2="455" stroke="#6a7d87" stroke-width="2" stroke-linecap="round"/>
+<text x="495" y="461" font-size="18" style="fill:#6a7d87">MISO</text>
+<circle cx="230" cy="490" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<circle cx="436" cy="490" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<line x1="207" y1="490" x2="222" y2="490" stroke="#7c8b92" stroke-width="2" stroke-linecap="round"/>
+<text x="195" y="496" font-size="18" style="fill:#667a83" text-anchor="end">GND</text>
+<line x1="444" y1="490" x2="480" y2="490" stroke="#6a7d87" stroke-width="2" stroke-linecap="round"/>
+<text x="495" y="496" font-size="18" style="fill:#6a7d87">SCK</text>
+<circle cx="230" cy="525" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<circle cx="436" cy="525" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<line x1="207" y1="525" x2="222" y2="525" stroke="#7c8b92" stroke-width="2" stroke-linecap="round"/>
+<text x="195" y="531" font-size="18" style="fill:#667a83" text-anchor="end">SCL</text>
+<line x1="444" y1="525" x2="480" y2="525" stroke="#6a7d87" stroke-width="2" stroke-linecap="round"/>
+<text x="495" y="531" font-size="18" style="fill:#6a7d87">TX</text>
+<circle cx="230" cy="560" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<circle cx="436" cy="560" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<line x1="207" y1="560" x2="222" y2="560" stroke="#7c8b92" stroke-width="2" stroke-linecap="round"/>
+<text x="195" y="566" font-size="18" style="fill:#667a83" text-anchor="end">SDA</text>
+<line x1="444" y1="560" x2="480" y2="560" stroke="#6a7d87" stroke-width="2" stroke-linecap="round"/>
+<text x="495" y="566" font-size="18" style="fill:#6a7d87">RX</text>
+<circle cx="230" cy="595" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<circle cx="436" cy="595" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<line x1="207" y1="595" x2="222" y2="595" stroke="#7c8b92" stroke-width="2" stroke-linecap="round"/>
+<text x="195" y="601" font-size="18" style="fill:#667a83" text-anchor="end">GPIO0</text>
+<line x1="444" y1="595" x2="480" y2="595" stroke="#6a7d87" stroke-width="2" stroke-linecap="round"/>
+<text x="495" y="601" font-size="18" style="fill:#6a7d87">GPIO3</text>
+<circle cx="230" cy="630" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<circle cx="436" cy="630" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<line x1="207" y1="630" x2="222" y2="630" stroke="#7c8b92" stroke-width="2" stroke-linecap="round"/>
+<text x="195" y="636" font-size="18" style="fill:#667a83" text-anchor="end">GPIO5</text>
+<line x1="444" y1="630" x2="480" y2="630" stroke="#087b62" stroke-width="4" stroke-linecap="round"/>
+<circle cx="436" cy="630" r="11" fill="none" stroke="#087b62" stroke-width="4"/>
+<rect x="486" y="613" width="198" height="32" rx="6" fill="#e3f5ef" stroke="none" stroke-width="2"/>
+<text x="495" y="636" font-size="18" style="fill:#087b62" font-weight="bold">GPIO2 · ABRIR</text>
+<circle cx="230" cy="665" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<circle cx="436" cy="665" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<line x1="207" y1="665" x2="222" y2="665" stroke="#7c8b92" stroke-width="2" stroke-linecap="round"/>
+<text x="195" y="671" font-size="18" style="fill:#667a83" text-anchor="end">GPIO4</text>
+<line x1="444" y1="665" x2="480" y2="665" stroke="#b85b12" stroke-width="4" stroke-linecap="round"/>
+<circle cx="436" cy="665" r="11" fill="none" stroke="#b85b12" stroke-width="4"/>
+<rect x="486" y="648" width="198" height="32" rx="6" fill="#fff0e1" stroke="none" stroke-width="2"/>
+<text x="495" y="671" font-size="18" style="fill:#b85b12" font-weight="bold">GPIO1 · CERRAR</text>
+<circle cx="230" cy="700" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<circle cx="436" cy="700" r="8" fill="#eef4ed" stroke="#d4bb78" stroke-width="2"/>
+<line x1="207" y1="700" x2="222" y2="700" stroke="#7c8b92" stroke-width="2" stroke-linecap="round"/>
+<text x="195" y="706" font-size="18" style="fill:#667a83" text-anchor="end">RST</text>
+<line x1="444" y1="700" x2="480" y2="700" stroke="#6a7d87" stroke-width="2" stroke-linecap="round"/>
+<text x="495" y="706" font-size="18" style="fill:#6a7d87">ADC</text>
+<text x="68" y="800" font-size="20" font-weight="bold">GPIO2: 3.º desde abajo. GPIO1: 2.º desde abajo.</text>
+<rect x="738" y="142" width="724" height="290" rx="12" fill="white" stroke="#dce3e8" stroke-width="2"/>
+<circle cx="777" cy="179" r="18" fill="#087b62" stroke="#087b62" stroke-width="2"/>
+<text x="777" y="186" font-size="20" style="fill:white" font-weight="bold" text-anchor="middle">A</text>
+<text x="810" y="187" font-size="23" font-weight="bold">Medir ABRIR: GPIO2 contra GND</text>
+<text x="776" y="260" font-size="24" style="fill:#087b62" font-weight="bold">GPIO2</text>
+<text x="776" y="350" font-size="24" font-weight="bold">GND</text>
+<circle cx="892" cy="252" r="5" fill="#d43c3c" stroke="#d43c3c" stroke-width="2"/>
+<line x1="892" y1="252" x2="1225" y2="252" stroke="#d43c3c" stroke-width="4" stroke-linecap="round"/>
+<line x1="1225" y1="252" x2="1225" y2="259" stroke="#d43c3c" stroke-width="4" stroke-linecap="round"/>
+<circle cx="892" cy="342" r="5" fill="#253947" stroke="#253947" stroke-width="2"/>
+<line x1="892" y1="342" x2="1225" y2="342" stroke="#253947" stroke-width="4" stroke-linecap="round"/>
+<line x1="1225" y1="335" x2="1225" y2="342" stroke="#253947" stroke-width="4" stroke-linecap="round"/>
+<circle cx="1225" cy="297" r="38" fill="#eef3f6" stroke="#647c8b" stroke-width="3"/>
+<text x="1225" y="308" font-size="32" font-weight="bold" text-anchor="middle">V</text>
+<text x="991" y="243" font-size="18" style="fill:#c13030">Roja · borne V/Ω</text>
+<text x="991" y="368" font-size="18">Negra · borne COM</text>
+<text x="1290" y="293" font-size="21" font-weight="bold">DC</text>
+<text x="1290" y="320" font-size="22">V⎓</text>
+<text x="776" y="407" font-size="21" font-weight="bold">Esperado: 0 V → ≈3,3 V durante el pulso → 0 V</text>
+<rect x="738" y="450" width="724" height="290" rx="12" fill="white" stroke="#dce3e8" stroke-width="2"/>
+<circle cx="777" cy="487" r="18" fill="#b85b12" stroke="#b85b12" stroke-width="2"/>
+<text x="777" y="494" font-size="20" style="fill:white" font-weight="bold" text-anchor="middle">B</text>
+<text x="810" y="495" font-size="23" font-weight="bold">Medir CERRAR: GPIO1 contra GND</text>
+<text x="776" y="568" font-size="24" style="fill:#b85b12" font-weight="bold">GPIO1</text>
+<text x="776" y="658" font-size="24" font-weight="bold">GND</text>
+<circle cx="892" cy="560" r="5" fill="#d43c3c" stroke="#d43c3c" stroke-width="2"/>
+<line x1="892" y1="560" x2="1225" y2="560" stroke="#d43c3c" stroke-width="4" stroke-linecap="round"/>
+<line x1="1225" y1="560" x2="1225" y2="567" stroke="#d43c3c" stroke-width="4" stroke-linecap="round"/>
+<circle cx="892" cy="650" r="5" fill="#253947" stroke="#253947" stroke-width="2"/>
+<line x1="892" y1="650" x2="1225" y2="650" stroke="#253947" stroke-width="4" stroke-linecap="round"/>
+<line x1="1225" y1="643" x2="1225" y2="650" stroke="#253947" stroke-width="4" stroke-linecap="round"/>
+<circle cx="1225" cy="605" r="38" fill="#eef3f6" stroke="#647c8b" stroke-width="3"/>
+<text x="1225" y="616" font-size="32" font-weight="bold" text-anchor="middle">V</text>
+<text x="991" y="551" font-size="18" style="fill:#c13030">Roja · borne V/Ω</text>
+<text x="991" y="676" font-size="18">Negra · borne COM</text>
+<text x="1290" y="601" font-size="21" font-weight="bold">DC</text>
+<text x="1290" y="628" font-size="22">V⎓</text>
+<text x="776" y="715" font-size="21" font-weight="bold">Esperado: 0 V → ≈3,3 V durante el pulso → 0 V</text>
+<text x="758" y="786" font-size="19" style="fill:#536875">Son dos mediciones separadas: mové solo la punta roja.</text>
+<rect x="38" y="846" width="1424" height="153" rx="12" fill="#e6edf2" stroke="none" stroke-width="2"/>
+<text x="65" y="883" font-size="20" font-weight="bold">ANTES DE ALARGAR EL PULSO</text>
+<text x="65" y="918" font-size="22">Para un pulso de varios segundos, aislá el CubeCell de la PCB de potencia y de la válvula.</text>
+<text x="65" y="951" font-size="21">Tester en tensión continua (V DC), escala 20 V o automática. Nunca en corriente o continuidad.</text>
+<text x="65" y="981" font-size="21">El GPIO es una señal lógica de ≈3,3 V. No es la salida de potencia que alimenta la válvula.</text>
+<text x="48" y="1031" font-size="17" style="fill:#536875">Esquema de medición, no a escala. Posiciones según el pinout oficial HTCC-AB01 de Heltec.</text>
+</svg>
