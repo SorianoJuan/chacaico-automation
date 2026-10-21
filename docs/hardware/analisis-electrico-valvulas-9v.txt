@@ -1,0 +1,533 @@
+CHACAICO — ANÁLISIS ELÉCTRICO DEL CONTROL DE ELECTROVÁLVULAS A 9 V
+Fecha: 20 de octubre de 2026
+Equipo: Heltec CubeCell HTCC-AB01 y PCB con dos AOP605
+
+
+1. CONCLUSIÓN PRINCIPAL
+======================
+
+Según las conexiones visibles en el esquema fotografiado, la etapa de potencia
+no está correctamente adaptada a los niveles lógicos del CubeCell.
+
+La alimentación de potencia es de 9 V, pero los GPIO entregan aproximadamente
+0 V o 3,3 V. En cada AOP605, el esquema une las compuertas de un MOSFET de canal
+P y otro de canal N y las conecta directamente a un GPIO.
+
+Cuando el GPIO sube a 3,3 V, puede encender el MOSFET N, pero no apaga el P:
+la tensión entre compuerta y fuente del P sigue siendo -5,7 V. Por lo tanto,
+los dos transistores de esa rama pueden conducir simultáneamente y establecer
+un camino de corriente directamente entre la alimentación y masa.
+
+Este fenómeno se llama conducción cruzada o "shoot-through". Puede producir
+calentamiento, caídas de alimentación, consumo excesivo y daño. En este circuito
+el problema puede mantenerse durante todo el pulso, no solamente durante el
+instante de conmutación.
+
+La conclusión corresponde al circuito dibujado. Falta verificar que la PCB
+fabricada tenga exactamente esas conexiones y esos componentes. No se midieron
+corrientes, temperaturas ni formas de onda para preparar este documento, y no
+se afirma que ya exista un componente dañado.
+
+Recomendación inmediata: no repetir pulsos con esta etapa de potencia alimentada
+hasta comprobar el circuito y resolver el manejo de compuertas. Desconectar sólo
+la válvula no elimina el camino de conducción cruzada dentro del puente.
+
+
+2. DATOS DISPONIBLES Y LÍMITES DEL ANÁLISIS
+========================================
+
+Se dispone de:
+
+- Una fotografía del esquema de la PCB entregada por el usuario.
+- La confirmación del usuario de que la alimentación utilizada es de 9 V.
+- Identificación de U1 y U3 como AOP605 y del regulador como AMS1117-5.0.
+- Un CubeCell HTCC-AB01 original; la revisión V1.2 está confirmada para el nodo 1.
+- El código del proyecto que controla GPIO2 para abrir y GPIO1 para cerrar.
+- Hojas de datos y documentación técnica citadas al final.
+
+Todavía no se dispone de:
+
+- Archivo original del esquema, diseño de pistas o comprobación de continuidad.
+- Confirmación de las referencias realmente montadas y su orientación.
+- Marca y modelo de la válvula, tensión nominal, corriente y pulso requerido.
+- Resistencia e inductancia de la bobina.
+- Características de la fuente o batería de 9 V y su limitación de corriente.
+- Mediciones de las tensiones durante los pulsos.
+
+El esquema parece destinado a una válvula de dos cables que conmuta mediante
+pulsos de polaridad opuesta, normalmente una válvula biestable. Eso debe
+confirmarse con la documentación de la válvula: una válvula convencional que
+necesita alimentación permanente tiene requisitos diferentes.
+
+
+3. CÓMO ESTÁ CONECTADO EL CIRCUITO
+================================
+
+3.1. Alimentación
+
+El esquema muestra dos caminos desde la alimentación:
+
+    Alimentación de 9 V ----+---- Etapa de potencia de la válvula
+                           |
+                           +---- AMS1117-5.0 ---- 5 V ---- VIN del CubeCell
+
+    GND de alimentación -------- GND del regulador y del CubeCell
+
+El regulador de 5 V alimenta VIN del módulo. Eso no convierte sus GPIO en salidas
+de 5 V: la lógica del CubeCell trabaja nominalmente a 3,3 V. El esquema oficial
+del HTCC-AB01 distingue VIN de la alimentación lógica VDD [2].
+
+No debe conectarse la alimentación de 9 V directamente a VIN del CubeCell
+reemplazando o puenteando el regulador.
+
+3.2. MOSFET y conexiones
+
+Cada AOP605 contiene un MOSFET N y otro P. El pinout del fabricante es [1]:
+
+    MOSFET N: fuente S2 = pin 1; compuerta G2 = pin 2;
+              drenador D2 = pines 7 y 8.
+
+    MOSFET P: fuente S1 = pin 3; compuerta G1 = pin 4;
+              drenador D1 = pines 5 y 6.
+
+Según la foto, en cada encapsulado:
+
+- La fuente del N está conectada a GND.
+- La fuente del P está conectada a +9 V.
+- Las compuertas de ambos están unidas.
+- Los drenadores forman la salida de esa rama hacia la válvula.
+- Una resistencia de 10 kohm lleva las compuertas comunes a GND.
+
+R3 y R4 son, por lo tanto, resistencias de pull-down. No llevan la compuerta
+del P hacia su fuente de +9 V.
+
+La correspondencia que se lee en el dibujo es:
+
+    Señal   Encapsulado   Resistencia   Salida
+    ------  ------------  -----------  ---------------------
+    GPIO2   U1            R3, 10 kohm  J2, terminal 2
+    GPIO1   U3            R4, 10 kohm  J2, terminal 1
+
+Los pines 13 y 14 escritos junto al símbolo del CubeCell corresponden,
+respectivamente, a GPIO1 y GPIO2 en ese símbolo. No son una indicación de
+orientación física para contar pines sobre una placa sin comprobar su pinout.
+
+3.3. Representación simplificada
+
+El siguiente dibujo reordena los componentes para mostrar su función eléctrica;
+no representa la posición física de las patas:
+
+                   +9 V                          +9 V
+                    |                             |
+               MOSFET P de U1                MOSFET P de U3
+                    |                             |
+    J2 terminal 2 --+---------- VÁLVULA -----------+-- J2 terminal 1
+                    |                             |
+               MOSFET N de U1                MOSFET N de U3
+                    |                             |
+                   GND                           GND
+
+    GPIO2 -> compuertas P y N de U1, unidas; R3 a GND.
+    GPIO1 -> compuertas P y N de U3, unidas; R4 a GND.
+
+La topología es un puente H. En un puente correctamente controlado se puede
+aplicar una polaridad a la bobina y luego la contraria. La condición esencial
+es evitar que el transistor superior y el inferior de una misma rama conduzcan
+a la vez, porque eso conecta directamente la alimentación con masa [4].
+
+
+4. POR QUÉ 3,3 V NO ALCANZAN PARA APAGAR EL MOSFET P
+=================================================
+
+Un MOSFET se controla por la diferencia de tensión entre su compuerta y su
+fuente, no por la tensión de compuerta respecto de masa:
+
+    VGS = tensión de compuerta - tensión de fuente
+
+En este circuito, la fuente del N está a 0 V y la fuente del P está a +9 V.
+Las dos compuertas reciben la misma señal del CubeCell.
+
+Los resultados nominales son:
+
+    GPIO   Compuerta   VGS del N   VGS del P   Resultado
+    ----   ---------   ---------   ---------   --------------------------
+    LOW       0 V         0 V        -9 V     N apagado; P encendido
+    HIGH    3,3 V       +3,3 V      -5,7 V     N puede conducir; P sigue
+                                             encendido
+
+Estos valores son cálculos sobre el esquema y las tensiones indicadas; no son
+mediciones de la placa.
+
+Para apagar el P, su compuerta debería acercarse a la tensión de su fuente:
+
+    Compuerta aproximadamente a 9 V
+    Fuente a 9 V
+    VGS aproximadamente igual a 0 V
+
+El GPIO no puede alcanzar ese nivel. Al ponerlo en HIGH, la compuerta sube sólo
+hasta unos 3,3 V y el P conserva una tensión de encendido importante.
+
+La hoja de datos del AOP605 especifica resistencia de conducción a VGS de
+4,5 V y 10 V para el N, y de -4,5 V y -10 V para el P. No garantiza esa baja
+resistencia para el N con 3,3 V. Su tensión umbral se especifica con una corriente
+de apenas 250 microamperios; superar el umbral no equivale a poder conducir la
+corriente de una válvula con bajas pérdidas [1].
+
+En consecuencia, hay dos dificultades relacionadas:
+
+1. El P no se apaga con el nivel alto disponible.
+2. El N tampoco tiene garantizada la resistencia de conducción especificada
+   para tensiones de compuerta mayores.
+
+La primera ya basta para invalidar este manejo directo a 9 V. No hace falta
+conocer la corriente exacta de la válvula para detectar esa incompatibilidad.
+
+
+5. QUÉ OCURRE AL ABRIR, CERRAR Y QUEDAR EN REPOSO
+==============================================
+
+El firmware utiliza la siguiente secuencia cuando corresponde un cambio:
+
+    Abrir:  GPIO1 LOW; GPIO2 HIGH durante el pulso; GPIO2 vuelve a LOW.
+    Cerrar: GPIO2 LOW; GPIO1 HIGH durante el pulso; GPIO1 vuelve a LOW.
+    Reposo: ambos GPIO LOW.
+
+Con la etapa dibujada, la consecuencia esperable es:
+
+Reposo:
+
+    Los N quedan apagados y los P encendidos.
+    Ambos terminales de la válvula quedan aproximadamente a +9 V.
+    La diferencia entre terminales es aproximadamente 0 V.
+
+Una vez extinguido cualquier transitorio de la bobina, esto puede dejarla sin
+corriente sostenida. Pero no significa que los cuatro MOSFET estén apagados.
+Por eso un tester entre cualquiera de los terminales y GND puede indicar unos
+9 V en reposo, mientras que entre los dos terminales indique aproximadamente
+0 V.
+
+Orden de apertura:
+
+    GPIO2 sube a 3,3 V.
+    En U1, el N comienza a conducir y el P sigue encendido.
+    U1 puede establecer este camino:
+
+        +9 V -> MOSFET P de U1 -> unión de drenadores
+             -> MOSFET N de U1 -> GND
+
+Orden de cierre:
+
+    Ocurre el mismo problema en U3 cuando GPIO1 sube.
+
+La tensión de la salida afectada no puede suponerse igual a 0 V ni a un valor
+intermedio fijo. Depende de la conducción de ambos transistores, la carga, la
+fuente y las caídas de tensión.
+
+Evitar que GPIO1 y GPIO2 estén HIGH simultáneamente es correcto, pero no resuelve
+esto: el conflicto está dentro de cada AOP605 cuando se activa su propio GPIO.
+Tampoco lo soluciona agregar una pausa entre apertura y cierre.
+
+La corriente de conducción cruzada no necesita circular por la bobina. Puede
+existir aunque J2 esté vacío. Retirar la válvula evita energizarla, pero no
+protege por sí solo al puente.
+
+
+6. POR QUÉ LA DURACIÓN DEL PULSO IMPORTA
+======================================
+
+La última configuración confirmada y guardada en el proyecto establece:
+
+    Nodo 1: pulso aplicado de 50 ms; máximo configurable de 3000 ms.
+    Nodo 2: pulso aplicado de 50 ms; máximo configurable de 3000 ms.
+
+Es un registro de la última verificación, no una lectura nueva de los nodos
+durante la preparación de este informe.
+
+Los pulsos de 3 segundos se habilitaron para medir las salidas del CubeCell
+separado de la PCB y de la válvula. Que el software acepte 3000 ms no implica
+que esa duración sea admisible para la etapa de potencia ni para la bobina.
+
+Tres segundos equivalen a 60 veces la duración de 50 ms. Si la potencia disipada
+fuera la misma, también sería 60 veces la energía. En el circuito real la
+corriente y la temperatura pueden variar, por lo que esa relación no permite
+predecir una temperatura concreta.
+
+Volver a 50 ms reduce la duración de la excitación, pero no corrige el manejo
+incorrecto de compuertas. Tampoco conocemos todavía si 50 ms es el pulso que
+exige la válvula: se tomó del código de prueba suministrado.
+
+El tiempo de sleep y la ventana de escucha LoRa no cambian esta incompatibilidad
+eléctrica. Sólo modifican cuándo puede ejecutarse la orden.
+
+
+7. QUÉ SÍ Y QUÉ NO DEMUESTRAN EL LED Y HOME ASSISTANT
+==================================================
+
+El LED demuestra una acción del microcontrolador. El ACK del nodo informa que
+el firmware completó la secuencia prevista de GPIO. Actualmente no mide posición
+de válvula, corriente de bobina ni caudal.
+
+Por lo tanto, una orden confirmada no demuestra por sí sola:
+
+- Que la bobina recibió la tensión y la corriente necesarias.
+- Que la válvula llegó a abrirse o cerrarse.
+- Que el puente no sufrió conducción cruzada.
+
+Un problema de potencia podría causar caídas de tensión, reinicios o fallas de
+radio. Sin embargo, este análisis no prueba que ésa haya sido la causa de los
+rebotes del switch o las demoras observadas anteriormente.
+
+Además, el firmware confirma después de terminar el pulso y cuenta con una
+guarda de radio. Un pulso largo incorpora una demora de confirmación por diseño.
+Los reintentos y la espera de un nodo dormido son mecanismos adicionales que
+deben distinguirse de una falla eléctrica.
+
+Para relacionar un síntoma de comunicaciones con la alimentación habría que
+registrar conjuntamente el comando, los GPIO, las tensiones y un eventual
+reinicio. No alcanza con observar que dos cosas ocurrieron cerca en el tiempo.
+
+
+8. OTROS PUNTOS ELÉCTRICOS QUE DEBEN REVISARSE
+===========================================
+
+8.1. Regulador AMS1117-5.0
+
+Es un regulador lineal: la caída de tensión se convierte principalmente en calor.
+Para 9 V de entrada y 5 V de salida:
+
+    Pérdida aproximada = (9 V - 5 V) x corriente de salida
+                         + 9 V x corriente propia del regulador
+
+Como ejemplo, una carga de 100 mA produce 0,4 W por la caída de tensión, más el
+consumo propio. No se está afirmando que el CubeCell consuma 100 mA.
+
+La relación ideal de potencia útil es 5/9, aproximadamente 56 %, sin contar el
+consumo propio. La temperatura depende del encapsulado, cobre, ambiente y carga.
+Una cifra máxima de corriente en un catálogo no garantiza operación continua
+con esa corriente en esta PCB.
+
+La documentación AMS consultada requiere un capacitor de salida para estabilidad
+y presenta una solución de 22 microfaradios de tantalio. La elección real debe
+seguir las exigencias del fabricante y variante montados, incluida la ESR.
+Su corriente propia puede ser de varios miliamperios, importante frente a un
+microcontrolador dormido [3].
+
+No se distinguen esos capacitores en la foto del esquema. Eso obliga a revisar
+la PCB, pero no prueba que físicamente estén ausentes. También conviene verificar
+el desacople de entrada y la reserva de energía próxima a la etapa de potencia.
+
+Para autonomía con batería, un regulador de menor consumo y mejor eficiencia
+puede ser conveniente después de corregir el puente y medir el consumo total.
+
+8.2. Energía de la bobina
+
+Una bobina almacena energía:
+
+    E = 1/2 x L x I^2
+
+Al interrumpir su corriente, esa energía debe encontrar un camino de descarga.
+De lo contrario aparecen sobretensiones. La descarga puede implicar recirculación
+y/o limitación de tensión, dimensionadas para la carga y frecuencia de maniobra
+[5].
+
+Los MOSFET del AOP605 tienen diodos internos. No corresponde afirmar que el
+circuito carezca de todo camino de protección. Sí falta comprobar que los caminos
+existentes, sus capacidades y la alimentación manejen adecuadamente la energía.
+
+No debe agregarse sin análisis un diodo simple directamente en paralelo con
+una bobina que se alimenta en ambas polaridades: conduciría en una de ellas.
+La solución debe ser compatible con un puente H y con la inversión de corriente.
+
+8.3. Alimentación, masas y cableado
+
+Hay que revisar:
+
+- Capacidad de la fuente para entregar el pulso real sin colapsar.
+- Retorno de corriente de potencia y su efecto sobre la masa del CubeCell.
+- Sección de cables, conectores y pistas.
+- Desacople, protección ante inversión de polaridad y limitación de fallas.
+- Estado de los GPIO durante arranque, reset, sueño y pérdida de alimentación.
+
+Las resistencias a GND fijan un estado lógico cuando el GPIO queda en alta
+impedancia, pero ese estado mantiene encendidos los P si los 9 V están presentes.
+
+Estos son puntos pendientes de comprobación, no una lista de defectos físicos
+ya constatados.
+
+
+9. CÓMO CORREGIR LA ETAPA
+========================
+
+Opción preferida: puente H o driver integrado adecuado.
+
+Seleccionar una solución que:
+
+- Acepte niveles lógicos de 3,3 V de forma garantizada.
+- Soporte la tensión mínima, nominal, máxima y transitorios de la alimentación.
+- Entregue la corriente de la bobina durante el pulso requerido.
+- Impida conducción simultánea en una misma rama.
+- Maneje la recirculación y los transitorios inductivos.
+- Tenga estados de arranque y apagado definidos.
+- Permita un consumo de reposo compatible con batería y panel solar.
+
+La protección térmica y la limitación de corriente son características útiles,
+pero no reemplazan el dimensionamiento. No se recomienda aquí una referencia
+concreta porque faltan los datos de la válvula y de la fuente.
+
+Alternativa: rediseñar el manejo de los MOSFET existentes.
+
+Eso requiere resolver el control de los P respecto de su fuente de 9 V y el de
+los N respecto de masa, con niveles suficientes, aislamiento de tensión respecto
+del GPIO, tiempos de conmutación y estados seguros.
+
+Puede requerir separar compuertas, agregar drivers o transistores de adaptación,
+resistencias y protecciones. El diseño debe verificarse tanto en régimen estable
+como en las transiciones.
+
+Un adaptador que simplemente convierta 0/3,3 V en 0/9 V sobre las compuertas
+todavía unidas podría corregir los extremos estáticos, pero no garantiza ausencia
+de conducción cruzada mientras atraviesa tensiones intermedias. No debe tomarse
+como una reparación completa sin analizar su velocidad y pérdidas.
+
+No son soluciones suficientes:
+
+- Cambiar sólo el firmware, la polaridad lógica o el tiempo del pulso.
+- Agregar una resistencia en serie con el GPIO.
+- Suponer que las resistencias de 10 kohm evitan la conducción cruzada.
+- Llevar la compuerta sólo a 5 V: con fuente a 9 V el P conserva VGS = -4 V.
+- Conectar un pull-up a 9 V directamente a un pin del CubeCell.
+
+Nunca debe aplicarse 9 V al GPIO. Una adaptación correcta debe mantener esa
+tensión fuera del microcontrolador, incluso durante reset o falta de alimentación.
+
+
+10. PLAN DE COMPROBACIÓN EN BANCO
+===============================
+
+Paso 1 — Comprobar el circuito sin alimentación.
+
+Desconectar batería/fuente y USB y descargar los capacitores. Verificar marcas,
+orientación y conexiones de los AOP605. Confirmar qué une cada compuerta, a dónde
+van R3/R4 y cómo llegan las fuentes y drenadores a alimentación y válvula.
+
+Una lectura de continuidad puede pasar por diodos o caminos paralelos; debe
+interpretarse junto con las pistas y el pinout. No basta con un pitido aislado.
+
+Paso 2 — Obtener los datos de la carga.
+
+Identificar la válvula y su ficha técnica: tipo, tensión, corriente, duración de
+pulso, intervalo entre pulsos y polaridad. Registrar también la fuente utilizada.
+
+Paso 3 — Resolver la adaptación antes de repetir la maniobra.
+
+Si se confirma el esquema, corregir la etapa o usar un driver adecuado. No usar
+un pulso largo para intentar diagnosticar por calentamiento el circuito original.
+
+Paso 4 — Verificar alimentación y control con energía limitada.
+
+Una persona con experiencia puede usar una fuente con limitación de corriente,
+dimensionada para la prueba. Verificar por separado las líneas de 9 V, 5 V y
+3,3 V, aislando la etapa de potencia cuando sea necesario.
+
+Las primeras comprobaciones del driver corregido se hacen sin válvula, evaluando
+el consumo sin carga y el control de compuertas. Recordar que desconectar la
+válvula no vuelve seguro al circuito original.
+
+Paso 5 — Medir las señales relevantes.
+
+Medir la compuerta y la fuente de cada MOSFET y calcular VGS. Comprobar con
+osciloscopio los cambios de estado, la tensión diferencial sobre la carga,
+la corriente y las caídas o picos de alimentación.
+
+Un tester común puede no mostrar un pulso de 50 ms. Para comprobar sólo el
+CubeCell, se pueden medir GPIO2/GND y GPIO1/GND con el módulo separado de la
+PCB; para evaluar la etapa de potencia hacen falta mediciones adicionales.
+
+En un osciloscopio de banco, la pinza de masa suele estar unida a tierra y las
+masas de canales suelen ser comunes. No conectarla a un terminal conmutado de
+la válvula: puede cortocircuitarlo. Para medir entre los dos terminales usar una
+sonda diferencial o una técnica de dos canales apropiada, con ambas masas en
+GND y respetando los límites del instrumento.
+
+Paso 6 — Probar la carga y validar.
+
+Sólo después de validar el driver, conectar la válvula y aplicar los pulsos
+especificados por su fabricante. Verificar:
+
+- Polaridad y corriente correctas.
+- Ausencia de conducción cruzada sostenida y pérdidas de conmutación aceptables.
+- Estabilidad de las alimentaciones.
+- Temperaturas dentro de los límites reales de componentes y montaje.
+- Operación repetible de la válvula y comportamiento durante reset.
+- Consumo de reposo y energía por maniobra.
+
+Para confirmar la posición o el resultado hidráulico desde Home Assistant se
+necesitará una medición adicional, como un contacto de posición o un caudalímetro.
+La medición de corriente ayuda a diagnosticar la bobina, pero tampoco prueba por
+sí sola que circule agua.
+
+
+11. DICTAMEN Y PRÓXIMA DECISIÓN
+==============================
+
+Con el esquema tal como se ve, alimentar a 9 V no resuelve la incompatibilidad
+entre las compuertas del puente y los GPIO de 3,3 V. El nivel alto deja al MOSFET
+P encendido mientras intenta encender el N de la misma rama.
+
+Hay fundamento eléctrico suficiente para detener las pruebas de potencia y
+verificar el diseño. No hay evidencia suficiente para cuantificar la corriente,
+atribuir todos los síntomas anteriores a este problema ni declarar que la PCB
+o la válvula estén dañadas.
+
+La siguiente decisión debe tomarse con el circuito real comprobado y la ficha
+de la válvula: sustituir la etapa por un driver adecuado o rediseñar su control.
+Después corresponde validar en banco y recién entonces retomar las pruebas
+desde Home Assistant con la válvula conectada.
+
+La preparación de este informe no modificó firmware, parámetros de los nodos,
+Home Assistant ni conexiones eléctricas, y no ejecutó maniobras de válvulas.
+
+
+12. FUENTES Y TRAZABILIDAD
+=========================
+
+[1] Alpha & Omega Semiconductor, AOP605.
+    Hoja de datos del fabricante, revisión 4, enero de 2009.
+    Copia alojada en:
+    https://www.bndhep.net/Electronics/Data/AOP605.pdf
+    Utilizada para pinout, tipos de MOSFET y condiciones de caracterización.
+
+[2] Heltec, esquema oficial del HTCC-AB01 original.
+    https://resource.heltec.cn/download/CubeCell/HTCC-AB01/HTCC-AB01_SchematicDiagram.pdf
+    Referencia para distinguir VIN y alimentación lógica del módulo.
+    Debe cotejarse con la revisión concreta antes de intervenir la placa.
+
+[3] Advanced Monolithic Systems, AMS1117, hoja de datos de 2012.
+    Copia alojada en:
+    https://xonstorage.z8.web.core.windows.net/pdf/advancedmonolithicsystems_ams111712_apr22_xonlink.pdf
+    Referencia de regulación, estabilidad y consumo propio.
+    Verificar fabricante y variante efectivamente montados.
+
+[4] Texas Instruments, Current Sensing in an H-Bridge, SBOA174D.
+    https://www.ti.com/document-viewer/lit/html/SBOA174
+    Referencia sobre funcionamiento del puente y conducción cruzada.
+
+[5] Texas Instruments, nota de aplicación SNVAA45, julio de 2022.
+    https://www.ti.com/document-viewer/lit/html/snvaa45
+    Referencia sobre descarga de energía de cargas inductivas.
+
+Material del proyecto utilizado:
+
+- Fotografía del esquema suministrada por el usuario y confirmación de 9 V.
+- Firmware compartido:
+  firmware/libraries/ChacaicoNode/src/ChacaicoNode.h
+- Perfiles de los nodos:
+  firmware/nodes/node_1/ y firmware/nodes/node_2/
+- Registro de la última confirmación de parámetros:
+  docs/evidence/2026-10-20/both-pulse-limit/live-confirmation.json
+
+Repositorio de referencia:
+/home/torce/work/chacaico/chacaico-automation
+
+Las ecuaciones de VGS y el diagnóstico de esta conexión son el análisis del
+esquema proporcionado, no resultados de una simulación ni de una medición física.

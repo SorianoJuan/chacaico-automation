@@ -1,0 +1,1197 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:ns2="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" width="1152.0pt" height="2376.0pt" viewBox="0 0 1152.0 2376.0" version="1.1"><title>Problema de 3,3 V y alternativas de reparación del puente de válvulas</title><svg width="1152.0" height="1080.0" viewBox="0 0 1152 1080" version="1.1" x="0" y="0">
+ <title>Chacaico: problema de los 3,3 V y propuesta de corrección</title>
+ <metadata>
+  <rdf:RDF>
+   <ns2:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+    <dc:title>Chacaico: problema de los 3,3 V y propuesta de corrección</dc:title>
+    <dc:date>2026-10-21T10:54:08.114735</dc:date>
+    <dc:description>Comparación funcional con GPIO a 0 y 3,3 V, cálculo de VGS y propuesta de reemplazo de la etapa por un módulo puente H. DRV8871 es un candidato condicionado a la carga. Nunca aplicar 9 V al GPIO. No es un plano de montaje ni una validación física. Fuentes: https://www.ti.com/lit/ds/symlink/drv8871.pdf ; https://www.bndhep.net/Electronics/Data/AOP605.pdf</dc:description>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <ns2:Agent>
+      <dc:title>Matplotlib v3.11.1, https://matplotlib.org/</dc:title>
+     </ns2:Agent>
+    </dc:creator>
+   </ns2:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="sheet0_figure_1">
+  <g id="sheet0_patch_1">
+   <path d="M 0 1080  L 1152 1080  L 1152 0  L 0 0  z " style="fill: #ffffff" />
+  </g>
+  <g id="sheet0_axes_1">
+   <g id="sheet0_patch_2">
+    <path d="M 266.5152 253.368  L 358.7904 253.368  L 358.7904 187.758  L 266.5152 187.758  z " clip-path="url(#sheet0_pc6de567ab7)" style="fill: #f5f7f8; stroke: #435563; stroke-width: 1.4; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet0_patch_3">
+    <path d="M 266.5152 419.58  L 358.7904 419.58  L 358.7904 353.97  L 266.5152 353.97  z " clip-path="url(#sheet0_pc6de567ab7)" style="fill: #f5f7f8; stroke: #435563; stroke-width: 1.4; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet0_patch_4">
+    <path d="M 169.1136 463.32  L 189.6192 463.32  L 189.6192 419.58  L 169.1136 419.58  z " clip-path="url(#sheet0_pc6de567ab7)" style="fill: #ffffff; stroke: #1767a6; stroke-width: 1.8; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet0_line2d_1">
+    <path d="M 312.6528 174.636  L 312.6528 187.758  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #435563; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_2">
+    <path d="M 312.6528 253.368  L 312.6528 240.246  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #435563; stroke-width: 2.4; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_3">
+    <path d="M 312.6528 200.88  L 312.6528 187.758  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #435563; stroke-width: 2.4; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_4">
+    <path d="M 312.6528 237.6216  L 312.6528 203.5044  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #435563; stroke-width: 3; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_5">
+    <path d="M 266.5152 220.563  L 292.1472 220.563  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke-dasharray: 3,3; stroke-dashoffset: 0; stroke: #1767a6; stroke-width: 1.5" />
+   </g>
+   <g id="sheet0_line2d_6">
+    <path d="M 312.6528 253.368  L 312.6528 353.97  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #435563; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_7">
+    <path d="M 312.6528 419.58  L 312.6528 406.458  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #435563; stroke-width: 2.4; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_8">
+    <path d="M 312.6528 367.092  L 312.6528 353.97  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #435563; stroke-width: 2.4; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_9">
+    <path d="M 312.6528 403.8336  L 343.4112 369.7164  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #435563; stroke-width: 2.4; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_10">
+    <path d="M 266.5152 386.775  L 292.1472 386.775  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke-dasharray: 3,3; stroke-dashoffset: 0; stroke: #1767a6; stroke-width: 1.5" />
+   </g>
+   <g id="sheet0_line2d_11">
+    <path d="M 312.6528 419.58  L 312.6528 493.938  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #435563; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_12">
+    <path d="M 297.2736 493.938  L 328.032 493.938  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #435563; stroke-width: 1.8; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_13">
+    <path d="M 302.4 499.1868  L 322.9056 499.1868  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #435563; stroke-width: 1.8; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_14">
+    <path d="M 307.5264 504.4356  L 317.7792 504.4356  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #435563; stroke-width: 1.8; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_15">
+    <path d="M 179.3664 386.775  L 179.3664 220.563  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #1767a6; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_16">
+    <path d="M 179.3664 220.563  L 266.5152 220.563  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #1767a6; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_17">
+    <path d="M 179.3664 386.775  L 266.5152 386.775  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #1767a6; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_18">
+    <path d="M 66.5856 310.23  L 179.3664 310.23  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #1767a6; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_19">
+    <path d="M 179.3664 386.775  L 179.3664 419.58  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #1767a6; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_20">
+    <path d="M 179.3664 463.32  L 179.3664 493.938  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #1767a6; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_21">
+    <path d="M 163.9872 493.938  L 194.7456 493.938  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #435563; stroke-width: 1.8; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_22">
+    <path d="M 169.1136 499.1868  L 189.6192 499.1868  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #435563; stroke-width: 1.8; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_23">
+    <path d="M 174.24 504.4356  L 184.4928 504.4356  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #435563; stroke-width: 1.8; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_24">
+    <path d="M 312.6528 310.23  L 512.5824 310.23  " clip-path="url(#sheet0_pc6de567ab7)" style="fill: none; stroke: #435563; stroke-width: 1.8; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_text_1">
+    <text style="font-weight: 700; font-size: 18px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #24694e" x="61.4592" y="131.197781" transform="rotate(-0 61.4592 131.197781)">GPIO = 0 V · reposo</text>
+   </g>
+   <g id="sheet0_text_2">
+    <text style="font-weight: 700; font-size: 16px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="312.6528" y="163.48325" transform="rotate(-0 312.6528 163.48325)">+9 V</text>
+   </g>
+   <g id="sheet0_text_3">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="251.136" y="212.485422" transform="rotate(-0 251.136 212.485422)">G</text>
+   </g>
+   <g id="sheet0_text_4">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #51616d" x="292.1472" y="181.867422" transform="rotate(-0 292.1472 181.867422)">S</text>
+   </g>
+   <g id="sheet0_text_5">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #51616d" x="292.1472" y="264.973422" transform="rotate(-0 292.1472 264.973422)">D</text>
+   </g>
+   <g id="sheet0_text_6">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="251.136" y="378.697422" transform="rotate(-0 251.136 378.697422)">G</text>
+   </g>
+   <g id="sheet0_text_7">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #51616d" x="292.1472" y="348.079422" transform="rotate(-0 292.1472 348.079422)">D</text>
+   </g>
+   <g id="sheet0_text_8">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #51616d" x="292.1472" y="431.185422" transform="rotate(-0 292.1472 431.185422)">S</text>
+   </g>
+   <g id="sheet0_text_9">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="312.6528" y="525.486187" transform="rotate(-0 312.6528 525.486187)">GND · 0 V</text>
+   </g>
+   <g id="sheet0_text_10">
+    <text style="font-weight: 700; font-size: 14px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="66.5856" y="291.996719" transform="rotate(-0 66.5856 291.996719)">GPIO</text>
+   </g>
+   <g id="sheet0_text_11">
+    <text style="font-size: 14px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="66.5856" y="335.736719" transform="rotate(-0 66.5856 335.736719)">0 V</text>
+   </g>
+   <g id="sheet0_text_12">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="71.712" y="199.623187" transform="rotate(-0 71.712 199.623187)">Compuertas</text>
+   </g>
+   <g id="sheet0_text_13">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="71.712" y="217.119656" transform="rotate(-0 71.712 217.119656)">unidas</text>
+   </g>
+   <g id="sheet0_text_14">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #1767a6" x="153.7344" y="435.819656" transform="rotate(-0 153.7344 435.819656)">10 kΩ</text>
+   </g>
+   <g id="sheet0_text_15">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #51616d" x="153.7344" y="457.429422" transform="rotate(-0 153.7344 457.429422)">R3 / R4</text>
+   </g>
+   <g id="sheet0_text_16">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="389.5488" y="296.091656" transform="rotate(-0 389.5488 296.091656)">A la válvula</text>
+   </g>
+   <g id="sheet0_text_17">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="389.5488" y="330.531891" transform="rotate(-0 389.5488 330.531891)">Una salida del puente</text>
+   </g>
+   <g id="sheet0_text_18">
+    <text style="font-weight: 700; font-size: 14px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #24694e" x="379.296" y="204.516719" transform="rotate(-0 379.296 204.516719)">P ENCENDIDO</text>
+   </g>
+   <g id="sheet0_text_19">
+    <text style="font-size: 14px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="379.296" y="230.760719" transform="rotate(-0 379.296 230.760719)">VGS = −9 V</text>
+   </g>
+   <g id="sheet0_text_20">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #24694e" x="379.296" y="370.468953" transform="rotate(-0 379.296 370.468953)">N APAGADO</text>
+   </g>
+   <g id="sheet0_text_21">
+    <text style="font-size: 14px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="379.296" y="396.972719" transform="rotate(-0 379.296 396.972719)">VGS = 0 V</text>
+   </g>
+   <g id="sheet0_patch_5">
+    <path d="M 312.6528 243.0891  C 313.536499 243.0891 314.384123 242.789533 315.008993 242.256375  C 315.633863 241.723218 315.98496 240.999999 315.98496 240.246  C 315.98496 239.492001 315.633863 238.768782 315.008993 238.235625  C 314.384123 237.702467 313.536499 237.4029 312.6528 237.4029  C 311.769101 237.4029 310.921477 237.702467 310.296607 238.235625  C 309.671737 238.768782 309.32064 239.492001 309.32064 240.246  C 309.32064 240.999999 309.671737 241.723218 310.296607 242.256375  C 310.921477 242.789533 311.769101 243.0891 312.6528 243.0891  z " clip-path="url(#sheet0_pc6de567ab7)" style="fill: #ffffff; stroke: #435563; stroke-width: 1.8; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet0_patch_6">
+    <path d="M 312.6528 203.7231  C 313.536499 203.7231 314.384123 203.423533 315.008993 202.890375  C 315.633863 202.357218 315.98496 201.633999 315.98496 200.88  C 315.98496 200.126001 315.633863 199.402782 315.008993 198.869625  C 314.384123 198.336467 313.536499 198.0369 312.6528 198.0369  C 311.769101 198.0369 310.921477 198.336467 310.296607 198.869625  C 309.671737 199.402782 309.32064 200.126001 309.32064 200.88  C 309.32064 201.633999 309.671737 202.357218 310.296607 202.890375  C 310.921477 203.423533 311.769101 203.7231 312.6528 203.7231  z " clip-path="url(#sheet0_pc6de567ab7)" style="fill: #ffffff; stroke: #435563; stroke-width: 1.8; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet0_patch_7">
+    <path d="M 312.6528 409.3011  C 313.536499 409.3011 314.384123 409.001533 315.008993 408.468375  C 315.633863 407.935218 315.98496 407.211999 315.98496 406.458  C 315.98496 405.704001 315.633863 404.980782 315.008993 404.447625  C 314.384123 403.914467 313.536499 403.6149 312.6528 403.6149  C 311.769101 403.6149 310.921477 403.914467 310.296607 404.447625  C 309.671737 404.980782 309.32064 405.704001 309.32064 406.458  C 309.32064 407.211999 309.671737 407.935218 310.296607 408.468375  C 310.921477 409.001533 311.769101 409.3011 312.6528 409.3011  z " clip-path="url(#sheet0_pc6de567ab7)" style="fill: #ffffff; stroke: #435563; stroke-width: 1.8; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet0_patch_8">
+    <path d="M 312.6528 369.9351  C 313.536499 369.9351 314.384123 369.635533 315.008993 369.102375  C 315.633863 368.569218 315.98496 367.845999 315.98496 367.092  C 315.98496 366.338001 315.633863 365.614782 315.008993 365.081625  C 314.384123 364.548467 313.536499 364.2489 312.6528 364.2489  C 311.769101 364.2489 310.921477 364.548467 310.296607 365.081625  C 309.671737 365.614782 309.32064 366.338001 309.32064 367.092  C 309.32064 367.845999 309.671737 368.569218 310.296607 369.102375  C 310.921477 369.635533 311.769101 369.9351 312.6528 369.9351  z " clip-path="url(#sheet0_pc6de567ab7)" style="fill: #ffffff; stroke: #435563; stroke-width: 1.8; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet0_patch_9">
+    <path d="M 179.3664 312.8544  C 180.182122 312.8544 180.964545 312.577877 181.541347 312.085731  C 182.11815 311.593585 182.44224 310.925999 182.44224 310.23  C 182.44224 309.534001 182.11815 308.866415 181.541347 308.374269  C 180.964545 307.882123 180.182122 307.6056 179.3664 307.6056  C 178.550678 307.6056 177.768255 307.882123 177.191453 308.374269  C 176.61465 308.866415 176.29056 309.534001 176.29056 310.23  C 176.29056 310.925999 176.61465 311.593585 177.191453 312.085731  C 177.768255 312.577877 178.550678 312.8544 179.3664 312.8544  z " clip-path="url(#sheet0_pc6de567ab7)" style="fill: #1767a6" />
+   </g>
+   <g id="sheet0_patch_10">
+    <path d="M 179.3664 389.3994  C 180.182122 389.3994 180.964545 389.122877 181.541347 388.630731  C 182.11815 388.138585 182.44224 387.470999 182.44224 386.775  C 182.44224 386.079001 182.11815 385.411415 181.541347 384.919269  C 180.964545 384.427123 180.182122 384.1506 179.3664 384.1506  C 178.550678 384.1506 177.768255 384.427123 177.191453 384.919269  C 176.61465 385.411415 176.29056 386.079001 176.29056 386.775  C 176.29056 387.470999 176.61465 388.138585 177.191453 388.630731  C 177.768255 389.122877 178.550678 389.3994 179.3664 389.3994  z " clip-path="url(#sheet0_pc6de567ab7)" style="fill: #1767a6" />
+   </g>
+   <g id="sheet0_patch_11">
+    <path d="M 312.6528 312.8544  C 313.468522 312.8544 314.250945 312.577877 314.827747 312.085731  C 315.40455 311.593585 315.72864 310.925999 315.72864 310.23  C 315.72864 309.534001 315.40455 308.866415 314.827747 308.374269  C 314.250945 307.882123 313.468522 307.6056 312.6528 307.6056  C 311.837078 307.6056 311.054655 307.882123 310.477853 308.374269  C 309.90105 308.866415 309.57696 309.534001 309.57696 310.23  C 309.57696 310.925999 309.90105 311.593585 310.477853 312.085731  C 311.054655 312.577877 311.837078 312.8544 312.6528 312.8544  z " clip-path="url(#sheet0_pc6de567ab7)" style="fill: #435563" />
+   </g>
+  </g>
+  <g id="sheet0_axes_2">
+   <g id="sheet0_patch_12">
+    <path d="M 819.4752 253.368  L 911.7504 253.368  L 911.7504 187.758  L 819.4752 187.758  z " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: #f5f7f8; stroke: #435563; stroke-width: 1.4; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet0_patch_13">
+    <path d="M 819.4752 419.58  L 911.7504 419.58  L 911.7504 353.97  L 819.4752 353.97  z " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: #f5f7f8; stroke: #435563; stroke-width: 1.4; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet0_patch_14">
+    <path d="M 722.0736 463.32  L 742.5792 463.32  L 742.5792 419.58  L 722.0736 419.58  z " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: #ffffff; stroke: #1767a6; stroke-width: 1.8; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet0_line2d_25">
+    <path d="M 865.6128 174.636  L 865.6128 187.758  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #b9322d; stroke-width: 2.8; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_26">
+    <path d="M 865.6128 253.368  L 865.6128 240.246  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #b9322d; stroke-width: 2.4; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_27">
+    <path d="M 865.6128 200.88  L 865.6128 187.758  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #b9322d; stroke-width: 2.4; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_28">
+    <path d="M 865.6128 237.6216  L 865.6128 203.5044  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #b9322d; stroke-width: 3; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_29">
+    <path d="M 819.4752 220.563  L 845.1072 220.563  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke-dasharray: 3,3; stroke-dashoffset: 0; stroke: #1767a6; stroke-width: 1.5" />
+   </g>
+   <g id="sheet0_line2d_30">
+    <path d="M 865.6128 253.368  L 865.6128 353.97  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #b9322d; stroke-width: 2.8; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_31">
+    <path d="M 865.6128 419.58  L 865.6128 406.458  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #b9322d; stroke-width: 2.4; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_32">
+    <path d="M 865.6128 367.092  L 865.6128 353.97  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #b9322d; stroke-width: 2.4; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_33">
+    <path d="M 865.6128 403.8336  L 865.6128 369.7164  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke-dasharray: 6,3; stroke-dashoffset: 0; stroke: #b9322d; stroke-width: 3" />
+   </g>
+   <g id="sheet0_line2d_34">
+    <path d="M 819.4752 386.775  L 845.1072 386.775  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke-dasharray: 3,3; stroke-dashoffset: 0; stroke: #1767a6; stroke-width: 1.5" />
+   </g>
+   <g id="sheet0_line2d_35">
+    <path d="M 865.6128 419.58  L 865.6128 493.938  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #b9322d; stroke-width: 2.8; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_36">
+    <path d="M 850.2336 493.938  L 880.992 493.938  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #435563; stroke-width: 1.8; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_37">
+    <path d="M 855.36 499.1868  L 875.8656 499.1868  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #435563; stroke-width: 1.8; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_38">
+    <path d="M 860.4864 504.4356  L 870.7392 504.4356  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #435563; stroke-width: 1.8; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_39">
+    <path d="M 732.3264 386.775  L 732.3264 220.563  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #1767a6; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_40">
+    <path d="M 732.3264 220.563  L 819.4752 220.563  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #1767a6; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_41">
+    <path d="M 732.3264 386.775  L 819.4752 386.775  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #1767a6; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_42">
+    <path d="M 619.5456 310.23  L 732.3264 310.23  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #1767a6; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_43">
+    <path d="M 732.3264 386.775  L 732.3264 419.58  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #1767a6; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_44">
+    <path d="M 732.3264 463.32  L 732.3264 493.938  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #1767a6; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_45">
+    <path d="M 716.9472 493.938  L 747.7056 493.938  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #435563; stroke-width: 1.8; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_46">
+    <path d="M 722.0736 499.1868  L 742.5792 499.1868  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #435563; stroke-width: 1.8; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_47">
+    <path d="M 727.2 504.4356  L 737.4528 504.4356  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #435563; stroke-width: 1.8; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_48">
+    <path d="M 865.6128 310.23  L 1065.5424 310.23  " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: none; stroke: #435563; stroke-width: 1.8; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_text_22">
+    <text style="font-weight: 700; font-size: 18px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #b9322d" x="614.4192" y="131.198484" transform="rotate(-0 614.4192 131.198484)">GPIO = 3,3 V · durante el pulso</text>
+   </g>
+   <g id="sheet0_text_23">
+    <text style="font-weight: 700; font-size: 16px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="865.6128" y="163.48325" transform="rotate(-0 865.6128 163.48325)">+9 V</text>
+   </g>
+   <g id="sheet0_text_24">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="804.096" y="212.485422" transform="rotate(-0 804.096 212.485422)">G</text>
+   </g>
+   <g id="sheet0_text_25">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #51616d" x="845.1072" y="181.867422" transform="rotate(-0 845.1072 181.867422)">S</text>
+   </g>
+   <g id="sheet0_text_26">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #51616d" x="845.1072" y="264.973422" transform="rotate(-0 845.1072 264.973422)">D</text>
+   </g>
+   <g id="sheet0_text_27">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="804.096" y="378.697422" transform="rotate(-0 804.096 378.697422)">G</text>
+   </g>
+   <g id="sheet0_text_28">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #51616d" x="845.1072" y="348.079422" transform="rotate(-0 845.1072 348.079422)">D</text>
+   </g>
+   <g id="sheet0_text_29">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #51616d" x="845.1072" y="431.185422" transform="rotate(-0 845.1072 431.185422)">S</text>
+   </g>
+   <g id="sheet0_text_30">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="865.6128" y="525.486187" transform="rotate(-0 865.6128 525.486187)">GND · 0 V</text>
+   </g>
+   <g id="sheet0_text_31">
+    <text style="font-weight: 700; font-size: 14px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="619.5456" y="291.996719" transform="rotate(-0 619.5456 291.996719)">GPIO</text>
+   </g>
+   <g id="sheet0_text_32">
+    <text style="font-size: 14px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="619.5456" y="335.736719" transform="rotate(-0 619.5456 335.736719)">3,3 V</text>
+   </g>
+   <g id="sheet0_text_33">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="624.672" y="199.623187" transform="rotate(-0 624.672 199.623187)">Compuertas</text>
+   </g>
+   <g id="sheet0_text_34">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="624.672" y="217.119656" transform="rotate(-0 624.672 217.119656)">unidas</text>
+   </g>
+   <g id="sheet0_text_35">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #1767a6" x="706.6944" y="435.819656" transform="rotate(-0 706.6944 435.819656)">10 kΩ</text>
+   </g>
+   <g id="sheet0_text_36">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #51616d" x="706.6944" y="457.429422" transform="rotate(-0 706.6944 457.429422)">R3 / R4</text>
+   </g>
+   <g id="sheet0_text_37">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="942.5088" y="296.091656" transform="rotate(-0 942.5088 296.091656)">A la válvula</text>
+   </g>
+   <g id="sheet0_text_38">
+    <text style="font-size: 10.8px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="942.5088" y="330.531891" transform="rotate(-0 942.5088 330.531891)">Una salida del puente</text>
+   </g>
+   <g id="sheet0_text_39">
+    <text style="font-weight: 700; font-size: 14px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #b9322d" x="932.256" y="204.516719" transform="rotate(-0 932.256 204.516719)">P ENCENDIDO</text>
+   </g>
+   <g id="sheet0_text_40">
+    <text style="font-size: 14px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="932.256" y="230.760719" transform="rotate(-0 932.256 230.760719)">VGS = −5,7 V</text>
+   </g>
+   <g id="sheet0_text_41">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #b9322d" x="932.256" y="370.468953" transform="rotate(-0 932.256 370.468953)">N PUEDE CONDUCIR</text>
+   </g>
+   <g id="sheet0_text_42">
+    <text style="font-size: 14px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="932.256" y="396.972719" transform="rotate(-0 932.256 396.972719)">VGS = +3,3 V</text>
+   </g>
+   <g id="sheet0_patch_15">
+    <path d="M 865.6128 268.492258  Q 865.6128 279.6144 865.6128 287.941457  " style="fill: none; stroke: #b9322d; stroke-width: 2.5; stroke-linecap: round" />
+    <path d="M 869.4128 280.341457  L 865.6128 287.941457  L 861.8128 280.341457  z " style="fill: #b9322d; stroke: #b9322d; stroke-width: 2.5; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_patch_16">
+    <path d="M 865.6128 439.079326  Q 865.6128 454.572969 865.6128 467.271527  " style="fill: none; stroke: #b9322d; stroke-width: 2.5; stroke-linecap: round" />
+    <path d="M 869.4128 459.671527  L 865.6128 467.271527  L 861.8128 459.671527  z " style="fill: #b9322d; stroke: #b9322d; stroke-width: 2.5; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_patch_17">
+    <path d="M 865.6128 243.0891  C 866.496499 243.0891 867.344123 242.789533 867.968993 242.256375  C 868.593863 241.723218 868.94496 240.999999 868.94496 240.246  C 868.94496 239.492001 868.593863 238.768782 867.968993 238.235625  C 867.344123 237.702467 866.496499 237.4029 865.6128 237.4029  C 864.729101 237.4029 863.881477 237.702467 863.256607 238.235625  C 862.631737 238.768782 862.28064 239.492001 862.28064 240.246  C 862.28064 240.999999 862.631737 241.723218 863.256607 242.256375  C 863.881477 242.789533 864.729101 243.0891 865.6128 243.0891  z " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: #ffffff; stroke: #b9322d; stroke-width: 1.8; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet0_patch_18">
+    <path d="M 865.6128 203.7231  C 866.496499 203.7231 867.344123 203.423533 867.968993 202.890375  C 868.593863 202.357218 868.94496 201.633999 868.94496 200.88  C 868.94496 200.126001 868.593863 199.402782 867.968993 198.869625  C 867.344123 198.336467 866.496499 198.0369 865.6128 198.0369  C 864.729101 198.0369 863.881477 198.336467 863.256607 198.869625  C 862.631737 199.402782 862.28064 200.126001 862.28064 200.88  C 862.28064 201.633999 862.631737 202.357218 863.256607 202.890375  C 863.881477 203.423533 864.729101 203.7231 865.6128 203.7231  z " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: #ffffff; stroke: #b9322d; stroke-width: 1.8; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet0_patch_19">
+    <path d="M 865.6128 409.3011  C 866.496499 409.3011 867.344123 409.001533 867.968993 408.468375  C 868.593863 407.935218 868.94496 407.211999 868.94496 406.458  C 868.94496 405.704001 868.593863 404.980782 867.968993 404.447625  C 867.344123 403.914467 866.496499 403.6149 865.6128 403.6149  C 864.729101 403.6149 863.881477 403.914467 863.256607 404.447625  C 862.631737 404.980782 862.28064 405.704001 862.28064 406.458  C 862.28064 407.211999 862.631737 407.935218 863.256607 408.468375  C 863.881477 409.001533 864.729101 409.3011 865.6128 409.3011  z " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: #ffffff; stroke: #b9322d; stroke-width: 1.8; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet0_patch_20">
+    <path d="M 865.6128 369.9351  C 866.496499 369.9351 867.344123 369.635533 867.968993 369.102375  C 868.593863 368.569218 868.94496 367.845999 868.94496 367.092  C 868.94496 366.338001 868.593863 365.614782 867.968993 365.081625  C 867.344123 364.548467 866.496499 364.2489 865.6128 364.2489  C 864.729101 364.2489 863.881477 364.548467 863.256607 365.081625  C 862.631737 365.614782 862.28064 366.338001 862.28064 367.092  C 862.28064 367.845999 862.631737 368.569218 863.256607 369.102375  C 863.881477 369.635533 864.729101 369.9351 865.6128 369.9351  z " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: #ffffff; stroke: #b9322d; stroke-width: 1.8; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet0_patch_21">
+    <path d="M 732.3264 312.8544  C 733.142122 312.8544 733.924545 312.577877 734.501347 312.085731  C 735.07815 311.593585 735.40224 310.925999 735.40224 310.23  C 735.40224 309.534001 735.07815 308.866415 734.501347 308.374269  C 733.924545 307.882123 733.142122 307.6056 732.3264 307.6056  C 731.510678 307.6056 730.728255 307.882123 730.151453 308.374269  C 729.57465 308.866415 729.25056 309.534001 729.25056 310.23  C 729.25056 310.925999 729.57465 311.593585 730.151453 312.085731  C 730.728255 312.577877 731.510678 312.8544 732.3264 312.8544  z " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: #1767a6" />
+   </g>
+   <g id="sheet0_patch_22">
+    <path d="M 732.3264 389.3994  C 733.142122 389.3994 733.924545 389.122877 734.501347 388.630731  C 735.07815 388.138585 735.40224 387.470999 735.40224 386.775  C 735.40224 386.079001 735.07815 385.411415 734.501347 384.919269  C 733.924545 384.427123 733.142122 384.1506 732.3264 384.1506  C 731.510678 384.1506 730.728255 384.427123 730.151453 384.919269  C 729.57465 385.411415 729.25056 386.079001 729.25056 386.775  C 729.25056 387.470999 729.57465 388.138585 730.151453 388.630731  C 730.728255 389.122877 731.510678 389.3994 732.3264 389.3994  z " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: #1767a6" />
+   </g>
+   <g id="sheet0_patch_23">
+    <path d="M 865.6128 312.8544  C 866.428522 312.8544 867.210945 312.577877 867.787747 312.085731  C 868.36455 311.593585 868.68864 310.925999 868.68864 310.23  C 868.68864 309.534001 868.36455 308.866415 867.787747 308.374269  C 867.210945 307.882123 866.428522 307.6056 865.6128 307.6056  C 864.797078 307.6056 864.014655 307.882123 863.437853 308.374269  C 862.86105 308.866415 862.53696 309.534001 862.53696 310.23  C 862.53696 310.925999 862.86105 311.593585 863.437853 312.085731  C 864.014655 312.577877 864.797078 312.8544 865.6128 312.8544  z " clip-path="url(#sheet0_p6ae52bbb09)" style="fill: #b9322d" />
+   </g>
+  </g>
+  <g id="sheet0_axes_3">
+   <g id="sheet0_patch_24">
+    <path d="M 72.8064 925.128  L 282.4704 925.128  L 282.4704 845.64  L 72.8064 845.64  z " clip-path="url(#sheet0_pd036795400)" style="fill: #f5f7f8; stroke: #435563; stroke-width: 1.4; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet0_patch_25">
+    <path d="M 492.1344 925.128  L 806.6304 925.128  L 806.6304 845.64  L 492.1344 845.64  z " clip-path="url(#sheet0_pd036795400)" style="fill: #f5f7f8; stroke: #435563; stroke-width: 1.4; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet0_patch_26">
+    <path d="M 963.8784 925.128  L 1079.1936 925.128  L 1079.1936 845.64  L 963.8784 845.64  z " clip-path="url(#sheet0_pd036795400)" style="fill: #f5f7f8; stroke: #435563; stroke-width: 1.4; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet0_line2d_49">
+    <path d="M 282.4704 869.832  L 492.1344 869.832  " clip-path="url(#sheet0_pd036795400)" style="fill: none; stroke: #1767a6; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_50">
+    <path d="M 282.4704 904.392  L 492.1344 904.392  " clip-path="url(#sheet0_pd036795400)" style="fill: none; stroke: #1767a6; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_51">
+    <path d="M 806.6304 869.832  L 963.8784 869.832  " clip-path="url(#sheet0_pd036795400)" style="fill: none; stroke: #435563; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_52">
+    <path d="M 806.6304 904.392  L 963.8784 904.392  " clip-path="url(#sheet0_pd036795400)" style="fill: none; stroke: #435563; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_53">
+    <path d="M 649.3824 817.992  L 649.3824 845.64  " clip-path="url(#sheet0_pd036795400)" style="fill: none; stroke: #435563; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_54">
+    <path d="M 177.6384 925.128  L 177.6384 954.504  " clip-path="url(#sheet0_pd036795400)" style="fill: none; stroke: #435563; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_55">
+    <path d="M 177.6384 954.504  L 649.3824 954.504  " clip-path="url(#sheet0_pd036795400)" style="fill: none; stroke: #435563; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_56">
+    <path d="M 649.3824 925.128  L 649.3824 954.504  " clip-path="url(#sheet0_pd036795400)" style="fill: none; stroke: #435563; stroke-width: 2; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_57">
+    <path d="M 617.9328 954.504  L 680.832 954.504  " clip-path="url(#sheet0_pd036795400)" style="fill: none; stroke: #435563; stroke-width: 1.8; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_58">
+    <path d="M 628.416 956.5776  L 670.3488 956.5776  " clip-path="url(#sheet0_pd036795400)" style="fill: none; stroke: #435563; stroke-width: 1.8; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_line2d_59">
+    <path d="M 638.8992 958.6512  L 659.8656 958.6512  " clip-path="url(#sheet0_pd036795400)" style="fill: none; stroke: #435563; stroke-width: 1.8; stroke-linecap: round" />
+   </g>
+   <g id="sheet0_text_43">
+    <text style="font-weight: 700; font-size: 16px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="177.6384" y="872.260875" transform="rotate(-0 177.6384 872.260875)">CubeCell</text>
+   </g>
+   <g id="sheet0_text_44">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #1767a6" x="177.6384" y="902.565656" transform="rotate(-0 177.6384 902.565656)">Lógica de 3,3 V</text>
+   </g>
+   <g id="sheet0_text_45">
+    <text style="font-weight: 700; font-size: 15px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="649.3824" y="870.272484" transform="rotate(-0 649.3824 870.272484)">Puente H · DRV8871*</text>
+   </g>
+   <g id="sheet0_text_46">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #24694e" x="649.3824" y="898.869656" transform="rotate(-0 649.3824 898.869656)">Control interno de los MOSFET</text>
+   </g>
+   <g id="sheet0_text_47">
+    <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #24694e" x="649.3824" y="919.475754" transform="rotate(-0 649.3824 919.475754)">y tiempo muerto entre conmutaciones</text>
+   </g>
+   <g id="sheet0_text_48">
+    <text style="font-weight: 700; font-size: 14px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="1021.536" y="873.749266" transform="rotate(-0 1021.536 873.749266)">Válvula</text>
+   </g>
+   <g id="sheet0_text_49">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="1021.536" y="902.325656" transform="rotate(-0 1021.536 902.325656)">2 cables</text>
+   </g>
+   <g id="sheet0_text_50">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #1767a6" x="387.3024" y="859.125188" transform="rotate(-0 387.3024 859.125188)">GPIO2 → IN1</text>
+   </g>
+   <g id="sheet0_text_51">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #1767a6" x="387.3024" y="893.685187" transform="rotate(-0 387.3024 893.685187)">GPIO1 → IN2</text>
+   </g>
+   <g id="sheet0_text_52">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="885.2544" y="859.125188" transform="rotate(-0 885.2544 859.125188)">OUT1</text>
+   </g>
+   <g id="sheet0_text_53">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="885.2544" y="893.685187" transform="rotate(-0 885.2544 893.685187)">OUT2</text>
+   </g>
+   <g id="sheet0_text_54">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="649.3824" y="807.545461" transform="rotate(-0 649.3824 807.545461)">9 V de potencia</text>
+   </g>
+   <g id="sheet0_text_55">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="670.3488" y="834.673422" transform="rotate(-0 670.3488 834.673422)">VM</text>
+   </g>
+   <g id="sheet0_text_56">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="680.832" y="954.405656" transform="rotate(-0 680.832 954.405656)">GND común</text>
+   </g>
+  </g>
+  <g id="sheet0_line2d_60">
+   <path d="M 576 527.04  L 576 118.8  " style="fill: none; stroke: #d5dce0; stroke-linecap: square" />
+  </g>
+  <g id="sheet0_line2d_61">
+   <path d="M 51.84 592.92  L 1100.16 592.92  " style="fill: none; stroke: #d5dce0; stroke-linecap: square" />
+  </g>
+  <g id="sheet0_line2d_62">
+   <path d="M 51.84 752.76  L 1100.16 752.76  " style="fill: none; stroke: #d5dce0; stroke-linecap: square" />
+  </g>
+  <g id="sheet0_text_57">
+   <text style="font-weight: 700; font-size: 27px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="38.88" transform="rotate(-0 51.84 38.88)">Problema de los 3,3 V y cómo corregirlo</text>
+  </g>
+  <g id="sheet0_text_58">
+   <text style="font-size: 14px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="51.84" y="69.12" transform="rotate(-0 51.84 69.12)">Una rama del puente, vista en dos estados. Dentro de cada AOP605 hay un MOSFET P y uno N.</text>
+  </g>
+  <g id="sheet0_text_59">
+   <text style="font-weight: 700; font-size: 14px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #24694e" x="59.904" y="567" transform="rotate(-0 59.904 567)">El N interrumpe el camino hacia masa.</text>
+  </g>
+  <g id="sheet0_text_60">
+   <text style="font-weight: 700; font-size: 14px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #b9322d" x="612.864" y="567" transform="rotate(-0 612.864 567)">Camino +9 V → GND: puede causar calentamiento.</text>
+  </g>
+  <g id="sheet0_text_61">
+   <text style="font-weight: 700; font-size: 16px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="619.92" transform="rotate(-0 51.84 619.92)">POR QUÉ 3,3 V NO ALCANZAN</text>
+  </g>
+  <g id="sheet0_text_62">
+   <text style="font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="51.84" y="648" transform="rotate(-0 51.84 648)">Lo que sucede con el GPIO alto:</text>
+  </g>
+  <g id="sheet0_text_63">
+   <text style="font-weight: 700; font-size: 18px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #b9322d" x="51.84" y="675" transform="rotate(-0 51.84 675)">VGS(P) = 3,3 V − 9 V = −5,7 V</text>
+  </g>
+  <g id="sheet0_text_64">
+   <text style="font-size: 12.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="698.76" transform="rotate(-0 51.84 698.76)">La compuerta sigue por debajo de la fuente: P encendido.</text>
+  </g>
+  <g id="sheet0_text_65">
+   <text style="font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="616.32" y="648" transform="rotate(-0 616.32 648)">Lo necesario para apagar el MOSFET P:</text>
+  </g>
+  <g id="sheet0_text_66">
+   <text style="font-weight: 700; font-size: 18px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #24694e" x="616.32" y="675" transform="rotate(-0 616.32 675)">VGS(P) = 9 V − 9 V = 0 V</text>
+  </g>
+  <g id="sheet0_text_67">
+   <text style="font-size: 12.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="616.32" y="698.76" transform="rotate(-0 616.32 698.76)">Su compuerta debe acercarse a 9 V; el GPIO llega a 3,3 V.</text>
+  </g>
+  <g id="sheet0_text_68">
+   <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="729" transform="rotate(-0 51.84 729)">VGS = tensión de compuerta − tensión de fuente.  Nunca conectar 9 V directamente al GPIO.</text>
+  </g>
+  <g id="sheet0_text_69">
+   <text style="font-weight: 700; font-size: 15.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="779.76" transform="rotate(-0 51.84 779.76)">SOLUCIÓN PRÁCTICA: REEMPLAZAR LOS DOS AOP605 POR UN MÓDULO PUENTE H</text>
+  </g>
+  <g id="sheet0_text_70">
+   <text style="font-weight: 700; font-size: 12.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="982.8" transform="rotate(-0 51.84 982.8)">Retirar U1/U3 o aislar completamente su etapa: el módulo nuevo no se conecta en paralelo con ellos.</text>
+  </g>
+  <g id="sheet0_text_71">
+   <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="51.84" y="1007.64" transform="rotate(-0 51.84 1007.64)">* Candidato a verificar según la corriente de la válvula. Ajustar límite de corriente y desacople; comprobar polaridad.</text>
+  </g>
+  <g id="sheet0_text_72">
+   <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="51.84" y="1030.32" transform="rotate(-0 51.84 1030.32)">Esquema funcional según la foto: U1 = GPIO2, U3 = GPIO1. Se omiten diodos internos y transitorios; no es un plano de montaje.</text>
+  </g>
+  <g id="sheet0_text_73">
+   <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="51.84" y="1051.92" transform="rotate(-0 51.84 1051.92)">Fuente técnica del módulo: Texas Instruments, DRV8871. La PCB y el funcionamiento físico todavía deben verificarse.</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="sheet0_pc6de567ab7">
+   <rect x="46.08" y="113.4" width="512.64" height="437.4" />
+  </clipPath>
+  <clipPath id="sheet0_p6ae52bbb09">
+   <rect x="599.04" y="113.4" width="512.64" height="437.4" />
+  </clipPath>
+  <clipPath id="sheet0_pd036795400">
+   <rect x="51.84" y="793.8" width="1048.32" height="172.8" />
+  </clipPath>
+ </defs>
+</svg><svg width="1152.0" height="1296.0" viewBox="0 0 1152 1296" version="1.1" x="0" y="1080.0">
+ <title>Adaptación propuesta: conservar los AOP605 mediante dos TC4428A</title>
+ <metadata>
+  <rdf:RDF>
+   <ns2:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+    <dc:title>Adaptación propuesta: conservar los AOP605 mediante dos TC4428A</dc:title>
+    <dc:date>2026-10-21T11:10:44.442701</dc:date>
+    <dc:description>Esquema lógico, cortes orientativos, componentes y limitaciones. No incorpora interbloqueo hardware ni protección de corriente; requiere validar potencia, secuencia de alimentación, apagado y tiempo muerto. Microchip DS20001423K; AOS AOP605 Rev4. No se probó físicamente.</dc:description>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <ns2:Agent>
+      <dc:title>Matplotlib v3.11.1, https://matplotlib.org/</dc:title>
+     </ns2:Agent>
+    </dc:creator>
+   </ns2:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="sheet1_figure_1">
+  <g id="sheet1_patch_1">
+   <path d="M 0 1296  L 1152 1296  L 1152 0  L 0 0  z " style="fill: #ffffff" />
+  </g>
+  <g id="sheet1_axes_1">
+   <g id="sheet1_patch_2">
+    <path d="M 178.6464 289.614528  L 189.4176 289.614528  L 189.4176 278.188992  L 178.6464 278.188992  z " clip-path="url(#sheet1_pe7c2c0b172)" style="fill: #ffffff; stroke: #435563; stroke-width: 1.5; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet1_line2d_1">
+    <path d="M 61.632 238.04928  L 184.032 238.04928  " clip-path="url(#sheet1_pe7c2c0b172)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_2">
+    <path d="M 184.032 269.61984  L 184.032 191.44512  " clip-path="url(#sheet1_pe7c2c0b172)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_3">
+    <path d="M 184.032 191.44512  L 360.288 191.44512  " clip-path="url(#sheet1_pe7c2c0b172)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_4">
+    <path d="M 184.032 238.04928  L 360.288 238.04928  " clip-path="url(#sheet1_pe7c2c0b172)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_5">
+    <path d="M 273.1392 186.93504  L 290.7648 195.9552  " clip-path="url(#sheet1_pe7c2c0b172)" style="fill: none; stroke: #b9322d; stroke-width: 2.5; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_6">
+    <path d="M 273.1392 195.9552  L 290.7648 186.93504  " clip-path="url(#sheet1_pe7c2c0b172)" style="fill: none; stroke: #b9322d; stroke-width: 2.5; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_7">
+    <path d="M 273.1392 233.5392  L 290.7648 242.55936  " clip-path="url(#sheet1_pe7c2c0b172)" style="fill: none; stroke: #b9322d; stroke-width: 2.5; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_8">
+    <path d="M 273.1392 242.55936  L 290.7648 233.5392  " clip-path="url(#sheet1_pe7c2c0b172)" style="fill: none; stroke: #b9322d; stroke-width: 2.5; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_9">
+    <path d="M 184.032 298.18368  L 184.032 289.614528  " clip-path="url(#sheet1_pe7c2c0b172)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_10">
+    <path d="M 184.032 278.188992  L 184.032 269.61984  " clip-path="url(#sheet1_pe7c2c0b172)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_11">
+    <path d="M 172.2816 298.18368  L 195.7824 298.18368  " clip-path="url(#sheet1_pe7c2c0b172)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_12">
+    <path d="M 176.39424 299.68704  L 191.66976 299.68704  " clip-path="url(#sheet1_pe7c2c0b172)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_13">
+    <path d="M 180.50688 301.1904  L 187.55712 301.1904  " clip-path="url(#sheet1_pe7c2c0b172)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_text_1">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="61.632" y="220.379193" transform="rotate(-0 61.632 220.379193)">GPIO2</text>
+   </g>
+   <g id="sheet1_text_2">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="374.976" y="194.562776" transform="rotate(-0 374.976 194.562776)">U1.2 · G del N</text>
+   </g>
+   <g id="sheet1_text_3">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="374.976" y="241.166936" transform="rotate(-0 374.976 241.166936)">U1.4 · G del P</text>
+   </g>
+   <g id="sheet1_text_4">
+    <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="213.408" y="284.634474" transform="rotate(-0 213.408 284.634474)">R3 · 10 kΩ</text>
+   </g>
+   <g id="sheet1_text_5">
+    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #b9322d" x="296.64" y="313.148509" transform="rotate(-0 296.64 313.148509)">X = desconectar esa unión; no unir las gates nuevas.</text>
+   </g>
+   <g id="sheet1_patch_3">
+    <path d="M 184.032 238.725792  C 184.616295 238.725792 185.176738 238.65451 185.589898 238.527646  C 186.003057 238.400782 186.2352 238.228693 186.2352 238.04928  C 186.2352 237.869867 186.003057 237.697778 185.589898 237.570914  C 185.176738 237.44405 184.616295 237.372768 184.032 237.372768  C 183.447705 237.372768 182.887262 237.44405 182.474102 237.570914  C 182.060943 237.697778 181.8288 237.869867 181.8288 238.04928  C 181.8288 238.228693 182.060943 238.400782 182.474102 238.527646  C 182.887262 238.65451 183.447705 238.725792 184.032 238.725792  z " clip-path="url(#sheet1_pe7c2c0b172)" style="fill: #435563" />
+   </g>
+  </g>
+  <g id="sheet1_axes_2">
+   <g id="sheet1_patch_4">
+    <path d="M 737.3664 289.614528  L 748.1376 289.614528  L 748.1376 278.188992  L 737.3664 278.188992  z " clip-path="url(#sheet1_pf53251f486)" style="fill: #ffffff; stroke: #435563; stroke-width: 1.5; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet1_line2d_14">
+    <path d="M 620.352 238.04928  L 742.752 238.04928  " clip-path="url(#sheet1_pf53251f486)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_15">
+    <path d="M 742.752 269.61984  L 742.752 191.44512  " clip-path="url(#sheet1_pf53251f486)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_16">
+    <path d="M 742.752 191.44512  L 919.008 191.44512  " clip-path="url(#sheet1_pf53251f486)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_17">
+    <path d="M 742.752 238.04928  L 919.008 238.04928  " clip-path="url(#sheet1_pf53251f486)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_18">
+    <path d="M 831.8592 186.93504  L 849.4848 195.9552  " clip-path="url(#sheet1_pf53251f486)" style="fill: none; stroke: #b9322d; stroke-width: 2.5; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_19">
+    <path d="M 831.8592 195.9552  L 849.4848 186.93504  " clip-path="url(#sheet1_pf53251f486)" style="fill: none; stroke: #b9322d; stroke-width: 2.5; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_20">
+    <path d="M 831.8592 233.5392  L 849.4848 242.55936  " clip-path="url(#sheet1_pf53251f486)" style="fill: none; stroke: #b9322d; stroke-width: 2.5; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_21">
+    <path d="M 831.8592 242.55936  L 849.4848 233.5392  " clip-path="url(#sheet1_pf53251f486)" style="fill: none; stroke: #b9322d; stroke-width: 2.5; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_22">
+    <path d="M 742.752 298.18368  L 742.752 289.614528  " clip-path="url(#sheet1_pf53251f486)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_23">
+    <path d="M 742.752 278.188992  L 742.752 269.61984  " clip-path="url(#sheet1_pf53251f486)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_24">
+    <path d="M 731.0016 298.18368  L 754.5024 298.18368  " clip-path="url(#sheet1_pf53251f486)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_25">
+    <path d="M 735.11424 299.68704  L 750.38976 299.68704  " clip-path="url(#sheet1_pf53251f486)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_26">
+    <path d="M 739.22688 301.1904  L 746.27712 301.1904  " clip-path="url(#sheet1_pf53251f486)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_text_6">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="620.352" y="220.379193" transform="rotate(-0 620.352 220.379193)">GPIO1</text>
+   </g>
+   <g id="sheet1_text_7">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="933.696" y="194.562776" transform="rotate(-0 933.696 194.562776)">U3.2 · G del N</text>
+   </g>
+   <g id="sheet1_text_8">
+    <text style="font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="933.696" y="241.166936" transform="rotate(-0 933.696 241.166936)">U3.4 · G del P</text>
+   </g>
+   <g id="sheet1_text_9">
+    <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="772.128" y="284.634474" transform="rotate(-0 772.128 284.634474)">R4 · 10 kΩ</text>
+   </g>
+   <g id="sheet1_text_10">
+    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #b9322d" x="855.36" y="313.148509" transform="rotate(-0 855.36 313.148509)">X = desconectar esa unión; no unir las gates nuevas.</text>
+   </g>
+   <g id="sheet1_patch_5">
+    <path d="M 742.752 238.725792  C 743.336295 238.725792 743.896738 238.65451 744.309898 238.527646  C 744.723057 238.400782 744.9552 238.228693 744.9552 238.04928  C 744.9552 237.869867 744.723057 237.697778 744.309898 237.570914  C 743.896738 237.44405 743.336295 237.372768 742.752 237.372768  C 742.167705 237.372768 741.607262 237.44405 741.194102 237.570914  C 740.780943 237.697778 740.5488 237.869867 740.5488 238.04928  C 740.5488 238.228693 740.780943 238.400782 741.194102 238.527646  C 741.607262 238.65451 742.167705 238.725792 742.752 238.725792  z " clip-path="url(#sheet1_pf53251f486)" style="fill: #435563" />
+   </g>
+  </g>
+  <g id="sheet1_axes_3">
+   <g id="sheet1_patch_6">
+    <path d="M 182.88 521.8992  L 385.992 521.8992  L 385.992 431.6976  L 182.88 431.6976  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #f5f7f8; stroke: #1767a6; stroke-width: 1.5; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet1_patch_7">
+    <path d="M 411.5448 454.62384  L 445.6152 454.62384  L 445.6152 446.35536  L 411.5448 446.35536  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #ffffff; stroke: #1767a6; stroke-width: 1.5; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet1_patch_8">
+    <path d="M 411.5448 507.24144  L 445.6152 507.24144  L 445.6152 498.97296  L 411.5448 498.97296  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #ffffff; stroke: #1767a6; stroke-width: 1.5; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet1_patch_9">
+    <path d="M 182.88 675.9936  L 385.992 675.9936  L 385.992 585.792  L 182.88 585.792  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #f5f7f8; stroke: #1767a6; stroke-width: 1.5; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet1_patch_10">
+    <path d="M 411.5448 608.71824  L 445.6152 608.71824  L 445.6152 600.44976  L 411.5448 600.44976  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #ffffff; stroke: #1767a6; stroke-width: 1.5; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet1_patch_11">
+    <path d="M 411.5448 661.33584  L 445.6152 661.33584  L 445.6152 653.06736  L 411.5448 653.06736  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #ffffff; stroke: #1767a6; stroke-width: 1.5; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet1_patch_12">
+    <path d="M 661.176 510.624  L 739.8 510.624  L 739.8 458.0064  L 661.176 458.0064  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #f5f7f8; stroke: #435563; stroke-width: 1.4; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet1_patch_13">
+    <path d="M 661.176 664.7184  L 739.8 664.7184  L 739.8 612.1008  L 661.176 612.1008  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #f5f7f8; stroke: #435563; stroke-width: 1.4; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet1_patch_14">
+    <path d="M 595.0008 464.01984  L 609.4152 464.01984  L 609.4152 436.95936  L 595.0008 436.95936  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #ffffff; stroke: #1767a6; stroke-width: 1.5; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet1_patch_15">
+    <path d="M 595.0008 709.44336  L 609.4152 709.44336  L 609.4152 668.85264  L 595.0008 668.85264  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #ffffff; stroke: #1767a6; stroke-width: 1.5; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet1_patch_16">
+    <path d="M 949.464 510.624  L 1028.088 510.624  L 1028.088 458.0064  L 949.464 458.0064  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #f5f7f8; stroke: #435563; stroke-width: 1.4; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet1_patch_17">
+    <path d="M 949.464 664.7184  L 1028.088 664.7184  L 1028.088 612.1008  L 949.464 612.1008  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #f5f7f8; stroke: #435563; stroke-width: 1.4; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet1_patch_18">
+    <path d="M 883.2888 464.01984  L 897.7032 464.01984  L 897.7032 436.95936  L 883.2888 436.95936  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #ffffff; stroke: #1767a6; stroke-width: 1.5; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet1_patch_19">
+    <path d="M 883.2888 709.44336  L 897.7032 709.44336  L 897.7032 668.85264  L 883.2888 668.85264  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #ffffff; stroke: #1767a6; stroke-width: 1.5; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet1_patch_20">
+    <path d="M 805.32 578.2752  L 890.496 578.2752  L 890.496 548.208  L 805.32 548.208  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #ffffff; stroke: #435563; stroke-width: 1.4; stroke-linejoin: miter" />
+   </g>
+   <g id="sheet1_line2d_27">
+    <path d="M 64.944 476.7984  L 143.568 476.7984  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_28">
+    <path d="M 143.568 503.1072  L 143.568 450.4896  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_29">
+    <path d="M 143.568 450.4896  L 182.88 450.4896  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_30">
+    <path d="M 143.568 503.1072  L 182.88 503.1072  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_31">
+    <path d="M 385.992 450.4896  L 411.5448 450.4896  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_32">
+    <path d="M 445.6152 450.4896  L 471.168 450.4896  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_33">
+    <path d="M 385.992 503.1072  L 411.5448 503.1072  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_34">
+    <path d="M 445.6152 503.1072  L 471.168 503.1072  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_35">
+    <path d="M 284.436 431.6976  L 284.436 412.9056  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_36">
+    <path d="M 284.436 521.8992  L 284.436 533.1744  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_37">
+    <path d="M 271.9872 533.1744  L 296.8848 533.1744  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_38">
+    <path d="M 276.34428 536.9328  L 292.52772 536.9328  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_39">
+    <path d="M 280.70136 540.6912  L 288.17064 540.6912  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_40">
+    <path d="M 64.944 630.8928  L 143.568 630.8928  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_41">
+    <path d="M 143.568 657.2016  L 143.568 604.584  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_42">
+    <path d="M 143.568 604.584  L 182.88 604.584  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_43">
+    <path d="M 143.568 657.2016  L 182.88 657.2016  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_44">
+    <path d="M 385.992 604.584  L 411.5448 604.584  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_45">
+    <path d="M 445.6152 604.584  L 471.168 604.584  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_46">
+    <path d="M 385.992 657.2016  L 411.5448 657.2016  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_47">
+    <path d="M 445.6152 657.2016  L 471.168 657.2016  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_48">
+    <path d="M 284.436 585.792  L 284.436 567  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_49">
+    <path d="M 284.436 675.9936  L 284.436 687.2688  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_50">
+    <path d="M 271.9872 687.2688  L 296.8848 687.2688  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_51">
+    <path d="M 276.34428 691.0272  L 292.52772 691.0272  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_52">
+    <path d="M 280.70136 694.7856  L 288.17064 694.7856  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_53">
+    <path d="M 700.488 416.664  L 988.776 416.664  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_54">
+    <path d="M 700.488 739.8864  L 988.776 739.8864  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_55">
+    <path d="M 828.9072 739.8864  L 860.3568 739.8864  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_56">
+    <path d="M 834.41088 743.6448  L 854.85312 743.6448  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_57">
+    <path d="M 839.91456 747.4032  L 849.34944 747.4032  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_58">
+    <path d="M 700.488 416.664  L 700.488 458.0064  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_59">
+    <path d="M 700.488 510.624  L 700.488 612.1008  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_60">
+    <path d="M 700.488 664.7184  L 700.488 739.8864  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_61">
+    <path d="M 602.208 484.3152  L 661.176 484.3152  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_62">
+    <path d="M 602.208 638.4096  L 661.176 638.4096  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_63">
+    <path d="M 602.208 484.3152  L 602.208 464.01984  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_64">
+    <path d="M 602.208 436.95936  L 602.208 416.664  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_65">
+    <path d="M 602.208 416.664  L 700.488 416.664  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_66">
+    <path d="M 602.208 739.8864  L 602.208 709.44336  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_67">
+    <path d="M 602.208 668.85264  L 602.208 638.4096  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_68">
+    <path d="M 602.208 739.8864  L 700.488 739.8864  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_69">
+    <path d="M 988.776 416.664  L 988.776 458.0064  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_70">
+    <path d="M 988.776 510.624  L 988.776 612.1008  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_71">
+    <path d="M 988.776 664.7184  L 988.776 739.8864  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_72">
+    <path d="M 890.496 484.3152  L 949.464 484.3152  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_73">
+    <path d="M 890.496 638.4096  L 949.464 638.4096  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_74">
+    <path d="M 890.496 484.3152  L 890.496 464.01984  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_75">
+    <path d="M 890.496 436.95936  L 890.496 416.664  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_76">
+    <path d="M 890.496 416.664  L 988.776 416.664  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_77">
+    <path d="M 890.496 739.8864  L 890.496 709.44336  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_78">
+    <path d="M 890.496 668.85264  L 890.496 638.4096  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_79">
+    <path d="M 890.496 739.8864  L 988.776 739.8864  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #1767a6; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_80">
+    <path d="M 700.488 563.2416  L 805.32 563.2416  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_line2d_81">
+    <path d="M 890.496 563.2416  L 988.776 563.2416  " clip-path="url(#sheet1_p026b66306a)" style="fill: none; stroke: #435563; stroke-width: 1.7; stroke-linecap: round" />
+   </g>
+   <g id="sheet1_text_11">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="284.436" y="468.640387" transform="rotate(-0 284.436 468.640387)">U6 · TC4428A</text>
+   </g>
+   <g id="sheet1_text_12">
+    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #51616d" x="284.436" y="498.318349" transform="rotate(-0 284.436 498.318349)">A inversor / B directo</text>
+   </g>
+   <g id="sheet1_text_13">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #1767a6" x="169.776" y="441.812056" transform="rotate(-0 169.776 441.812056)">2</text>
+   </g>
+   <g id="sheet1_text_14">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #1767a6" x="169.776" y="494.429656" transform="rotate(-0 169.776 494.429656)">4</text>
+   </g>
+   <g id="sheet1_text_15">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="64.944" y="431.316153" transform="rotate(-0 64.944 431.316153)">GPIO2</text>
+   </g>
+   <g id="sheet1_text_16">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="389.268" y="441.812056" transform="rotate(-0 389.268 441.812056)">7</text>
+   </g>
+   <g id="sheet1_text_17">
+    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #1767a6" x="435.132" y="438.183539" transform="rotate(-0 435.132 438.183539)">22 Ω</text>
+   </g>
+   <g id="sheet1_text_18">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="484.272" y="453.606787" transform="rotate(-0 484.272 453.606787)">GP3</text>
+   </g>
+   <g id="sheet1_text_19">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="389.268" y="494.429656" transform="rotate(-0 389.268 494.429656)">5</text>
+   </g>
+   <g id="sheet1_text_20">
+    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #1767a6" x="435.132" y="490.801139" transform="rotate(-0 435.132 490.801139)">22 Ω</text>
+   </g>
+   <g id="sheet1_text_21">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="484.272" y="506.224387" transform="rotate(-0 484.272 506.224387)">GN1</text>
+   </g>
+   <g id="sheet1_text_22">
+    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #1767a6" x="284.436" y="404.358349" transform="rotate(-0 284.436 404.358349)">pin 6: +9 V</text>
+   </g>
+   <g id="sheet1_text_23">
+    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="313.92" y="539.660749" transform="rotate(-0 313.92 539.660749)">pin 3: GND</text>
+   </g>
+   <g id="sheet1_text_24">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="284.436" y="622.734788" transform="rotate(-0 284.436 622.734788)">U7 · TC4428A</text>
+   </g>
+   <g id="sheet1_text_25">
+    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #51616d" x="284.436" y="652.412749" transform="rotate(-0 284.436 652.412749)">A inversor / B directo</text>
+   </g>
+   <g id="sheet1_text_26">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #1767a6" x="169.776" y="595.906456" transform="rotate(-0 169.776 595.906456)">2</text>
+   </g>
+   <g id="sheet1_text_27">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #1767a6" x="169.776" y="648.524056" transform="rotate(-0 169.776 648.524056)">4</text>
+   </g>
+   <g id="sheet1_text_28">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="64.944" y="585.410553" transform="rotate(-0 64.944 585.410553)">GPIO1</text>
+   </g>
+   <g id="sheet1_text_29">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="389.268" y="595.906456" transform="rotate(-0 389.268 595.906456)">7</text>
+   </g>
+   <g id="sheet1_text_30">
+    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #1767a6" x="435.132" y="592.277939" transform="rotate(-0 435.132 592.277939)">22 Ω</text>
+   </g>
+   <g id="sheet1_text_31">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="484.272" y="607.701187" transform="rotate(-0 484.272 607.701187)">GP1</text>
+   </g>
+   <g id="sheet1_text_32">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="389.268" y="648.524056" transform="rotate(-0 389.268 648.524056)">5</text>
+   </g>
+   <g id="sheet1_text_33">
+    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #1767a6" x="435.132" y="644.895539" transform="rotate(-0 435.132 644.895539)">22 Ω</text>
+   </g>
+   <g id="sheet1_text_34">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="484.272" y="660.318787" transform="rotate(-0 484.272 660.318787)">GN3</text>
+   </g>
+   <g id="sheet1_text_35">
+    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #1767a6" x="284.436" y="558.452749" transform="rotate(-0 284.436 558.452749)">pin 6: +9 V</text>
+   </g>
+   <g id="sheet1_text_36">
+    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="313.92" y="693.755149" transform="rotate(-0 313.92 693.755149)">pin 3: GND</text>
+   </g>
+   <g id="sheet1_text_37">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="844.632" y="408.246652" transform="rotate(-0 844.632 408.246652)">+9 V · mismo rail que los drivers</text>
+   </g>
+   <g id="sheet1_text_38">
+    <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="870.84" y="757.857949" transform="rotate(-0 870.84 757.857949)">GND común</text>
+   </g>
+   <g id="sheet1_text_39">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="700.488" y="442.331587" transform="rotate(-0 700.488 442.331587)">U1</text>
+   </g>
+   <g id="sheet1_text_40">
+    <text style="font-weight: 700; font-size: 16px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="700.488" y="488.47145" transform="rotate(-0 700.488 488.47145)">P</text>
+   </g>
+   <g id="sheet1_text_41">
+    <text style="font-weight: 700; font-size: 16px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="700.488" y="642.56585" transform="rotate(-0 700.488 642.56585)">N</text>
+   </g>
+   <g id="sheet1_text_42">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="713.592" y="452.957373" transform="rotate(-0 713.592 452.957373)">3 · S</text>
+   </g>
+   <g id="sheet1_text_43">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="713.592" y="524.366973" transform="rotate(-0 713.592 524.366973)">5/6 · D</text>
+   </g>
+   <g id="sheet1_text_44">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="713.592" y="603.293373" transform="rotate(-0 713.592 603.293373)">7/8 · D</text>
+   </g>
+   <g id="sheet1_text_45">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="713.592" y="682.219773" transform="rotate(-0 713.592 682.219773)">1 · S</text>
+   </g>
+   <g id="sheet1_text_46">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #1767a6" x="654.624" y="475.507773" transform="rotate(-0 654.624 475.507773)">4 · G</text>
+   </g>
+   <g id="sheet1_text_47">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #1767a6" x="654.624" y="629.602173" transform="rotate(-0 654.624 629.602173)">2 · G</text>
+   </g>
+   <g id="sheet1_text_48">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #1767a6" x="595.656" y="502.465987" transform="rotate(-0 595.656 502.465987)">GP1</text>
+   </g>
+   <g id="sheet1_text_49">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #1767a6" x="595.656" y="656.560387" transform="rotate(-0 595.656 656.560387)">GN1</text>
+   </g>
+   <g id="sheet1_text_50">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #1767a6" x="592.38" y="453.087647" transform="rotate(-0 592.38 453.087647)">47 kΩ</text>
+   </g>
+   <g id="sheet1_text_51">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #1767a6" x="592.38" y="701.142047" transform="rotate(-0 592.38 701.142047)">47 kΩ</text>
+   </g>
+   <g id="sheet1_text_52">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="988.776" y="442.331587" transform="rotate(-0 988.776 442.331587)">U3</text>
+   </g>
+   <g id="sheet1_text_53">
+    <text style="font-weight: 700; font-size: 16px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="988.776" y="488.47145" transform="rotate(-0 988.776 488.47145)">P</text>
+   </g>
+   <g id="sheet1_text_54">
+    <text style="font-weight: 700; font-size: 16px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="988.776" y="642.56585" transform="rotate(-0 988.776 642.56585)">N</text>
+   </g>
+   <g id="sheet1_text_55">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="1001.88" y="452.957373" transform="rotate(-0 1001.88 452.957373)">3 · S</text>
+   </g>
+   <g id="sheet1_text_56">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="1001.88" y="524.366973" transform="rotate(-0 1001.88 524.366973)">5/6 · D</text>
+   </g>
+   <g id="sheet1_text_57">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="1001.88" y="603.293373" transform="rotate(-0 1001.88 603.293373)">7/8 · D</text>
+   </g>
+   <g id="sheet1_text_58">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="1001.88" y="682.219773" transform="rotate(-0 1001.88 682.219773)">1 · S</text>
+   </g>
+   <g id="sheet1_text_59">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #1767a6" x="942.912" y="475.507773" transform="rotate(-0 942.912 475.507773)">4 · G</text>
+   </g>
+   <g id="sheet1_text_60">
+    <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #1767a6" x="942.912" y="629.602173" transform="rotate(-0 942.912 629.602173)">2 · G</text>
+   </g>
+   <g id="sheet1_text_61">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #1767a6" x="883.944" y="502.465987" transform="rotate(-0 883.944 502.465987)">GP3</text>
+   </g>
+   <g id="sheet1_text_62">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #1767a6" x="883.944" y="656.560387" transform="rotate(-0 883.944 656.560387)">GN3</text>
+   </g>
+   <g id="sheet1_text_63">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #1767a6" x="880.668" y="453.087647" transform="rotate(-0 880.668 453.087647)">47 kΩ</text>
+   </g>
+   <g id="sheet1_text_64">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: end; fill: #1767a6" x="880.668" y="701.142047" transform="rotate(-0 880.668 701.142047)">47 kΩ</text>
+   </g>
+   <g id="sheet1_text_65">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: middle; fill: #162d3a" x="847.908" y="536.252252" transform="rotate(-0 847.908 536.252252)">Válvula</text>
+   </g>
+   <g id="sheet1_text_66">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="739.8" y="584.631256" transform="rotate(-0 739.8 584.631256)">J2.2</text>
+   </g>
+   <g id="sheet1_text_67">
+    <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="936.36" y="584.631256" transform="rotate(-0 936.36 584.631256)">J2.1</text>
+   </g>
+   <g id="sheet1_text_68">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #1767a6" x="84.6" y="742.837923" transform="rotate(-0 84.6 742.837923)">Azul: añadir / recablear</text>
+   </g>
+   <g id="sheet1_text_69">
+    <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="84.6" y="765.294652" transform="rotate(-0 84.6 765.294652)">Gris: potencia existente</text>
+   </g>
+   <g id="sheet1_patch_21">
+    <path d="M 143.568 478.48968  C 144.349925 478.48968 145.099929 478.311476 145.652834 477.994316  C 146.205738 477.677155 146.5164 477.246933 146.5164 476.7984  C 146.5164 476.349867 146.205738 475.919645 145.652834 475.602484  C 145.099929 475.285324 144.349925 475.10712 143.568 475.10712  C 142.786075 475.10712 142.036071 475.285324 141.483166 475.602484  C 140.930262 475.919645 140.6196 476.349867 140.6196 476.7984  C 140.6196 477.246933 140.930262 477.677155 141.483166 477.994316  C 142.036071 478.311476 142.786075 478.48968 143.568 478.48968  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #1767a6" />
+   </g>
+   <g id="sheet1_patch_22">
+    <path d="M 143.568 632.58408  C 144.349925 632.58408 145.099929 632.405876 145.652834 632.088716  C 146.205738 631.771555 146.5164 631.341333 146.5164 630.8928  C 146.5164 630.444267 146.205738 630.014045 145.652834 629.696884  C 145.099929 629.379724 144.349925 629.20152 143.568 629.20152  C 142.786075 629.20152 142.036071 629.379724 141.483166 629.696884  C 140.930262 630.014045 140.6196 630.444267 140.6196 630.8928  C 140.6196 631.341333 140.930262 631.771555 141.483166 632.088716  C 142.036071 632.405876 142.786075 632.58408 143.568 632.58408  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #1767a6" />
+   </g>
+   <g id="sheet1_patch_23">
+    <path d="M 602.208 486.00648  C 602.989925 486.00648 603.739929 485.828276 604.292834 485.511116  C 604.845738 485.193955 605.1564 484.763733 605.1564 484.3152  C 605.1564 483.866667 604.845738 483.436445 604.292834 483.119284  C 603.739929 482.802124 602.989925 482.62392 602.208 482.62392  C 601.426075 482.62392 600.676071 482.802124 600.123166 483.119284  C 599.570262 483.436445 599.2596 483.866667 599.2596 484.3152  C 599.2596 484.763733 599.570262 485.193955 600.123166 485.511116  C 600.676071 485.828276 601.426075 486.00648 602.208 486.00648  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #1767a6" />
+   </g>
+   <g id="sheet1_patch_24">
+    <path d="M 602.208 640.10088  C 602.989925 640.10088 603.739929 639.922676 604.292834 639.605516  C 604.845738 639.288355 605.1564 638.858133 605.1564 638.4096  C 605.1564 637.961067 604.845738 637.530845 604.292834 637.213684  C 603.739929 636.896524 602.989925 636.71832 602.208 636.71832  C 601.426075 636.71832 600.676071 636.896524 600.123166 637.213684  C 599.570262 637.530845 599.2596 637.961067 599.2596 638.4096  C 599.2596 638.858133 599.570262 639.288355 600.123166 639.605516  C 600.676071 639.922676 601.426075 640.10088 602.208 640.10088  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #1767a6" />
+   </g>
+   <g id="sheet1_patch_25">
+    <path d="M 700.488 564.93288  C 701.269925 564.93288 702.019929 564.754676 702.572834 564.437516  C 703.125738 564.120355 703.4364 563.690133 703.4364 563.2416  C 703.4364 562.793067 703.125738 562.362845 702.572834 562.045684  C 702.019929 561.728524 701.269925 561.55032 700.488 561.55032  C 699.706075 561.55032 698.956071 561.728524 698.403166 562.045684  C 697.850262 562.362845 697.5396 562.793067 697.5396 563.2416  C 697.5396 563.690133 697.850262 564.120355 698.403166 564.437516  C 698.956071 564.754676 699.706075 564.93288 700.488 564.93288  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #435563" />
+   </g>
+   <g id="sheet1_patch_26">
+    <path d="M 890.496 486.00648  C 891.277925 486.00648 892.027929 485.828276 892.580834 485.511116  C 893.133738 485.193955 893.4444 484.763733 893.4444 484.3152  C 893.4444 483.866667 893.133738 483.436445 892.580834 483.119284  C 892.027929 482.802124 891.277925 482.62392 890.496 482.62392  C 889.714075 482.62392 888.964071 482.802124 888.411166 483.119284  C 887.858262 483.436445 887.5476 483.866667 887.5476 484.3152  C 887.5476 484.763733 887.858262 485.193955 888.411166 485.511116  C 888.964071 485.828276 889.714075 486.00648 890.496 486.00648  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #1767a6" />
+   </g>
+   <g id="sheet1_patch_27">
+    <path d="M 890.496 640.10088  C 891.277925 640.10088 892.027929 639.922676 892.580834 639.605516  C 893.133738 639.288355 893.4444 638.858133 893.4444 638.4096  C 893.4444 637.961067 893.133738 637.530845 892.580834 637.213684  C 892.027929 636.896524 891.277925 636.71832 890.496 636.71832  C 889.714075 636.71832 888.964071 636.896524 888.411166 637.213684  C 887.858262 637.530845 887.5476 637.961067 887.5476 638.4096  C 887.5476 638.858133 887.858262 639.288355 888.411166 639.605516  C 888.964071 639.922676 889.714075 640.10088 890.496 640.10088  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #1767a6" />
+   </g>
+   <g id="sheet1_patch_28">
+    <path d="M 988.776 564.93288  C 989.557925 564.93288 990.307929 564.754676 990.860834 564.437516  C 991.413738 564.120355 991.7244 563.690133 991.7244 563.2416  C 991.7244 562.793067 991.413738 562.362845 990.860834 562.045684  C 990.307929 561.728524 989.557925 561.55032 988.776 561.55032  C 987.994075 561.55032 987.244071 561.728524 986.691166 562.045684  C 986.138262 562.362845 985.8276 562.793067 985.8276 563.2416  C 985.8276 563.690133 986.138262 564.120355 986.691166 564.437516  C 987.244071 564.754676 987.994075 564.93288 988.776 564.93288  z " clip-path="url(#sheet1_p026b66306a)" style="fill: #435563" />
+   </g>
+  </g>
+  <g id="sheet1_line2d_82">
+   <path d="M 51.84 356.4  L 1100.16 356.4  " style="fill: none; stroke: #d5dce0; stroke-linecap: square" />
+  </g>
+  <g id="sheet1_line2d_83">
+   <path d="M 51.84 808.704  L 1100.16 808.704  " style="fill: none; stroke: #d5dce0; stroke-linecap: square" />
+  </g>
+  <g id="sheet1_line2d_84">
+   <path d="M 51.84 1056.24  L 1100.16 1056.24  " style="fill: none; stroke: #d5dce0; stroke-linecap: square" />
+  </g>
+  <g id="sheet1_text_70">
+   <text style="font-weight: 700; font-size: 25px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="47.952" transform="rotate(-0 51.84 47.952)">Alternativa: conservar U1 y U3 (AOP605)</text>
+  </g>
+  <g id="sheet1_text_71">
+   <text style="font-size: 13px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="80.352" transform="rotate(-0 51.84 80.352)">Dos drivers TC4428A controlan diagonales del puente; los GPIO siguen trabajando a 0 / 3,3 V.</text>
+  </g>
+  <g id="sheet1_text_72">
+   <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #b9322d" x="51.84" y="108.864" transform="rotate(-0 51.84 108.864)">PROPUESTA DE BANCO · Cortes eléctricos orientativos; falta verificar pistas, carga y formas de onda.</text>
+  </g>
+  <g id="sheet1_text_73">
+   <text style="font-weight: 700; font-size: 15px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="149.04" transform="rotate(-0 51.84 149.04)">1. AISLAR LAS COMPUERTAS DEL BUS ORIGINAL</text>
+  </g>
+  <g id="sheet1_text_74">
+   <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="338.256" transform="rotate(-0 51.84 338.256)">R3/R4 quedan del lado de los GPIO, como pull-down de las entradas del driver. Reubicarlas si el corte exige hacerlo.</text>
+  </g>
+  <g id="sheet1_text_75">
+   <text style="font-weight: 700; font-size: 15px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="383.616" transform="rotate(-0 51.84 383.616)">2. AÑADIR LOS DRIVERS Y RECONECTAR CADA COMPUERTA POR SEPARADO</text>
+  </g>
+  <g id="sheet1_text_76">
+   <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="790.56" transform="rotate(-0 51.84 790.56)">GP1/GN1/GP3/GN3: unir sólo etiquetas iguales. Cada salida lleva su propio resistor de 22 Ω; no unir gates P y N.</text>
+  </g>
+  <g id="sheet1_text_77">
+   <text style="font-weight: 700; font-size: 15px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="834.624" transform="rotate(-0 51.84 834.624)">3. COMPONENTES Y ESTADOS DE CONTROL</text>
+  </g>
+  <g id="sheet1_text_78">
+   <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="864.432" transform="rotate(-0 51.84 864.432)">Añadir por placa (valores iniciales para validar):</text>
+  </g>
+  <g id="sheet1_text_79">
+   <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="890.352" transform="rotate(-0 51.84 890.352)">2 × TC4428A, por ejemplo en encapsulado PDIP-8.</text>
+  </g>
+  <g id="sheet1_text_80">
+   <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="916.272" transform="rotate(-0 51.84 916.272)">4 × 22 Ω en serie con las compuertas.</text>
+  </g>
+  <g id="sheet1_text_81">
+   <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="942.192" transform="rotate(-0 51.84 942.192)">2 × 47 kΩ: GP → +9 V; 2 × 47 kΩ: GN → GND.</text>
+  </g>
+  <g id="sheet1_text_82">
+   <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="968.112" transform="rotate(-0 51.84 968.112)">Por driver: 100 nF + 4,7 µF / 25 V entre pines 6 y 3,</text>
+  </g>
+  <g id="sheet1_text_83">
+   <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="991.44" transform="rotate(-0 51.84 991.44)">muy cerca del integrado. Pines 1 y 8: sin conexión.</text>
+  </g>
+  <g id="sheet1_text_84">
+   <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="1017.36" transform="rotate(-0 51.84 1017.36)">Reutilizar R3/R4 (10 kΩ) del lado de los GPIO.</text>
+  </g>
+  <g id="sheet1_text_85">
+   <text style="font-weight: 700; font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="650.88" y="864.432" transform="rotate(-0 650.88 864.432)">GPIO2    GPIO1     Transistores encendidos</text>
+  </g>
+  <g id="sheet1_text_86">
+   <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="668.16" y="894.24" transform="rotate(-0 668.16 894.24)">0             0          Todos apagados</text>
+  </g>
+  <g id="sheet1_text_87">
+   <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="668.16" y="925.344" transform="rotate(-0 668.16 925.344)">1             0          P de U3 + N de U1</text>
+  </g>
+  <g id="sheet1_text_88">
+   <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="668.16" y="956.448" transform="rotate(-0 668.16 956.448)">0             1          P de U1 + N de U3</text>
+  </g>
+  <g id="sheet1_text_89">
+   <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #b9322d" x="668.16" y="987.552" transform="rotate(-0 668.16 987.552)">1             1          PROHIBIDO: ambos pares</text>
+  </g>
+  <g id="sheet1_text_90">
+   <text style="font-size: 10.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="650.88" y="1034.208" transform="rotate(-0 650.88 1034.208)">0 = 0 V   ·   1 = 3,3 V   ·   Salidas del driver ≈ 0 / 9 V.</text>
+  </g>
+  <g id="sheet1_text_91">
+   <text style="font-weight: 700; font-size: 12px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #b9322d" x="51.84" y="1080.864" transform="rotate(-0 51.84 1080.864)">OBLIGATORIO: TC4428A NO incorpora interbloqueo ni tiempo muerto entre estas dos órdenes.</text>
+  </g>
+  <g id="sheet1_text_92">
+   <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="1106.784" transform="rotate(-0 51.84 1106.784)">Control: poner ambos GPIO en 0 → esperar apagado → activar sólo una diagonal → volver a 0/0.</text>
+  </g>
+  <g id="sheet1_text_93">
+   <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="1132.704" transform="rotate(-0 51.84 1132.704)">100 µs de tiempo muerto es un punto de partida de banco, a verificar con osciloscopio. No habilitar el estado 1/1.</text>
+  </g>
+  <g id="sheet1_text_94">
+   <text style="font-size: 11.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #b9322d" x="51.84" y="1158.624" transform="rotate(-0 51.84 1158.624)">Si los 9 V del driver están ausentes, no enviar HIGH desde USB: hay que resolver la secuencia de alimentación.</text>
+  </g>
+  <g id="sheet1_text_95">
+   <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="1184.544" transform="rotate(-0 51.84 1184.544)">No añade protección contra sobrecorriente. Faltan dimensionar reserva de energía / transitorios y comprobar la válvula.</text>
+  </g>
+  <g id="sheet1_text_96">
+   <text style="font-size: 11px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #162d3a" x="51.84" y="1210.464" transform="rotate(-0 51.84 1210.464)">Antes de montar: verificar U1/U3 sanos, pistas reales y estados al arrancar. No se modificó el firmware ni la PCB.</text>
+  </g>
+  <g id="sheet1_text_97">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="51.84" y="1241.568" transform="rotate(-0 51.84 1241.568)">Fuentes: Microchip TC4426A/27A/28A, DS20001423K; Alpha &amp; Omega AOP605. Diseño propuesto, no ensayo físico.</text>
+  </g>
+  <g id="sheet1_text_98">
+   <text style="font-size: 10px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #51616d" x="51.84" y="1264.896" transform="rotate(-0 51.84 1264.896)">No usar como plano de cortes: la foto del esquema no permite localizar las pistas ni confirmar el montaje real.</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="sheet1_pe7c2c0b172">
+   <rect x="51.84" y="165.888" width="489.6" height="150.336" />
+  </clipPath>
+  <clipPath id="sheet1_pf53251f486">
+   <rect x="610.56" y="165.888" width="489.6" height="150.336" />
+  </clipPath>
+  <clipPath id="sheet1_p026b66306a">
+   <rect x="51.84" y="397.872" width="1048.32" height="375.84" />
+  </clipPath>
+ </defs>
+</svg></svg>

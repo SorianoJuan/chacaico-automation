@@ -1,0 +1,142 @@
+CHACAICO — PROPUESTA PARA CONSERVAR LOS AOP605
+21 de octubre de 2026
+
+Estado: propuesta de banco. Se comprobó la tabla lógica y el pinout documental;
+no se verificaron la PCB real, las formas de onda, el arranque ni la válvula.
+No se modificaron firmware ni hardware. No es un plano de cortes de pistas.
+
+OBJETIVO
+
+Mantener U1 y U3 como puente de potencia y separar sus cuatro compuertas.
+Agregar dos drivers TC4428A a 9 V. Cada driver controla una diagonal del puente:
+el MOSFET P de un AOP605 y el N del otro. No controla ambos MOSFET de una rama.
+
+Los GPIO siguen siendo de 0/3,3 V. Las compuertas pasan a recibir aproximadamente
+0/9 V, referidos a la masa común. Las señales nuevas se llaman GP1, GN1, GP3 y
+GN3; el número indica el AOP605 de destino.
+
+MODIFICACIONES ELÉCTRICAS
+
+1. Sin alimentación ni USB, aislar los pines 2 y 4 de U1 del bus que antes los
+   unía a GPIO2. Aislar los pines 2 y 4 de U3 del bus que los unía a GPIO1.
+   Ninguna compuerta debe seguir conectada directamente a un GPIO ni a la otra
+   compuerta del encapsulado. Los puntos físicos de corte dependen de las pistas;
+   puede estudiarse levantar las patas de compuerta, pero requiere inspección
+   y trabajo de soldadura adecuado. No cortar basándose sólo en el dibujo.
+
+2. R3 y R4, de 10 kohm, deben quedar entre cada GPIO y GND, del lado de las
+   entradas del driver. Si un corte las deja del lado de las compuertas,
+   reubicarlas. En particular, no conservar el pull-down antiguo sobre GP1/GP3.
+
+3. Conservar fuentes, drenadores y conexiones de la válvula, si coinciden con
+   el esquema y están sanos. En cada AOP605: pin 1 = fuente N a GND; pin 3 =
+   fuente P a +9 V. El nodo de drenadores de U1 llega a J2.2; el de U3 a J2.1.
+   Los pares de drenadores del encapsulado son 5/6 para P y 7/8 para N.
+
+4. Agregar U6 y U7, ambos TC4428A. La numeración siguiente corresponde al
+   encapsulado PDIP-8/SOIC-8/MSOP-8 de la hoja consultada; verificar orientación
+   y referencia antes de soldar. No sustituir por TC4426A o TC4427A sin rediseñar.
+
+CONEXIONES NUEVAS
+
+U6, comando de apertura:
+  GPIO2 -> U6 pines 2 y 4, unidos (entradas A y B).
+  U6 pin 7, salida A inversora -> 22 ohm -> GP3 -> U3 pin 4.
+  U6 pin 5, salida B directa   -> 22 ohm -> GN1 -> U1 pin 2.
+
+U7, comando de cierre:
+  GPIO1 -> U7 pines 2 y 4, unidos.
+  U7 pin 7, salida A inversora -> 22 ohm -> GP1 -> U1 pin 4.
+  U7 pin 5, salida B directa   -> 22 ohm -> GN3 -> U3 pin 2.
+
+En U6 y U7:
+  Pin 6 -> mismo +9 V que alimenta las fuentes P de U1/U3.
+  Pin 3 -> GND común, con retorno corto.
+  Pines 1 y 8 -> sin conexión.
+  100 nF y 4,7 uF en paralelo entre pines 6 y 3, junto a cada driver;
+  usar capacitores con tensión nominal de al menos 25 V en esta propuesta.
+
+En las compuertas, del lado del MOSFET después de los resistores de 22 ohm:
+  GP1 -> 47 kohm -> fuente P de U1 (+9 V).
+  GP3 -> 47 kohm -> fuente P de U3 (+9 V).
+  GN1 -> 47 kohm -> fuente N de U1 (GND).
+  GN3 -> 47 kohm -> fuente N de U3 (GND).
+
+LISTA DE COMPONENTES DE CONTROL
+
+  2 x TC4428A.
+  4 x 22 ohm para las compuertas.
+  4 x 47 kohm de polarización compuerta-fuente.
+  2 x 100 nF y 2 x 4,7 uF, al menos 25 V.
+  R3/R4 de 10 kohm se reutilizan o se reubican del lado de los GPIO.
+
+Son valores iniciales de diseño, no valores validados en esta PCB. No constituyen
+la lista completa de protecciones de potencia. La reserva de energía, el manejo
+de transitorios de la bobina y la protección de corriente siguen por dimensionar.
+
+POR QUÉ FUNCIONA LA ADAPTACIÓN EN RÉGIMEN ESTABLE
+
+Con ambos GPIO en 0, las salidas inversoras llevan GP1 y GP3 cerca de +9 V.
+Como las fuentes P también están a +9 V, VGS de ambos P es aproximadamente 0 V:
+quedan apagados. Las salidas directas llevan GN1 y GN3 a 0 V: los N también
+quedan apagados. Esto cambia el reposo original, donde los P estaban encendidos.
+
+Al subir sólo GPIO2, GP3 baja a 0 V y GN1 sube a 9 V. Se encienden P de U3 y
+N de U1, mientras la otra diagonal queda apagada. Al subir sólo GPIO1 sucede
+lo contrario. La correspondencia física abrir/cerrar debe comprobarse con la
+polaridad de la válvula, aunque se conserva la intención del esquema original.
+
+TABLA COMPROBADA COMO MODELO LÓGICO, CON ALIMENTACIÓN ESTABLE
+
+ GPIO2  GPIO1   GP1  GN1  GP3  GN3   Estado
+   0      0      9    0    9    0    Los cuatro MOSFET apagados.
+   1      0      9    9    0    0    P de U3 y N de U1 encendidos.
+   0      1      0    0    9    9    P de U1 y N de U3 encendidos.
+   1      1      0    9    0    9    PROHIBIDO: conducción cruzada en ambas ramas.
+
+Los valores de GPIO son estados lógicos (0 V y 3,3 V); los valores GP/GN son
+voltajes nominales. La tabla no simula propagación, carga de gate ni transitorios.
+
+CONDICIONES QUE TODAVÍA DEBEN RESOLVERSE Y VALIDARSE
+
+- TC4428A tiene canales independientes: no agrega interbloqueo de las órdenes
+  ni tiempo muerto automático. El control debe poner ambos GPIO en 0, esperar
+  el apagado efectivo y recién entonces activar una única diagonal. Se propone
+  100 microsegundos como punto inicial de banco, a comprobar con osciloscopio;
+  no es una garantía universal. Nunca permitir el estado 1/1.
+
+- Si se requiere tolerar un fallo de software que active ambos GPIO, hace falta
+  interbloqueo por hardware adicional. No está incluido en este esquema. Esta
+  propuesta de banco no ofrece esa protección por sí sola.
+
+- La entrada del driver no debe exceder su alimentación en las condiciones
+  indicadas por el fabricante. Si el CubeCell está por USB y los 9 V están
+  ausentes, no puede emitir HIGH hacia estos drivers sin resolver antes la
+  secuencia de alimentación o añadir aislamiento de señales apropiado. Los
+  resistores de polarización no resuelven ese caso.
+
+- Alimentación de drivers y fuentes P deben ser el mismo rail, con desacople
+  y retornos adecuados. Verificar encendido, apagado, caídas de tensión y reset.
+  Los pull-up/pull-down no garantizan por sí solos todos los estados transitorios.
+
+- No hay limitador de corriente ni protección térmica de los MOSFET externos
+  añadidos por este parche. Verificar la carga, los diodos internos y la energía
+  inductiva. Probar con fuente limitada en corriente después de revisar el diseño.
+  Medir compuerta-fuente, salida y corriente; no validar sólo tocando el componente.
+
+- Un AOP605 que ya se dañó no se recupera al cambiar el control: comprobar su
+  estado antes de reutilizarlo. Si hace falta, reemplazarlo por otro sano del
+  mismo modelo o por un sustituto expresamente verificado.
+
+FUENTES
+
+Microchip, DS20001423K (2022), TC4426A/TC4427A/TC4428A:
+https://ww1.microchip.com/downloads/aemDocuments/documents/APID/ProductDocuments/DataSheets/TC4426A-TC4427A-TC4428A-1.5A-Dual-High-Speed-Power-MOSFET-Drivers-20001423.pdf
+
+Alpha & Omega, AOP605, revisión 4 (2009), copia de hoja del fabricante:
+https://www.bndhep.net/Electronics/Data/AOP605.pdf
+
+Topología original: fotografía del esquema suministrada por el usuario.
+El cableado por diagonales, los valores propuestos y la secuencia de control son
+una propuesta de diseño para este proyecto, no un circuito certificado por los
+fabricantes ni una reparación físicamente comprobada.
