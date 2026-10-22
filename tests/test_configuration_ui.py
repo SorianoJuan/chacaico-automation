@@ -32,6 +32,7 @@ class ConfigurationUiTest(unittest.TestCase):
             elif isinstance(obj, list):
                 for v in obj: walk(v)
         walk(view.view())
+        walk(view.advanced_view())
         json.dumps(discovery, allow_nan=False)
 
     def test_merge_preserves_user_main_view_and_is_idempotent(self):

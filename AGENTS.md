@@ -44,7 +44,11 @@ Preservar los controles y demás contenido de la vista original. El usuario auto
 la fila Orden de válvula inmediatamente después de cada válvula en esa vista,
 con su estado de orden independiente del LED. También autorizó una pestaña aparte
 Configuración LoRa (`configuracion-lora`) para parámetros/confirmaciones;
-no mezclarla con los controles de válvula ni reemplazar otras vistas. No sustituir estado desconocido por
+no mezclarla con los controles de válvula ni reemplazar otras vistas.
+Mantener Configuración LoRa minimalista: reposo, pulso, potencia, Aplicar y
+confirmación resumida. Ventanas, políticas y diagnóstico van detrás de Más opciones
+(subvista `configuracion-lora-avanzada`). No volver a mostrar todos los contadores
+ni explicaciones extensas en la vista inicial. No sustituir estado desconocido por
 cerrado para cambiar la apariencia. Mantener estado pendiente/confirmado separado.
 
 La Pi5 tiene1GB de RAM. Usar `home-assistant/scripts/install-local-app.sh` para

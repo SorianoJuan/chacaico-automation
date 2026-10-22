@@ -3,12 +3,15 @@
 ## Operación desde Home Assistant
 
 La pestaña **Configuración LoRa** de Chacaico (`dashboard-chacaico/configuracion-lora`)
-contiene una sección por nodo. La vista original de válvulas y LED se conserva.
+muestra una sección compacta por nodo: reposo, pulso, potencia y Aplicar.
+**En uso** resume los valores confirmados. **Más opciones** abre la subvista
+`configuracion-lora-avanzada` con ventanas, política de entrega y diagnóstico.
+La vista original de válvulas y LED se conserva.
 
 1. Editar los parámetros solicitados del nodo (tabla siguiente).
 2. Pulsar **Aplicar al nodo**. Editar los campos solo modifica el borrador.
-3. Esperar **Confirmada** y comprobar los valores, revisión y hora reportados.
-4. **Consultar al nodo** pide una lectura nueva; si duerme, espera su anuncio.
+3. Esperar **Confirmada** y comprobar el resumen **En uso**.
+4. **Más opciones → Consultar al nodo** pide una lectura nueva; si duerme, espera su anuncio.
 
 | Parámetro del nodo | Rango | Predeterminado |
 | --- | --- | --- |
@@ -41,8 +44,8 @@ de esa válvula y las órdenes de LED no la sobrescriben. Tras reiniciar el puen
 empieza en Sin órdenes pendientes. Los parámetros siguen en Configuración LoRa.
 
 Los valores confirmados son los que devolvió el nodo, no una copia optimista de
-lo solicitado. Permanecen visibles durante el reposo. La hora permite distinguir
-una lectura reciente de otra anterior. Un error de escritura permanece visible
+lo solicitado. Permanecen visibles durante el reposo. La revisión y hora de confirmación siguen disponibles como entidades de
+diagnóstico para distinguir una lectura reciente de otra anterior. Un error de escritura permanece visible
 hasta Aplicar o Consultar; una consulta posterior confirma la configuración que
 sigue vigente, no que el intento fallido se haya aplicado.
 
@@ -139,7 +142,11 @@ de escritura conserva la configuración anterior y se informa como error. Esto
 reduce el riesgo de perder un nodo al bajar demasiado la potencia; no garantiza
 que el enlace continúe funcionando ante cambios posteriores del entorno.
 
-## Métricas en Configuración LoRa
+## Entidades de métricas
+
+La vista muestra únicamente un diagnóstico resumido dentro de **Más opciones**.
+El resto permanece disponible como entidades de Home Assistant para consultas
+o tarjetas elegidas por el usuario.
 
 - RSSI/SNR nodo→HAT y HAT→nodo: la segunda medición la reporta el propio CubeCell.
   Corresponden al último intercambio autenticado, no a un promedio ni un margen

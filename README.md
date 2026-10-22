@@ -81,8 +81,9 @@ HA espera la publicación del estado confirmado. Todos los ACK incluyen el estad
 de válvula y LED. Tras reiniciar un nodo la posición de válvula es desconocida.
 
 La pestaña **Configuración LoRa** (`dashboard-chacaico/configuracion-lora`) reúne
-reposo, pulso, potencia y ventanas solicitadas, **Aplicar**, **Consultar**,
-configuración confirmada, políticas del puente y métricas en ambos sentidos.
+reposo, pulso y potencia solicitados, **Aplicar** y confirmación resumida.
+**Más opciones** abre ventanas, política de entrega y diagnóstico en una subvista
+oculta; las métricas restantes siguen disponibles como entidades.
 La potencia del HAT se aplica con un control independiente. La vista original del usuario se conserva.
 Editar un campo no envía SET_CONFIG hasta pulsar Aplicar.
 

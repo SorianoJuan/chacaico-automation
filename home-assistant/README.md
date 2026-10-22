@@ -19,9 +19,14 @@ nombre de carpeta/slug. Para Pi1GB, `scripts/install-local-app.sh` detiene Core
 durante la construcción y lo reactiva al terminar.
 
 El panel Chacaico se edita desde la UI del usuario. La pestaña nueva
-**Configuración LoRa** contiene todos los parámetros y sus confirmaciones.
+**Configuración LoRa** muestra solo reposo, pulso, potencia, Aplicar y una
+confirmación breve por nodo, más potencia del HAT. **Más opciones** abre una
+subvista oculta con escucha, política de entrega y diagnóstico resumido. Los
+errores de validación aparecen solo cuando existen. Las demás métricas siguen
+disponibles como entidades, sin llenar la pantalla de contadores.
 La vista original se preserva. El generador reproducible es
-`scripts/node-config-view.py`; el JSON público está en `config/node-config-view.json`.
+`scripts/node-config-view.py`; los JSON públicos están en `config/node-config-view.json` y
+`config/node-config-advanced-view.json` (exportar con `--advanced`).
 `deploy-config-view.sh` instala con respaldo privado y control SHA256 de edición
 concurrente. Ver [operación de configuración](../docs/node-configuration.md). Las plantillas de
 `config/chacaico-controls.yaml` agregan switches para los IDs1/2, sin editarlo.

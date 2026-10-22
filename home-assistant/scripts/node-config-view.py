@@ -6,76 +6,84 @@ import json
 from pathlib import Path
 
 VIEW_PATH = "configuracion-lora"
+ADVANCED_PATH = "configuracion-lora-avanzada"
+DASHBOARD_PATH = "/dashboard-chacaico/"
+
+
+def entities(title, rows):
+    return {"type": "entities", "title": title, "show_header_toggle": False,
+            "entities": [{"entity": entity, "name": label} for entity, label in rows]}
+
+
+def reported(node, fields):
+    values = ["{{ states('sensor.chacaico_node_%s_%s_confirmed') }} %s" % (node, key, unit)
+              for key, unit in fields]
+    return {"type": "markdown", "content": "En uso: " + " · ".join(values)}
+
+
+def validation(node):
+    entity = f"sensor.chacaico_node_{node}_config_input_error"
+    return {"type": "conditional", "conditions": [
+        {"condition": "state", "entity": entity, "state_not": state}
+        for state in ("Sin errores", "unknown", "unavailable")],
+        "card": entities("Revisá los valores", [(entity, "Aviso")])}
 
 
 def view(nodes=(1, 2)):
-    def entities(title, rows):
-        return {"type": "entities", "title": title, "show_header_toggle": False,
-                "entities": [{"entity": entity, "name": label} for entity, label in rows]}
-    sections = [{"type": "grid", "cards": [
-        {"type": "heading", "heading": "Radio de la Raspberry", "heading_style": "title"},
-        entities("Potencia del HAT", [
-            ("number.chacaico_bridge_tx_power_requested", "Potencia solicitada (dBm)"),
-            ("button.chacaico_bridge_power_apply", "Aplicar potencia"),
-            ("sensor.chacaico_bridge_tx_power_applied", "Potencia aplicada"),
-            ("sensor.chacaico_bridge_power_status", "Estado")]),
-        {"type": "markdown", "content": "14 dBm ≈ 25 mW · 20 dBm = 100 mW · 22 dBm ≈ 158 mW. "
-         "La potencia aplicada es el ajuste del transmisor; no es una medición de RF ni confirma el enlace."}]}]
+    sections = []
     for node in nodes:
         prefix = f"chacaico_node_{node}"
-        parameters = [("sleep_s", "Reposo (s)"), ("pulse_ms", "Pulso GPIO (ms)"),
-                      ("tx_power_dbm", "Potencia TX (dBm)"), ("listen_ms", "Escucha renovable (ms)"),
-                      ("max_awake_ms", "Presupuesto despierto (ms)")]
-        cards = [
-            {"type": "heading", "heading": f"CubeCell {node}", "heading_style": "title", "icon": "mdi:radio-tower"},
-            {"type": "markdown", "content": "**0 s = escucha continua.** Editá los valores y pulsá **Aplicar al nodo**. "
-             "Si duerme, espera al próximo contacto. La escucha se renueva con intercambios válidos y puede terminar antes "
-             "si no hay trabajo. El pulso GPIO no es la duración del riego. Cambiar potencia incluye una prueba de ida y vuelta; "
-             "si falla, el nodo recupera el valor anterior."},
-            entities("Parámetros solicitados", [(f"number.{prefix}_{key}_requested", label) for key, label in parameters] + [
-                (f"sensor.{prefix}_config_input_error", "Validación"),
+        sections.append({"type": "grid", "cards": [
+            entities(f"Nodo {node}", [
+                (f"number.{prefix}_sleep_s_requested", "Reposo (0 = continuo)"),
+                (f"number.{prefix}_pulse_ms_requested", "Pulso"),
+                (f"number.{prefix}_tx_power_dbm_requested", "Potencia"),
+                (f"button.{prefix}_config_apply", "Aplicar"),
+                (f"sensor.{prefix}_config_status", "Última aplicación")]),
+            reported(node, [("sleep_s", "s"), ("pulse_ms", "ms"), ("tx_power_dbm", "dBm")]),
+            validation(node)]})
+    sections.append({"type": "grid", "cards": [
+        entities("Raspberry · HAT", [
+            ("number.chacaico_bridge_tx_power_requested", "Potencia"),
+            ("button.chacaico_bridge_power_apply", "Aplicar"),
+            ("sensor.chacaico_bridge_tx_power_applied", "En uso")]),
+        {"type": "conditional", "conditions": [{"condition": "state",
+            "entity": "sensor.chacaico_bridge_power_status", "state_not": "Aplicada en el HAT"}],
+         "card": entities("Potencia del HAT", [("sensor.chacaico_bridge_power_status", "Estado")])},
+        {"type": "button", "name": "Más opciones", "icon": "mdi:tune", "show_icon": False,
+         "tap_action": {"action": "navigate", "navigation_path": DASHBOARD_PATH + ADVANCED_PATH}}]})
+    return {"title": "Configuración LoRa", "path": VIEW_PATH, "icon": "mdi:tune",
+            "type": "sections", "max_columns": 2, "show_icon_and_title": True, "sections": sections}
+
+
+def advanced_view(nodes=(1, 2)):
+    sections = []
+    for node in nodes:
+        prefix = f"chacaico_node_{node}"
+        sections.append({"type": "grid", "cards": [
+            entities(f"Nodo {node} · Escucha", [
+                (f"number.{prefix}_listen_ms_requested", "Ventana de escucha"),
+                (f"number.{prefix}_max_awake_ms_requested", "Máximo despierto"),
                 (f"button.{prefix}_config_apply", "Aplicar al nodo"),
-                (f"button.{prefix}_config_query", "Consultar al nodo")]),
-            entities("Configuración confirmada por el nodo", [
-                (f"sensor.{prefix}_config_status", "Actualización"),
-                (f"sensor.{prefix}_protocol", "Compatibilidad")]
-                + [(f"sensor.{prefix}_{key}_confirmed", label) for key, label in parameters] + [
-                (f"sensor.{prefix}_config_revision", "Revisión"),
-                (f"sensor.{prefix}_config_confirmed_at", "Confirmada"),
-                (f"sensor.{prefix}_link", "Comunicación")]),
-            {"type": "markdown", "content": "**Política del puente:** se aplica sin despertar al nodo. Vigencia **0 = automática** "
-             "según reposo y ventana. El plazo elegido solo afecta órdenes nuevas; una orden vencida no se vuelve a enviar. "
-             "Si el plazo es menor que el reposo, puede vencer antes de que despierte."},
-            entities("Entrega y alerta de contacto", [
-                (f"number.{prefix}_command_ttl_s_requested", "Vigencia solicitada (s)"),
+                (f"sensor.{prefix}_config_status", "Última aplicación")]),
+            reported(node, [("listen_ms", "ms de escucha"), ("max_awake_ms", "ms despierto")]),
+            validation(node),
+            entities("Entrega de órdenes", [
+                (f"number.{prefix}_command_ttl_s_requested", "Vigencia (0 = automática)"),
                 (f"number.{prefix}_missed_contacts_requested", "Contactos perdidos tolerados"),
                 (f"button.{prefix}_policy_apply", "Aplicar política"),
-                (f"sensor.{prefix}_policy_status", "Estado"),
-                (f"sensor.{prefix}_command_ttl_s_confirmed", "Vigencia configurada"),
-                (f"sensor.{prefix}_missed_contacts_confirmed", "Tolerancia aplicada"),
-                (f"sensor.{prefix}_metric_command_ttl_s", "Vigencia efectiva (órdenes nuevas)"),
-                (f"sensor.{prefix}_metric_contact_timeout_s", "Plazo sin contacto")]),
-            entities("Calidad del enlace", [(f"sensor.{prefix}_metric_{key}", label) for key, label in (
-                ("uplink_rssi", "RSSI nodo → HAT"), ("uplink_snr", "SNR nodo → HAT"),
-                ("downlink_rssi", "RSSI HAT → nodo"), ("downlink_snr", "SNR HAT → nodo"),
-                ("last_ack_ms", "Tiempo de última respuesta"), ("tx_attempts", "Intentos TX"),
-                ("tx_errors", "Errores TX"), ("retries", "Reenvíos"), ("acks", "Respuestas válidas"))]),
-            entities("Órdenes de válvula y LED", [(f"sensor.{prefix}_command_status", "Última orden")]
-                + [(f"sensor.{prefix}_metric_{key}", label) for key, label in (
-                ("orders", "Aceptadas"), ("confirmed", "Confirmadas"), ("expired", "Vencidas sin confirmar"),
-                ("superseded", "Sustituidas por otra orden"), ("pending", "Pendientes"),
-                ("success_percent", "Éxito entre confirmadas y vencidas"),
-                ("last_attempts", "Envíos de última orden finalizada"),
-                ("last_queue_s", "Espera antes del primer envío"),
-                ("last_delivery_s", "Demora desde primer envío"), ("last_total_s", "Demora total"))]
-                + [(f"sensor.{prefix}_metrics_started_at", "Contadores desde")]),
-            {"type": "markdown", "content": "Las métricas se reinician al arrancar el puente. El porcentaje cuenta órdenes "
-             "confirmadas y vencidas; excluye pendientes y sustituidas. No mide pérdida de paquetes. Una confirmación de válvula "
-             "confirma ejecución GPIO, no posición física. El tiempo de respuesta incluye el pulso cuando corresponde."},
-        ]
-        sections.append({"type": "grid", "cards": cards})
-    return {"title": "Configuración LoRa", "path": VIEW_PATH, "icon": "mdi:tune",
-            "type": "sections", "max_columns": 3, "show_icon_and_title": True, "sections": sections}
+                (f"sensor.{prefix}_policy_status", "Estado")]),
+            reported(node, [("command_ttl_s", "s de vigencia"), ("missed_contacts", "contactos")]),
+            entities("Diagnóstico", [
+                (f"sensor.{prefix}_link", "Comunicación"),
+                (f"sensor.{prefix}_metric_uplink_rssi", "Señal recibida por HAT"),
+                (f"sensor.{prefix}_metric_downlink_rssi", "Señal recibida por nodo"),
+                (f"sensor.{prefix}_metric_last_total_s", "Demora de última orden"),
+                (f"button.{prefix}_config_query", "Consultar al nodo")])
+        ]})
+    return {"title": "Más opciones LoRa", "path": ADVANCED_PATH, "subview": True,
+            "back_path": DASHBOARD_PATH + VIEW_PATH, "type": "sections", "max_columns": 2,
+            "sections": sections}
 
 
 def merge(document, nodes=(1, 2)):
@@ -83,26 +91,30 @@ def merge(document, nodes=(1, 2)):
     if result.get("key") != "lovelace.dashboard_chacaico":
         raise ValueError("Unexpected dashboard storage key")
     views = result["data"]["config"].setdefault("views", [])
-    for index, existing in enumerate(views):
-        if existing.get("path") == VIEW_PATH:
-            if existing.get("title") != "Configuración LoRa":
+    for replacement in (view(nodes), advanced_view(nodes)):
+        matches = [i for i, existing in enumerate(views) if existing.get("path") == replacement["path"]]
+        if len(matches) > 1:
+            raise ValueError("Duplicate reserved view path")
+        if matches:
+            index = matches[0]
+            if views[index].get("title") != replacement["title"]:
                 raise ValueError("Reserved view path is already used by another view")
-            views[index] = view(nodes)
-            break
-    else:
-        views.append(view(nodes))
+            views[index] = replacement
+        else:
+            views.append(replacement)
     return result
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--storage", type=Path)
+    parser.add_argument("--advanced", action="store_true", help="Export the hidden advanced subview")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--nodes", type=int, nargs="+", default=[1, 2])
     args = parser.parse_args()
     if len(args.nodes) != len(set(args.nodes)) or any(not 1 <= n <= 65534 for n in args.nodes):
         parser.error("Node IDs must be unique and between 1 and 65534")
-    result = merge(json.loads(args.storage.read_text()), args.nodes) if args.storage else view(args.nodes)
+    result = merge(json.loads(args.storage.read_text()), args.nodes) if args.storage else (advanced_view(args.nodes) if args.advanced else view(args.nodes))
     args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2)+"\n")
 
 
