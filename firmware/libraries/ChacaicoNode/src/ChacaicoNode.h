@@ -16,28 +16,46 @@ static uint32_t wake=0, lastSequence=0, pulseEnd=0, replyAt=0, blinkAt=0;
 static uint32_t idleUntil=0, hardUntil=0, announceAt=0, rng=1, txStarted=0;
 static bool haveSequence=false, announcement=false, sleepAfterTx=false;
 static const int POFF=GPIO1, PON=GPIO2;
-static const uint32_t LISTEN_MS=3000, MAX_AWAKE_MS=10000, REPLY_GUARD_MS=150;
+static const uint32_t REPLY_GUARD_MS=150, POWER_TRIAL_MS=8000;
+static int16_t downlinkRssi=32767;
+static int8_t downlinkSnr=127;
+static bool powerTrial=false;
+static uint32_t trialUntil=0, trialRevision=0;
+static uint16_t trialSleep=0, trialPulse=50, trialListen=3000, trialAwake=10000;
+static uint8_t trialPower=0;
+static void setPower(uint8_t power) {
+    Radio.Standby();
+    Radio.SetTxConfig(MODEM_LORA,power,0,0,7,1,8,false,true,0,0,false,3000);
+}
 static bool due(uint32_t at) { return int32_t(millis()-at)>=0; }
 static uint32_t jitter(uint32_t max) {
     rng^=rng<<13;rng^=rng>>17;rng^=rng<<5;return rng%(max+1);
 }
 static void receive() { Radio.Rx(0); }
 static void onWake() { wakeRequested=true; }
-static void extendWindow() { idleUntil=millis()+LISTEN_MS; }
+static void extendWindow() { idleUntil=millis()+config.listen; }
 static void startWindow() {
     if (wake==0xffffffff) { config.healthy=false;return; }
     ++wake;endRequested=false;sleepAfterTx=false;
-    idleUntil=millis()+LISTEN_MS;hardUntil=millis()+MAX_AWAKE_MS;
+    idleUntil=millis()+config.listen;hardUntil=millis()+config.awake;
     announcement=true;replyPending=true;replyAt=millis()+jitter(800)+100;
     receive();
 }
 static void makeResponse(uint8_t kind,uint8_t op,uint8_t status,uint32_t sequence) {
-    memset(reply,0,sizeof(reply));reply[0]='C';reply[1]='L';reply[2]=2;reply[3]=kind;
+    memset(reply,0,sizeof(reply));reply[0]='C';reply[1]='L';reply[2]=3;reply[3]=kind;
     write16(reply+4,CHACAICO_NODE_ID);write32(reply+6,config.boot);
     write32(reply+10,wake);write32(reply+14,sequence);
     reply[18]=op;reply[19]=status;write32(reply+20,config.revision);
     write16(reply+24,config.sleep);write16(reply+26,config.pulse);
-    reply[28]=valve;reply[29]=led?1:0;authenticate(reply,reply+BODY_SIZE);
+    reply[28]=valve;reply[29]=led?1:0;
+    reply[30]=config.power;write16(reply+31,config.listen);write16(reply+33,config.awake);
+    write16(reply+35,uint16_t(downlinkRssi));reply[37]=uint8_t(downlinkSnr);
+    if(powerTrial) {
+        reply[19]=TRIAL;reply[38]=1;write32(reply+20,trialRevision);
+        write16(reply+24,trialSleep);write16(reply+26,trialPulse);reply[30]=trialPower;
+        write16(reply+31,trialListen);write16(reply+33,trialAwake);
+    }
+    authenticate(reply,reply+BODY_SIZE);
 }
 static void queueResponse(uint8_t status=OK) {
     announcement=false;makeResponse(RESPONSE,lastRequest[18],status,lastSequence);
@@ -47,7 +65,7 @@ static void queueResponse(uint8_t status=OK) {
 static void onTxDone() {
     transmitting=false;
     if (announcement) {
-        idleUntil=millis()+LISTEN_MS;hardUntil=millis()+MAX_AWAKE_MS;
+        idleUntil=millis()+config.listen;hardUntil=millis()+config.awake;
         announceAt=millis()+30000+jitter(2000);announcement=false;
     }
     if(sleepAfterTx) endRequested=true;
@@ -59,14 +77,14 @@ static void onTxTimeout() {
     Serial.println("TX timeout");
 }
 static void onRxError() { if(!sleeping && !transmitting && !pulsing) receive(); }
-static void onRxDone(uint8_t *payload,uint16_t size,int16_t,int8_t) {
+static void onRxDone(uint8_t *payload,uint16_t size,int16_t rssi,int8_t snr) {
     // Validate/copy only; flash writes and actuation run from loop, never IRQ context.
     if(sleeping || incoming || pulsing || transmitting || size!=FRAME_SIZE
-        || payload[0]!='C' || payload[1]!='L' || payload[2]!=2 || payload[3]!=REQUEST
+        || payload[0]!='C' || payload[1]!='L' || payload[2]!=3 || payload[3]!=REQUEST
         || read16(payload+4)!=CHACAICO_NODE_ID || read32(payload+6)!=config.boot
-        || read32(payload+10)!=wake || !read32(payload+14) || payload[18]>END
-        || payload[19]!=0 || payload[28]>1 || payload[29]>1 || !authentic(payload)) return;
-    Radio.Standby();memcpy(rx,payload,FRAME_SIZE);incoming=true;
+        || read32(payload+10)!=wake || !read32(payload+14) || payload[18]>COMMIT_CONFIG
+        || payload[19]!=0 || payload[38]!=0 || payload[28]>1 || payload[29]>1 || !authentic(payload)) return;
+    Radio.Standby();downlinkRssi=rssi;downlinkSnr=snr;memcpy(rx,payload,FRAME_SIZE);incoming=true;
 }
 static void processRequest() {
     incoming=false;
@@ -86,19 +104,45 @@ static void processRequest() {
     if(!config.healthy) { queueResponse(STORE_FAILED);return; }
     // Budget the maximum pulse, flash and response before accepting new work.
     const int32_t requiredMs=1000+(rx[18]==SET_VALVE ? config.pulse : 0);
-    if(config.sleep && int32_t(hardUntil-millis())<requiredMs && rx[18]!=END) {
+    if(!powerTrial && config.sleep && int32_t(hardUntil-millis())<requiredMs && rx[18]!=END) {
         queueResponse(BUSY);return;
     }
-    if(rx[18]!=SET_CONFIG && (read32(rx+20) || read16(rx+24) || read16(rx+26))) {
+    if(rx[18]!=SET_CONFIG && rx[18]!=COMMIT_CONFIG && (read32(rx+20) || read16(rx+24) || read16(rx+26))) {
         queueResponse(INVALID);return;
     }
-    if(rx[18]==SET_CONFIG) {
+    if(rx[18]==SET_CONFIG || rx[18]==COMMIT_CONFIG) {
+        const uint32_t rev=read32(rx+20);
+        const uint16_t sec=read16(rx+24),ms=read16(rx+26),listen=read16(rx+31),awake=read16(rx+33);
+        const uint8_t dbm=rx[30];
+        const bool match=powerTrial && rev==trialRevision && sec==trialSleep && ms==trialPulse
+            && dbm==trialPower && listen==trialListen && awake==trialAwake;
+        if(!validConfig(sec,ms,dbm,listen,awake)) { queueResponse(INVALID);return; }
+        if(powerTrial && !match) { queueResponse(BUSY);return; }
+        if(rx[18]==SET_CONFIG && dbm!=config.power && !powerTrial) {
+            if(config.revision==0xffffffff || rev!=config.revision+1) { queueResponse(CONFLICT);return; }
+            trialRevision=rev;trialSleep=sec;trialPulse=ms;trialPower=dbm;trialListen=listen;trialAwake=awake;
+            powerTrial=true;trialUntil=millis()+POWER_TRIAL_MS;
+            setPower(dbm);queueResponse(TRIAL);return;
+        }
+        if(rx[18]==SET_CONFIG && powerTrial) { queueResponse(TRIAL);return; }
+        if(rx[18]==COMMIT_CONFIG && !powerTrial && (rev!=config.revision || dbm!=config.power)) {
+            queueResponse(CONFLICT);return;
+        }
         const bool wasContinuous=config.sleep==0;
-        const Status result=config.apply(read32(rx+20),read16(rx+24),read16(rx+26));
-        if(result==OK && wasContinuous && config.sleep) hardUntil=millis()+MAX_AWAKE_MS;
-        Serial.printf("CONFIG node=%u revision=%lu sleep=%u pulse=%u result=%u\r\n",
-            CHACAICO_NODE_ID,(unsigned long)config.revision,config.sleep,config.pulse,result);
+        const Status result=config.apply(rev,sec,ms,dbm,listen,awake);
+        powerTrial=false;setPower(config.power);
+        if(result==OK) {
+            // Start the new budget from application of the new window settings.
+            if(wasContinuous || config.sleep) hardUntil=millis()+config.awake;
+        }
+        Serial.printf("CONFIG node=%u revision=%lu sleep=%u pulse=%u power=%u listen=%u awake=%u result=%u\r\n",
+            CHACAICO_NODE_ID,(unsigned long)config.revision,config.sleep,config.pulse,
+            config.power,config.listen,config.awake,result);
         queueResponse(result);return;
+    }
+    if(powerTrial) {
+        if(rx[18]==END) { powerTrial=false;setPower(config.power); }
+        else { queueResponse(TRIAL);return; }
     }
     if(rx[18]==SET_VALVE && valve!=rx[28]) {
         requestedValve=rx[28];
@@ -132,10 +176,10 @@ static void nodeSetup() {
     events.TxDone=onTxDone;events.TxTimeout=onTxTimeout;
     events.RxDone=onRxDone;events.RxError=onRxError;
     Radio.Init(&events);Radio.SetChannel(CHACAICO_FREQUENCY);
-    Radio.SetTxConfig(MODEM_LORA,0,0,0,7,1,8,false,true,0,0,false,3000);
+    setPower(config.power);
     Radio.SetRxConfig(MODEM_LORA,0,7,1,0,8,0,false,0,true,0,0,false,true);
     Radio.SetPublicNetwork(false);TimerInit(&wakeTimer,onWake);
-    Serial.printf("CHACAICO valve-0.4.1 node=%u boot=%lu revision=%lu sleep=%u pulse=%u store=%u\r\n",
+    Serial.printf("CHACAICO valve-0.5.0 node=%u boot=%lu revision=%lu sleep=%u pulse=%u store=%u\r\n",
         CHACAICO_NODE_ID,(unsigned long)config.boot,(unsigned long)config.revision,
         config.sleep,config.pulse,config.healthy);
     startWindow();
@@ -146,7 +190,16 @@ static void nodeLoop() {
         wakeRequested=false;sleeping=false;startWindow();
     }
     Radio.IrqProcess();
-    if(incoming && config.sleep && due(hardUntil) && !pulsing && !replyPending && !transmitting)
+    if(powerTrial && due(trialUntil) && !transmitting) {
+        powerTrial=false;setPower(config.power);replyPending=false;receive();
+        // A duplicate of the expired trial must never replay its tentative ACK.
+        if(haveSequence) {
+            makeResponse(RESPONSE,lastRequest[18],CONFLICT,lastSequence);
+            memcpy(lastReply,reply,FRAME_SIZE);
+        }
+        extendWindow();hardUntil=millis()+config.awake;
+    }
+    if(incoming && !powerTrial && config.sleep && due(hardUntil) && !pulsing && !replyPending && !transmitting)
         incoming=false;
     if(incoming) processRequest();
     if(pulsing && due(pulseEnd)) {
@@ -171,10 +224,10 @@ static void nodeLoop() {
     }
     const bool idle=!incoming && !pulsing && !transmitting && !replyPending
         && !blinkTransitions && !restoringLed;
-    if(idle && config.healthy && config.sleep && (endRequested || due(idleUntil) || due(hardUntil))) {
+    if(idle && !powerTrial && config.healthy && config.sleep && (endRequested || due(idleUntil) || due(hardUntil))) {
         sleepNow();return;
     }
-    if(idle && (!config.sleep || !config.healthy) && due(announceAt)) {
+    if(idle && !powerTrial && (!config.sleep || !config.healthy) && due(announceAt)) {
         announcement=true;replyPending=true;replyAt=millis()+jitter(250);
     }
     delay(1);

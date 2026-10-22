@@ -1,7 +1,7 @@
 # Firmware CubeCell
 
 Entradas separadas en `nodes/node_1/` y `nodes/node_2/`, cada una con su ID,
-perfil público y build privado. Firmware0.4.1 instalado en ambas; máximo configurable3000ms, pulso aplicado50ms. La aplicación compartida
+perfil público y build privado. Firmware0.5.0 para ambas; máximo configurable3000ms, pulso aplicado50ms. La aplicación compartida
 está en `libraries/ChacaicoNode/src/ChacaicoNode.h`; los encabezados ChacaicoProtocol.h y ChacaicoStorage.h contienen protocolo y persistencia.
 
 `configure-node.py --id N` conserva `.secrets/node-N.json`, verifica ID/clave
@@ -19,3 +19,6 @@ está identificada con su antena conectada. En la raíz están los comandos exac
 
 Configuración remota y sueño implementados en 0.4.0; OTA de firmware no implementado.
 [Operación y límites](../docs/node-configuration.md).
+
+0.5.0 agrega potencia TX, ventanas configurables, señal de bajada y prueba/commit
+de potencia. Migra flash anterior; no volver a firmware0.4.x después de migrar.

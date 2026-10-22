@@ -1,0 +1,17 @@
+{
+  "firmware_version": "0.5.0",
+  "bridge_version": "0.5.0",
+  "core_version": "2026.9.4",
+  "python_tests_passed": 68,
+  "node1_build_bytes": 56540,
+  "node2_build_bytes": 56532,
+  "main_view_unchanged": true,
+  "other_views_preserved": 1,
+  "backup_slug": "9f01c042",
+  "usb_identity": {
+    "1": "pci-0000:06:00.1-usb-0:3:1.0-port0",
+    "2": "pci-0000:06:00.1-usb-0:4:1.0-port0"
+  },
+  "valve_commands_sent": 0,
+  "observed_bridge_memory_bytes": 17420288
+}

@@ -8,13 +8,14 @@ static void advance(uint32_t ms) {
     while(int32_t(until-millis())>0)loop();
 }
 static std::vector<uint8_t> request(uint8_t op,uint32_t seq,uint8_t value=0,
-                                  uint32_t rev=0,uint16_t sleep=0,uint16_t pulse=0) {
+                                  uint32_t rev=0,uint16_t sleep=0,uint16_t pulse=0,uint8_t power=0,uint16_t listen=3000,uint16_t awake=10000) {
     std::vector<uint8_t> p(FRAME_SIZE,0);
-    p[0]='C';p[1]='L';p[2]=2;p[3]=REQUEST;write16(p.data()+4,CHACAICO_NODE_ID);
+    p[0]='C';p[1]='L';p[2]=3;p[3]=REQUEST;write16(p.data()+4,CHACAICO_NODE_ID);
     write32(p.data()+6,config.boot);write32(p.data()+10,wake);write32(p.data()+14,seq);
     p[18]=op;write32(p.data()+20,rev);write16(p.data()+24,sleep);write16(p.data()+26,pulse);
     if(op==SET_LED)p[29]=value;
     if(op==SET_VALVE)p[28]=value;
+    p[30]=power;write16(p.data()+31,listen);write16(p.data()+33,awake);
     authenticate(p.data(),p.data()+BODY_SIZE);return p;
 }
 static void deliver(std::vector<uint8_t> p) {
@@ -22,7 +23,7 @@ static void deliver(std::vector<uint8_t> p) {
     events.RxDone(p.data(),p.size(),-50,12);loop();
 }
 static void storageTests() {
-    for(int cut=0;cut<=32;++cut) {
+    for(int cut=0;cut<=40;++cut) {
         flashMemory.fill(255);flashCut=-1;ConfigStore a;a.begin();
         assert(a.healthy && a.boot==1);
         assert(a.apply(2,5,75)==OK);
@@ -31,18 +32,27 @@ static void storageTests() {
         assert(a.apply(2,6,75)==CONFLICT && flashWrites==before);
         assert(a.apply(3,3601,75)==INVALID && flashWrites==before);
         flashCut=cut;const Status result=a.apply(3,9,100);
-        assert(result==(cut==32?OK:STORE_FAILED));
+        assert(result==(cut==40?OK:STORE_FAILED));
         flashCut=-1;ConfigStore reboot;reboot.begin();
         assert(reboot.healthy && reboot.boot==2);
-        assert(reboot.sleep==(cut==32?9:5));
-        assert(reboot.pulse==(cut==32?100:75));
+        assert(reboot.sleep==(cut==40?9:5));
+        assert(reboot.pulse==(cut==40?100:75));
     }
     flashMemory.fill(255);flashCut=-1;ConfigStore good;good.begin();
     auto saved=flashMemory;flashReadFail=true;ConfigStore unreadable;unreadable.begin();
     assert(!unreadable.healthy && flashMemory==saved);flashReadFail=false;
-    flashMemory[28]^=1;ConfigStore damaged;damaged.begin();assert(!damaged.healthy);
+    flashMemory[36]^=1;ConfigStore damaged;damaged.begin();assert(!damaged.healthy);
     flashMemory.fill(255);flashCut=0;ConfigStore failed;failed.begin();assert(!failed.healthy);
-    flashCut=-1;flashMemory.fill(255);flashWrites=0;
+    // Upgrade a legacy record without losing its boot counter or user settings.
+    flashCut=-1;flashMemory.fill(255);
+    uint8_t old[32]={0};memcpy(old,"CCF2",4);write16(old+4,CHACAICO_NODE_ID);write16(old+6,1);
+    write32(old+8,41);write32(old+12,25);write32(old+16,7);write16(old+20,30);write16(old+22,75);
+    write32(old+28,ConfigStore::checksum(old,28));memcpy(flashMemory.data(),old,32);
+    ConfigStore migrated;migrated.begin();
+    assert(migrated.healthy && migrated.boot==26 && migrated.generation==42);
+    assert(migrated.revision==7 && migrated.sleep==30 && migrated.pulse==75);
+    assert(migrated.power==0 && migrated.listen==3000 && migrated.awake==10000);
+    flashMemory.fill(255);flashWrites=0;
 }
 int main() {
     storageTests();
@@ -118,7 +128,7 @@ int main() {
     deliver(request(SET_CONFIG,seq++,0,6,0,50));advance(500);
     assert(config.sleep==0);
     clockMs=0xfffffff0UL;
-    idleUntil=millis()+LISTEN_MS;hardUntil=millis()+MAX_AWAKE_MS;announceAt=millis()+30000;
+    idleUntil=millis()+config.listen;hardUntil=millis()+config.awake;announceAt=millis()+30000;
     deliver(request(SET_VALVE,seq++,0));start=highEdges.back().second;
     advance(55);
     assert(!gpio[1]&&!gpio[2] && uint32_t(millis()-start)<=57);
@@ -157,6 +167,41 @@ int main() {
         ConfigStore restored;restored.begin();
         assert(restored.healthy && restored.pulse==50 && restored.sleep==0);
     }
+    // Power must be tried bidirectionally before persistence; lost trial replies roll back.
+    const auto edgesBefore=highEdges.size();
+    const int writesBefore=flashWrites;
+    auto trial=request(SET_CONFIG,seq++,0,config.revision+1,7,50,14,2500,12000);
+    deliver(trial);advance(500);
+    assert(powerTrial && config.power==0 && Radio.txPower==14 && reply[19]==TRIAL && reply[38]==1);
+    assert(config.sleep==0 && flashWrites==writesBefore);
+    advance(8500);assert(!powerTrial && config.power==0 && Radio.txPower==0 && flashWrites==writesBefore);
+    deliver(trial);advance(500);assert(!powerTrial && reply[19]==CONFLICT);
+    deliver(request(SET_CONFIG,seq++,0,config.revision+1,7,50,14,2500,12000));advance(500);
+    assert(powerTrial);
+    flashCut=0;
+    deliver(request(COMMIT_CONFIG,seq++,0,config.revision+1,7,50,14,2500,12000));advance(500);
+    assert(!powerTrial && config.power==0 && Radio.txPower==0 && reply[19]==STORE_FAILED);
+    flashCut=-1;
+    deliver(request(SET_CONFIG,seq++,0,config.revision+1,7,50,14,2500,12000));advance(500);
+    assert(powerTrial);
+    auto commit=request(COMMIT_CONFIG,seq++,0,config.revision+1,7,50,14,2500,12000);
+    deliver(commit);advance(500);
+    assert(!powerTrial && config.power==14 && config.sleep==7 && config.listen==2500 && config.awake==12000);
+    assert(flashWrites==writesBefore+2 && reply[19]==OK && reply[38]==0);
+    assert(int16_t(read16(reply+35))==-50 && int8_t(reply[37])==12);
+    deliver(commit);advance(500);assert(flashWrites==writesBefore+2);
+    ConfigStore withPower;withPower.begin();
+    assert(withPower.healthy && withPower.power==14 && withPower.listen==2500 && withPower.awake==12000);
+    deliver(request(SET_CONFIG,seq++,0,config.revision+1,5,50,14,1000,5000));advance(500);
+    advance(650);assert(sleeping);
+    advance(6200);
+    const uint32_t budget=hardUntil;
+    while(!sleeping && int32_t(budget+600-millis())>0) {
+        if(Radio.state==TestRadio::RX && !incoming && !replyPending && !transmitting)
+            deliver(request(GET_CONFIG,seq++));
+        advance(300);
+    }
+    assert(sleeping && highEdges.size()==edgesBefore);
     std::cout<<"PASS node="<<CHACAICO_NODE_ID
-             <<" real CMAC; 33 torn-write points; GPIO timing/LED; dedup; sessions; config; sleep; TX timeout\n";
+             <<" real CMAC; 41 torn-write points; GPIO timing/LED; dedup; sessions; config; sleep; TX timeout\n";
 }

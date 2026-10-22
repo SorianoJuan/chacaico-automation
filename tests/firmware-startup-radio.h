@@ -39,6 +39,7 @@ struct TestRadio {
     enum State { STANDBY,RX,TX,SLEEP } state=STANDBY;
     RadioEvents_t* callbacks=nullptr;
     uint32_t txDoneAt=0;
+    int txPower=0;
     std::vector<RecordedPacket> sent;
     void Init(RadioEvents_t*e){callbacks=e;}
     void Standby(){state=STANDBY;}
@@ -51,12 +52,12 @@ struct TestRadio {
     }
     void SetChannel(uint32_t){}
     void SetPublicNetwork(bool){}
-    template<class...Args>void SetTxConfig(Args...){}
+    template<class...Args>void SetTxConfig(int,int power,Args...){txPower=power;}
     template<class...Args>void SetRxConfig(Args...){}
     void Send(uint8_t*p,uint8_t len){
         assert(!gpio[1]&&!gpio[2]);assert(state!=TX);
         sent.push_back({millis(),std::vector<uint8_t>(p,p+len)});
-        state=TX;txDoneAt=millis()+83;
+        state=TX;txDoneAt=millis()+98;
     }
 };
 inline TestRadio Radio;

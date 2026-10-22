@@ -44,7 +44,7 @@ machine_id **2e21da3405714e0cba2d890984d6dfa8**.
 [acceso remoto](../docs/remote-access.md),
 [diagnóstico de arranque](../docs/startup-diagnosis.md).
 
-## Prueba de banco actual
+## Prueba de banco histórica 0.4.x
 
 `scripts/test-node-configuration.sh --bench` se ejecuta dentro de Terminal & SSH,
 con ambos nodos/antenas conectados. Exige empezar en0s/50ms y LEDs apagados;
@@ -84,3 +84,16 @@ identificar la ejecución; verificar el proceso antes de enviarle una señal.
 Los100 ciclos del20/10/2026 quedaron en ejecución en segundo plano; consultar
 `docs/evidence/2026-10-20/pulse3s/hundred-cycle-start.json` para el registro vivo.
 Ese archivo acredita el inicio y las confirmaciones observadas, no la finalización.
+
+## Prueba de banco 0.5.0
+
+`python3 home-assistant/scripts/test-radio-configuration.py --bench --output /tmp/result.json`
+se ejecuta desde esta computadora por SSH. Verifica máquina, exige ambos nodosv3
+con reposo≤30s, guarda los ajustes iniciales y prueba14dBm, escucha2s, presupuesto12s,
+reposo8s, LED en cola y vencimiento de una orden con plazo1s. Comprueba aislamiento,
+métricas de ambas direcciones y que la orden vencida no se ejecute al despertar.
+Restaura y confirma ajustes, políticas, potencia del HAT y LED originales, incluso
+si falla una prueba; informa errores de restauración si el enlace se pierde.
+El transporte `mqtt-bench-transport.sh` rechaza temas de válvula y mantiene las
+credenciales MQTT en la Pi. Es una prueba que modifica el banco, no un diagnóstico
+pasivo. No lanzarla durante el uso de las válvulas.

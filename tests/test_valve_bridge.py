@@ -140,7 +140,7 @@ class EngineTest(unittest.TestCase):
 
     def test_all_frame_bits_are_authenticated(self):
         packet = encode(self.keys[1], Frame(REQUEST, 1, 1, 1, 1, SET_LED, led=1))
-        self.assertEqual(len(packet), 38)
+        self.assertEqual(len(packet), FRAME_SIZE)
         for bit in range(len(packet)*8):
             bad = bytearray(packet);bad[bit//8] ^= 1 << (bit%8)
             with self.assertRaises(ValueError): decode(self.keys[1], bad)
@@ -311,7 +311,7 @@ class EngineTest(unittest.TestCase):
         self.engine.message(1, "config/apply", "APPLY", True)
         self.engine.message(1, "valve/set", "OPEN", True)
         self.assertIsNone(self.engine.nodes[1].config_job)
-        self.assertEqual(self.engine.nodes[1].draft, {"sleep_s": 0, "pulse_ms": 50})
+        self.assertEqual(self.engine.nodes[1].draft, CONFIG_DEFAULTS)
         self.assertFalse(self.engine.nodes[1].actions)
 
     def test_duplicate_clicks_coalesce_and_close_cancels_unsent_open(self):

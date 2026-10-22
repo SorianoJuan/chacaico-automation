@@ -37,15 +37,16 @@ claves y **no se publican**.
 
 | Componente | Versión / identidad | Código |
 | --- | --- | --- |
-| Nodo 1 | Firmware0.4.1, ID1, HTCC-AB01/ASR6501, PCB V1.2 confirmada | [firmware/nodes/node_1](firmware/nodes/node_1/README.md) |
-| Nodo 2 | Firmware0.4.1, ID2, HTCC-AB01/ASR6501; revisión de PCB por verificar | [firmware/nodes/node_2](firmware/nodes/node_2/README.md) |
-| Puente | App0.4.3, Python, MQTT ↔ LoRa | [bridge](bridge/README.md) |
-| Home Assistant | Core2026.9.4, verificación20/10/2026 | [home-assistant](home-assistant/README.md) |
+| Nodo 1 | Firmware0.5.0, ID1, HTCC-AB01/ASR6501, PCB V1.2 confirmada | [firmware/nodes/node_1](firmware/nodes/node_1/README.md) |
+| Nodo 2 | Firmware0.5.0, ID2, HTCC-AB01/ASR6501; revisión de PCB por verificar | [firmware/nodes/node_2](firmware/nodes/node_2/README.md) |
+| Puente | App0.5.0, Python, MQTT ↔ LoRa | [bridge](bridge/README.md) |
+| Home Assistant | Core2026.9.4, verificación22/10/2026 | [home-assistant](home-assistant/README.md) |
 
-La versión 0.4.0 incorpora configuración remota confirmada y persistente, ventanas
-de escucha y recuperación de ACK perdidos. Se actualizan puente y ambos nodos
-juntos. Operación y límites en [configuración de nodos](docs/node-configuration.md).
-[Pruebas offline y hardware del20/10/2026](docs/evidence/2026-10-20/README.md).
+La versión0.5.0 agrega potencia HAT/nodos, ventanas configurables, vigencia de
+órdenes, tolerancia a contactos perdidos y métricas. El cambio de potencia del nodo
+requiere prueba/commit antes de guardarlo. Se actualiza primero el puente y luego
+cada nodo. Hay migración de flash; no degradar al firmware anterior después. Operación y límites en [configuración de nodos](docs/node-configuration.md).
+[Pruebas offline y de banco del22/10/2026](docs/evidence/2026-10-22/radio-configuration-stage1/README.md).
 
 El recorrido es Home Assistant → MQTT → puente → HAT SPI → LoRa → CubeCell → ACK.
 El HAT contiene una sola radio; esta implementación usa LoRa directo, no un
@@ -80,8 +81,9 @@ HA espera la publicación del estado confirmado. Todos los ACK incluyen el estad
 de válvula y LED. Tras reiniciar un nodo la posición de válvula es desconocida.
 
 La pestaña **Configuración LoRa** (`dashboard-chacaico/configuracion-lora`) reúne
-reposo y pulso solicitados, **Aplicar**, **Consultar**, configuración confirmada,
-revisión, hora y estado de comunicación. La vista original del usuario se conserva.
+reposo, pulso, potencia y ventanas solicitadas, **Aplicar**, **Consultar**,
+configuración confirmada, políticas del puente y métricas en ambos sentidos.
+La potencia del HAT se aplica con un control independiente. La vista original del usuario se conserva.
 Editar un campo no envía SET_CONFIG hasta pulsar Aplicar.
 
 SSH usa la clave ya existente de Arch. En la LAN: `ssh pi5.chacaico`.

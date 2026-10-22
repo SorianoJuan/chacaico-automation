@@ -3,9 +3,46 @@
   "path": "configuracion-lora",
   "icon": "mdi:tune",
   "type": "sections",
-  "max_columns": 2,
+  "max_columns": 3,
   "show_icon_and_title": true,
   "sections": [
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Radio de la Raspberry",
+          "heading_style": "title"
+        },
+        {
+          "type": "entities",
+          "title": "Potencia del HAT",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "number.chacaico_bridge_tx_power_requested",
+              "name": "Potencia solicitada (dBm)"
+            },
+            {
+              "entity": "button.chacaico_bridge_power_apply",
+              "name": "Aplicar potencia"
+            },
+            {
+              "entity": "sensor.chacaico_bridge_tx_power_applied",
+              "name": "Potencia aplicada"
+            },
+            {
+              "entity": "sensor.chacaico_bridge_power_status",
+              "name": "Estado"
+            }
+          ]
+        },
+        {
+          "type": "markdown",
+          "content": "14 dBm ≈ 25 mW · 20 dBm = 100 mW · 22 dBm ≈ 158 mW. La potencia aplicada es el ajuste del transmisor; no es una medición de RF ni confirma el enlace."
+        }
+      ]
+    },
     {
       "type": "grid",
       "cards": [
@@ -17,7 +54,7 @@
         },
         {
           "type": "markdown",
-          "content": "**0 s = escucha continua.** Editá ambos valores y pulsá **Aplicar**. Si está dormido, el cambio espera su próximo contacto. El pulso es el impulso eléctrico, no la duración del riego."
+          "content": "**0 s = escucha continua.** Editá los valores y pulsá **Aplicar al nodo**. Si duerme, espera al próximo contacto. La escucha se renueva con intercambios válidos y puede terminar antes si no hay trabajo. El pulso GPIO no es la duración del riego. Cambiar potencia incluye una prueba de ida y vuelta; si falla, el nodo recupera el valor anterior."
         },
         {
           "type": "entities",
@@ -26,15 +63,31 @@
           "entities": [
             {
               "entity": "number.chacaico_node_1_sleep_s_requested",
-              "name": "Reposo (segundos)"
+              "name": "Reposo (s)"
             },
             {
               "entity": "number.chacaico_node_1_pulse_ms_requested",
-              "name": "Pulso GPIO (milisegundos)"
+              "name": "Pulso GPIO (ms)"
+            },
+            {
+              "entity": "number.chacaico_node_1_tx_power_dbm_requested",
+              "name": "Potencia TX (dBm)"
+            },
+            {
+              "entity": "number.chacaico_node_1_listen_ms_requested",
+              "name": "Escucha renovable (ms)"
+            },
+            {
+              "entity": "number.chacaico_node_1_max_awake_ms_requested",
+              "name": "Presupuesto despierto (ms)"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_config_input_error",
+              "name": "Validación"
             },
             {
               "entity": "button.chacaico_node_1_config_apply",
-              "name": "Aplicar ambos parámetros"
+              "name": "Aplicar al nodo"
             },
             {
               "entity": "button.chacaico_node_1_config_query",
@@ -44,7 +97,7 @@
         },
         {
           "type": "entities",
-          "title": "Última configuración confirmada",
+          "title": "Configuración confirmada por el nodo",
           "show_header_toggle": false,
           "entities": [
             {
@@ -52,12 +105,28 @@
               "name": "Actualización"
             },
             {
+              "entity": "sensor.chacaico_node_1_protocol",
+              "name": "Compatibilidad"
+            },
+            {
               "entity": "sensor.chacaico_node_1_sleep_s_confirmed",
-              "name": "Reposo"
+              "name": "Reposo (s)"
             },
             {
               "entity": "sensor.chacaico_node_1_pulse_ms_confirmed",
-              "name": "Pulso GPIO"
+              "name": "Pulso GPIO (ms)"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_tx_power_dbm_confirmed",
+              "name": "Potencia TX (dBm)"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_listen_ms_confirmed",
+              "name": "Escucha renovable (ms)"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_max_awake_ms_confirmed",
+              "name": "Presupuesto despierto (ms)"
             },
             {
               "entity": "sensor.chacaico_node_1_config_revision",
@@ -70,12 +139,153 @@
             {
               "entity": "sensor.chacaico_node_1_link",
               "name": "Comunicación"
+            }
+          ]
+        },
+        {
+          "type": "markdown",
+          "content": "**Política del puente:** se aplica sin despertar al nodo. Vigencia **0 = automática** según reposo y ventana. El plazo elegido solo afecta órdenes nuevas; una orden vencida no se vuelve a enviar. Si el plazo es menor que el reposo, puede vencer antes de que despierte."
+        },
+        {
+          "type": "entities",
+          "title": "Entrega y alerta de contacto",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "number.chacaico_node_1_command_ttl_s_requested",
+              "name": "Vigencia solicitada (s)"
             },
+            {
+              "entity": "number.chacaico_node_1_missed_contacts_requested",
+              "name": "Contactos perdidos tolerados"
+            },
+            {
+              "entity": "button.chacaico_node_1_policy_apply",
+              "name": "Aplicar política"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_policy_status",
+              "name": "Estado"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_command_ttl_s_confirmed",
+              "name": "Vigencia configurada"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_missed_contacts_confirmed",
+              "name": "Tolerancia aplicada"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metric_command_ttl_s",
+              "name": "Vigencia efectiva (órdenes nuevas)"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metric_contact_timeout_s",
+              "name": "Plazo sin contacto"
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "title": "Calidad del enlace",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "sensor.chacaico_node_1_metric_uplink_rssi",
+              "name": "RSSI nodo → HAT"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metric_uplink_snr",
+              "name": "SNR nodo → HAT"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metric_downlink_rssi",
+              "name": "RSSI HAT → nodo"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metric_downlink_snr",
+              "name": "SNR HAT → nodo"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metric_last_ack_ms",
+              "name": "Tiempo de última respuesta"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metric_tx_attempts",
+              "name": "Intentos TX"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metric_tx_errors",
+              "name": "Errores TX"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metric_retries",
+              "name": "Reenvíos"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metric_acks",
+              "name": "Respuestas válidas"
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "title": "Órdenes de válvula y LED",
+          "show_header_toggle": false,
+          "entities": [
             {
               "entity": "sensor.chacaico_node_1_command_status",
               "name": "Última orden"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metric_orders",
+              "name": "Aceptadas"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metric_confirmed",
+              "name": "Confirmadas"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metric_expired",
+              "name": "Vencidas sin confirmar"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metric_superseded",
+              "name": "Sustituidas por otra orden"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metric_pending",
+              "name": "Pendientes"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metric_success_percent",
+              "name": "Éxito entre confirmadas y vencidas"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metric_last_attempts",
+              "name": "Envíos de última orden finalizada"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metric_last_queue_s",
+              "name": "Espera antes del primer envío"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metric_last_delivery_s",
+              "name": "Demora desde primer envío"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metric_last_total_s",
+              "name": "Demora total"
+            },
+            {
+              "entity": "sensor.chacaico_node_1_metrics_started_at",
+              "name": "Contadores desde"
             }
           ]
+        },
+        {
+          "type": "markdown",
+          "content": "Las métricas se reinician al arrancar el puente. El porcentaje cuenta órdenes confirmadas y vencidas; excluye pendientes y sustituidas. No mide pérdida de paquetes. Una confirmación de válvula confirma ejecución GPIO, no posición física. El tiempo de respuesta incluye el pulso cuando corresponde."
         }
       ]
     },
@@ -90,7 +300,7 @@
         },
         {
           "type": "markdown",
-          "content": "**0 s = escucha continua.** Editá ambos valores y pulsá **Aplicar**. Si está dormido, el cambio espera su próximo contacto. El pulso es el impulso eléctrico, no la duración del riego."
+          "content": "**0 s = escucha continua.** Editá los valores y pulsá **Aplicar al nodo**. Si duerme, espera al próximo contacto. La escucha se renueva con intercambios válidos y puede terminar antes si no hay trabajo. El pulso GPIO no es la duración del riego. Cambiar potencia incluye una prueba de ida y vuelta; si falla, el nodo recupera el valor anterior."
         },
         {
           "type": "entities",
@@ -99,15 +309,31 @@
           "entities": [
             {
               "entity": "number.chacaico_node_2_sleep_s_requested",
-              "name": "Reposo (segundos)"
+              "name": "Reposo (s)"
             },
             {
               "entity": "number.chacaico_node_2_pulse_ms_requested",
-              "name": "Pulso GPIO (milisegundos)"
+              "name": "Pulso GPIO (ms)"
+            },
+            {
+              "entity": "number.chacaico_node_2_tx_power_dbm_requested",
+              "name": "Potencia TX (dBm)"
+            },
+            {
+              "entity": "number.chacaico_node_2_listen_ms_requested",
+              "name": "Escucha renovable (ms)"
+            },
+            {
+              "entity": "number.chacaico_node_2_max_awake_ms_requested",
+              "name": "Presupuesto despierto (ms)"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_config_input_error",
+              "name": "Validación"
             },
             {
               "entity": "button.chacaico_node_2_config_apply",
-              "name": "Aplicar ambos parámetros"
+              "name": "Aplicar al nodo"
             },
             {
               "entity": "button.chacaico_node_2_config_query",
@@ -117,7 +343,7 @@
         },
         {
           "type": "entities",
-          "title": "Última configuración confirmada",
+          "title": "Configuración confirmada por el nodo",
           "show_header_toggle": false,
           "entities": [
             {
@@ -125,12 +351,28 @@
               "name": "Actualización"
             },
             {
+              "entity": "sensor.chacaico_node_2_protocol",
+              "name": "Compatibilidad"
+            },
+            {
               "entity": "sensor.chacaico_node_2_sleep_s_confirmed",
-              "name": "Reposo"
+              "name": "Reposo (s)"
             },
             {
               "entity": "sensor.chacaico_node_2_pulse_ms_confirmed",
-              "name": "Pulso GPIO"
+              "name": "Pulso GPIO (ms)"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_tx_power_dbm_confirmed",
+              "name": "Potencia TX (dBm)"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_listen_ms_confirmed",
+              "name": "Escucha renovable (ms)"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_max_awake_ms_confirmed",
+              "name": "Presupuesto despierto (ms)"
             },
             {
               "entity": "sensor.chacaico_node_2_config_revision",
@@ -143,12 +385,153 @@
             {
               "entity": "sensor.chacaico_node_2_link",
               "name": "Comunicación"
+            }
+          ]
+        },
+        {
+          "type": "markdown",
+          "content": "**Política del puente:** se aplica sin despertar al nodo. Vigencia **0 = automática** según reposo y ventana. El plazo elegido solo afecta órdenes nuevas; una orden vencida no se vuelve a enviar. Si el plazo es menor que el reposo, puede vencer antes de que despierte."
+        },
+        {
+          "type": "entities",
+          "title": "Entrega y alerta de contacto",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "number.chacaico_node_2_command_ttl_s_requested",
+              "name": "Vigencia solicitada (s)"
             },
+            {
+              "entity": "number.chacaico_node_2_missed_contacts_requested",
+              "name": "Contactos perdidos tolerados"
+            },
+            {
+              "entity": "button.chacaico_node_2_policy_apply",
+              "name": "Aplicar política"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_policy_status",
+              "name": "Estado"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_command_ttl_s_confirmed",
+              "name": "Vigencia configurada"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_missed_contacts_confirmed",
+              "name": "Tolerancia aplicada"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metric_command_ttl_s",
+              "name": "Vigencia efectiva (órdenes nuevas)"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metric_contact_timeout_s",
+              "name": "Plazo sin contacto"
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "title": "Calidad del enlace",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "sensor.chacaico_node_2_metric_uplink_rssi",
+              "name": "RSSI nodo → HAT"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metric_uplink_snr",
+              "name": "SNR nodo → HAT"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metric_downlink_rssi",
+              "name": "RSSI HAT → nodo"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metric_downlink_snr",
+              "name": "SNR HAT → nodo"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metric_last_ack_ms",
+              "name": "Tiempo de última respuesta"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metric_tx_attempts",
+              "name": "Intentos TX"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metric_tx_errors",
+              "name": "Errores TX"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metric_retries",
+              "name": "Reenvíos"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metric_acks",
+              "name": "Respuestas válidas"
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "title": "Órdenes de válvula y LED",
+          "show_header_toggle": false,
+          "entities": [
             {
               "entity": "sensor.chacaico_node_2_command_status",
               "name": "Última orden"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metric_orders",
+              "name": "Aceptadas"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metric_confirmed",
+              "name": "Confirmadas"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metric_expired",
+              "name": "Vencidas sin confirmar"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metric_superseded",
+              "name": "Sustituidas por otra orden"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metric_pending",
+              "name": "Pendientes"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metric_success_percent",
+              "name": "Éxito entre confirmadas y vencidas"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metric_last_attempts",
+              "name": "Envíos de última orden finalizada"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metric_last_queue_s",
+              "name": "Espera antes del primer envío"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metric_last_delivery_s",
+              "name": "Demora desde primer envío"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metric_last_total_s",
+              "name": "Demora total"
+            },
+            {
+              "entity": "sensor.chacaico_node_2_metrics_started_at",
+              "name": "Contadores desde"
             }
           ]
+        },
+        {
+          "type": "markdown",
+          "content": "Las métricas se reinician al arrancar el puente. El porcentaje cuenta órdenes confirmadas y vencidas; excluye pendientes y sustituidas. No mide pérdida de paquetes. Una confirmación de válvula confirma ejecución GPIO, no posición física. El tiempo de respuesta incluye el pulso cuando corresponde."
         }
       ]
     }

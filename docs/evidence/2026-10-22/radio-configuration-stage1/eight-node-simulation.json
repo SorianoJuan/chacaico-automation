@@ -1,0 +1,132 @@
+{
+  "passed": true,
+  "real_scheduler": true,
+  "modeled_nodes_and_radio": true,
+  "scenarios": [
+    {
+      "seed": 1,
+      "nodes": 8,
+      "seconds": 180,
+      "requests": 256,
+      "responses": 206,
+      "injected_losses": 76,
+      "config_writes_per_node": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "all_configurations_confirmed": true,
+      "all_leds_confirmed": true,
+      "explicit_expirations_during_loss": 0,
+      "new_user_request_after_rf_recovery": true,
+      "valve_pulses": 0,
+      "node_reboot": true,
+      "bridge_restart": true
+    },
+    {
+      "seed": 7,
+      "nodes": 8,
+      "seconds": 180,
+      "requests": 288,
+      "responses": 200,
+      "injected_losses": 96,
+      "config_writes_per_node": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "all_configurations_confirmed": true,
+      "all_leds_confirmed": true,
+      "explicit_expirations_during_loss": 1,
+      "new_user_request_after_rf_recovery": true,
+      "valve_pulses": 0,
+      "node_reboot": true,
+      "bridge_restart": true
+    },
+    {
+      "seed": 42,
+      "nodes": 8,
+      "seconds": 180,
+      "requests": 254,
+      "responses": 205,
+      "injected_losses": 72,
+      "config_writes_per_node": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "all_configurations_confirmed": true,
+      "all_leds_confirmed": true,
+      "explicit_expirations_during_loss": 0,
+      "new_user_request_after_rf_recovery": true,
+      "valve_pulses": 0,
+      "node_reboot": true,
+      "bridge_restart": true
+    },
+    {
+      "seed": 91,
+      "nodes": 8,
+      "seconds": 180,
+      "requests": 257,
+      "responses": 211,
+      "injected_losses": 71,
+      "config_writes_per_node": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "all_configurations_confirmed": true,
+      "all_leds_confirmed": true,
+      "explicit_expirations_during_loss": 0,
+      "new_user_request_after_rf_recovery": true,
+      "valve_pulses": 0,
+      "node_reboot": true,
+      "bridge_restart": true
+    },
+    {
+      "seed": 137,
+      "nodes": 8,
+      "seconds": 180,
+      "requests": 263,
+      "responses": 207,
+      "injected_losses": 76,
+      "config_writes_per_node": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "all_configurations_confirmed": true,
+      "all_leds_confirmed": true,
+      "explicit_expirations_during_loss": 0,
+      "new_user_request_after_rf_recovery": true,
+      "valve_pulses": 0,
+      "node_reboot": true,
+      "bridge_restart": true
+    }
+  ]
+}

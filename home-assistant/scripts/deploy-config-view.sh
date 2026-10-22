@@ -12,11 +12,11 @@ checked() { chacaico_result=$(api "$@"); printf '%s' "$chacaico_result" | jq -e 
 api http://supervisor/info | jq -e '.data.machine_id == "2e21da3405714e0cba2d890984d6dfa8"' >/dev/null
 test -f "$chacaico_stage/engine.py"
 jq -e '.key == "lovelace.dashboard_chacaico" and (.data.config.views | map(select(.path == "configuracion-lora")) | length == 1)' "$chacaico_view" >/dev/null
-chacaico_backup=/config/chacaico-backups/config-v040-$(date -u +%Y%m%dT%H%M%SZ)
+chacaico_backup=/config/chacaico-backups/config-v050-$(date -u +%Y%m%dT%H%M%SZ)
 mkdir -p "$chacaico_backup"
 chmod 700 "$chacaico_backup"
 cp -a /local_apps/chacaico_lora_bridge "$chacaico_backup/bridge"
-checked -X POST http://supervisor/backups/new/partial -d '{"name":"Chacaico before configuration v0.4.0","addons":["local_chacaico_lora_bridge"],"homeassistant":true}'
+checked -X POST http://supervisor/backups/new/partial -d '{"name":"Chacaico before configuration v0.5.0","addons":["local_chacaico_lora_bridge"],"homeassistant":true}'
 printf '%s' "$chacaico_result" | jq '{result,backup:.data.slug}'
 chacaico_backup_slug=$(printf '%s' "$chacaico_result" | jq -er '.data.slug')
 api "http://supervisor/backups/$chacaico_backup_slug/info" | jq -e '.result == "ok" and .data.homeassistant != null and (.data.addons | length > 0)' >/dev/null

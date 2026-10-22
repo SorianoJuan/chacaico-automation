@@ -1,6 +1,6 @@
 # Nodo 1
 
-Firmware **0.4.1**, ID LoRa **1**, placa objetivo **HTCC-AB01 / ASR6501**.
+Firmware **0.5.0**, ID LoRa **1**, placa objetivo **HTCC-AB01 / ASR6501**.
 PCB **V1.2** confirmada por el usuario.
 
 - `node_1.ino`: entrada Arduino; rechaza una configuración de otro ID.
@@ -15,7 +15,7 @@ GPIO1 cierra, ambos con pulso configurable (50 ms predeterminado); el LED de pru
 conserva su estado tras los destellos. Reposo y pulso se configuran desde la pestaña
 Configuración LoRa y se conservan en flash. OTA de firmware no implementado.
 El perfil permite hasta **3000 ms** para medir GPIO con el CubeCell separado de
-la PCB de potencia y la válvula. Pulso aplicado **50 ms**; bridge instalado0.4.3. Antes de reconectar o volver
+la PCB de potencia y la válvula. Pulso aplicado **50 ms**; bridge0.5.0. Antes de reconectar o volver
 a versiones anteriores, aplicar **50 ms** y verificar la confirmación.
 
 Ver [operación y límites](../../../docs/node-configuration.md).
@@ -30,3 +30,6 @@ sh firmware/flash-node.sh --id 1 /dev/serial/by-path/PUERTO_FISICO-port0
 Antes de cargar, identificar físicamente la placa y conectar su antena. Los
 CP2102 comparten serial0001: el puerto USB no determina el ID LoRa. La carga USB
 reinicia el nodo; no se ejecuta como parte de pruebas offline.
+
+0.5.0 agrega potencia TX, ventanas configurables, señal de bajada y prueba/commit
+de potencia. Migra flash anterior; no volver a firmware0.4.x después de migrar.

@@ -1,11 +1,12 @@
-# Puente LoRa ↔ MQTT 0.4.3
+# Puente LoRa ↔ MQTT 0.5.0
 
 - `chacaico_lora_bridge/bridge.py`: MQTT, discovery y transporte.
 - `engine.py`: scheduler, ventanas, colas, confirmaciones y persistencia.
-- `protocol.py`: tramas v2 de 38 bytes, sesión y AES-CMAC64 individual.
-- `radio.py`: SX1262 SPI/libgpiod2, sin cambios en esta actualización.
+- `protocol.py`: tramas v3 de47 bytes y compatibilidad v2 de38 bytes, sesión y AES-CMAC64 individual.
+- `radio.py`: SX1262 SPI/libgpiod2 y potencia TX configurable.
 
-El protocolo es compatible con firmware0.4.x. El pulso de banco de hasta3000ms
+El puente admite firmware0.5.0 y nodos0.4.x durante la migración. Los nuevos
+parámetros de radio requieren firmware0.5.0. El pulso de banco de hasta3000ms
 se admite en nodos1/2 con firmware0.4.1; ambos quedaron configurados a50ms. No habilitar automatismos de
 prueba: la opción heredada self_test se ignora. Los comandos de configuración son
 independientes de las válvulas; no hay actuación de válvula al instalar/arrancar.
@@ -28,3 +29,10 @@ mantenida en el bridge; la trama v2 no transmite una versión de software.
 
 0.4.3 amplía el máximo configurable a3000ms también para nodo2 y publica el
 mismo límite en Home Assistant. Se conserva50ms como valor predeterminado.
+
+0.5.0 permite potencia HAT/nodos, escucha/presupuesto, vigencia/tolerancia y
+métricas. Los cambios de potencia del nodo usan TRIAL/COMMIT_CONFIG con reversión
+si no se confirma en8s. La política de entrega reside en el puente. Los contadores
+son de sesión; no reproducir órdenes de válvula/LED tras reiniciar. El archivo
+runtime-v2.json conserva el nombre, pero migra su esquema interno de1 a2.
+La frecuencia y el perfil de modulación no cambian.

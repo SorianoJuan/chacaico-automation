@@ -1,6 +1,6 @@
 # Nodo 2
 
-Firmware **0.4.1**, ID LoRa **2**, placa objetivo **HTCC-AB01 / ASR6501**.
+Firmware **0.5.0**, ID LoRa **2**, placa objetivo **HTCC-AB01 / ASR6501**.
 La revisión impresa de esta PCB debe verificarse por separado; no se infiere de la del nodo 1.
 
 - `node_2.ino`: entrada Arduino; rechaza una configuración de otro ID.
@@ -29,3 +29,6 @@ sh firmware/flash-node.sh --id 2 /dev/serial/by-path/PUERTO_FISICO-port0
 Antes de cargar, identificar físicamente la placa y conectar su antena. Los
 CP2102 comparten serial0001: el puerto USB no determina el ID LoRa. La carga USB
 reinicia el nodo; no se ejecuta como parte de pruebas offline.
+
+0.5.0 agrega potencia TX, ventanas configurables, señal de bajada y prueba/commit
+de potencia. Migra flash anterior; no volver a firmware0.4.x después de migrar.

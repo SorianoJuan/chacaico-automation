@@ -44,7 +44,7 @@ static inline void memset1(uint8_t*d,uint8_t v,uint16_t n){memset(d,v,n);}
             (stage/"node_config.h").write_text(
                 f"#define CHACAICO_NODE_ID {node}\n#define CHACAICO_FREQUENCY 916800000\n"
                 + "#define CHACAICO_KEY {"+",".join(str(x) for x in key)+"}\n")
-            ack = encode(key, Frame(RESPONSE, node, 1, 1, 1, SET_LED, revision=1, pulse_ms=50, valve=UNKNOWN, led=1))
+            ack = encode(key, Frame(RESPONSE, node, 1, 1, 1, SET_LED, revision=1, pulse_ms=50, valve=UNKNOWN, led=1, downlink_rssi=-50, downlink_snr=12))
             (stage/"test_expected_ack.h").write_text(
                 "static const uint8_t EXPECTED_ACK[] = {"+",".join(str(v) for v in ack)+"};\n")
             binary = stage/f"node-{node}"
@@ -52,7 +52,7 @@ static inline void memset1(uint8_t*d,uint8_t v,uint16_t n){memset(d,v,n);}
                             str(stage/"test.cpp"), str(stage/"aes.o"), str(stage/"cmac.o"), "-o", str(binary)], check=True)
             results.append(subprocess.check_output([str(binary)], text=True).strip())
     result = {"passed": True, "nodes": [1, 2], "real_firmware": True, "real_aes_cmac": True,
-              "torn_write_cut_points_per_node": 33, "hardware_simulated": True, "results": results}
+              "torn_write_cut_points_per_node": 41, "hardware_simulated": True, "results": results}
     print(json.dumps(result, indent=2))
     if args.output:
         args.output.write_text(json.dumps(result, indent=2)+"\n")

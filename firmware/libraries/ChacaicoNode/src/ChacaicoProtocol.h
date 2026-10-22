@@ -11,10 +11,10 @@ static_assert(CHACAICO_MAX_PULSE_MS >= 10 && CHACAICO_MAX_PULSE_MS <= 3000, "Uns
 
 namespace Chacaico {
 static const uint8_t KEY[16] = CHACAICO_KEY;
-static const uint8_t BODY_SIZE = 30, FRAME_SIZE = 38;
+static const uint8_t BODY_SIZE = 39, FRAME_SIZE = 47;
 enum Kind : uint8_t { REQUEST, RESPONSE, READY };
-enum Op : uint8_t { GET_STATE, SET_LED, SET_VALVE, GET_CONFIG, SET_CONFIG, END };
-enum Status : uint8_t { OK, INVALID, STORE_FAILED, CONFLICT, BUSY };
+enum Op : uint8_t { GET_STATE, SET_LED, SET_VALVE, GET_CONFIG, SET_CONFIG, END, COMMIT_CONFIG };
+enum Status : uint8_t { OK, INVALID, STORE_FAILED, CONFLICT, BUSY, TRIAL };
 static const uint8_t UNKNOWN = 2;
 static const uint16_t MAX_SLEEP = 3600, MIN_PULSE = 10, MAX_PULSE = CHACAICO_MAX_PULSE_MS;
 static uint16_t read16(const uint8_t *p) { return uint16_t(p[0]) | uint16_t(p[1]) << 8; }
@@ -25,8 +25,11 @@ static void write16(uint8_t *p, uint16_t v) { p[0]=v; p[1]=v>>8; }
 static void write32(uint8_t *p, uint32_t v) {
     for (uint8_t i=0;i<4;++i) p[i]=v>>(i*8);
 }
-static bool validConfig(uint16_t sleep, uint16_t pulse) {
-    return sleep<=MAX_SLEEP && pulse>=MIN_PULSE && pulse<=MAX_PULSE;
+static bool validConfig(uint16_t sleep,uint16_t pulse,uint8_t power=0,
+                        uint16_t listen=3000,uint16_t awake=10000) {
+    return sleep<=MAX_SLEEP && pulse>=MIN_PULSE && pulse<=MAX_PULSE && power<=22
+        && listen>=1000 && listen<=10000 && awake>=5000 && awake<=60000
+        && awake>=listen+1000UL && awake>=pulse+2000UL;
 }
 static void authenticate(const uint8_t *p, uint8_t *tag) {
     AES_CMAC_CTX ctx; uint8_t digest[16];

@@ -42,7 +42,7 @@ class Radio:
             self.command(0x98, [0xE1, 0xE9])  # image calibration 902-928 MHz
             self.command(0x86, list(int(frequency * (1 << 25) / 32_000_000).to_bytes(4, "big")))
             self.command(0x95, [4, 7, 0, 1])  # SX1262 PA
-            self.command(0x8E, [0, 2])  # 0 dBm, 40 us ramp (bench test)
+            self.command(0x8E, [0, 2])  # Persisted setting is restored by Engine.
             self.write_reg(0x08D8, [self.read_reg(0x08D8) | 0x1E])  # TX clamp workaround
             self.write_reg(0x0889, [self.read_reg(0x0889) | 0x04])  # BW125 workaround
             self.command(0x8B, [7, 4, 1, 0])  # SF7, BW125, CR4/5, LDRO off
@@ -55,6 +55,16 @@ class Radio:
         except BaseException:
             self.close()
             raise
+
+    def set_power(self, dbm):
+        if type(dbm) is not int or not 0 <= dbm <= 22:
+            raise ValueError("TX power must be 0..22 dBm")
+        self.command(0x80, [0])
+        try:
+            self.command(0x8E, [dbm, 2])  # SX1262 SetTxParams; 40 us ramp.
+            self.tx_power_dbm = dbm
+        finally:
+            self.receive()
 
     def command(self, opcode, data=()):
         deadline = time.monotonic() + 1

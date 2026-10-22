@@ -25,3 +25,14 @@ Los ejecutables históricos de 0.3.0 con radio/CMAC simplificados fueron sustitu
 por esta prueba. La caracterización original del 6/10/2026 se conserva en
 `docs/evidence/2026-10-06/` y en el commit `9ddcd459`.
 Los dos scripts aceptan `--output RUTA` para guardar evidencia pública JSON.
+
+## Configuración 0.5.0
+
+`test_stage1_configuration.py`: compatibilidad v2, límites, potencia en dos fases,
+ACK final perdido, vigencia, contactos perdidos, métricas, migración del runtime y
+fallos al aplicar potencia del HAT. `test_configuration_ui.py`: discovery, rangos,
+todas las entidades referenciadas y preservación de las otras vistas. La prueba
+C++ del firmware incluye migración de flash,41 cortes de escritura por nodo,
+rollback/commit de potencia, persistencia, ventanas y deduplicación.
+Las pruebas de campo y el benchmark MQTT/LED se documentan separadamente de estas
+simulaciones; un mock no prueba corriente, RF radiada ni posición física.

@@ -1,14 +1,39 @@
-# Configuración remota y ventanas de escucha — nodos0.4.x / bridge0.4.3
+# Configuración remota y ventanas de escucha — firmware y puente 0.5.0
 
 ## Operación desde Home Assistant
 
 La pestaña **Configuración LoRa** de Chacaico (`dashboard-chacaico/configuracion-lora`)
 contiene una sección por nodo. La vista original de válvulas y LED se conserva.
 
-1. Editar reposo en segundos (0–3600) y pulso GPIO en milisegundos (10–3000 en nodos1/2).
-2. Pulsar **Aplicar ambos parámetros**. Editar los campos solo modifica el borrador.
+1. Editar los parámetros solicitados del nodo (tabla siguiente).
+2. Pulsar **Aplicar al nodo**. Editar los campos solo modifica el borrador.
 3. Esperar **Confirmada** y comprobar los valores, revisión y hora reportados.
 4. **Consultar al nodo** pide una lectura nueva; si duerme, espera su anuncio.
+
+| Parámetro del nodo | Rango | Predeterminado |
+| --- | --- | --- |
+| Reposo | 0–3600 s; 0 mantiene recepción continua | 0 s |
+| Pulso GPIO | 10–3000 ms en nodos 1/2 | 50 ms |
+| Potencia TX | 0–22 dBm | 0 dBm |
+| Escucha renovable | 1000–10000 ms | 3000 ms |
+| Presupuesto despierto | 5000–60000 ms | 10000 ms |
+
+El presupuesto debe ser al menos escucha +1000 ms y pulso +2000 ms. Aumentarlo
+primero si se necesita una escucha más larga. Una combinación inválida conserva
+el borrador anterior y muestra el motivo. Aplicar manda los cinco parámetros
+juntos, con una revisión. Consultar devuelve la configuración guardada realmente.
+
+La potencia del HAT tiene su propio borrador y botón **Aplicar potencia**. Se
+aplica localmente en el puente, persiste al reiniciarlo y no modifica la del nodo.
+14 dBm ≈25 mW; 20 dBm =100 mW; 22 dBm ≈158 mW. Son ajustes nominales del chip,
+no mediciones de potencia radiada ni garantías de alcance.
+
+Por nodo, **Aplicar política** guarda en el puente dos valores independientes:
+
+- Vigencia de órdenes: 0–7200 s; 0 calcula un plazo automático. Solo afecta
+  órdenes nuevas de válvula/LED. Cambiarlo no prolonga las que ya están pendientes.
+- Contactos perdidos tolerados: 1–20, predeterminado 3. Modifica cuándo se declara
+  Sin contacto; no cambia el reposo del nodo ni la vigencia de una orden.
 
 La vista principal muestra **Orden de válvula** debajo de cada control: Pendiente,
 Confirmada, Sin confirmación; consultando, o Vencida sin confirmar. Es exclusiva
@@ -69,8 +94,9 @@ ya confirmado no vuelve a generar un pulso.
 ## Ventana de comunicación
 
 Con reposo positivo el nodo despierta, anuncia READY y escucha inicialmente
-**3 segundos**. Cada intercambio válido renueva la espera, con un presupuesto
-máximo de **10 segundos** desde el anuncio. El puente responde cuando recibe el
+**3 segundos por defecto**, según Escucha renovable. Cada intercambio válido
+renueva la espera, con un presupuesto de **10 segundos por defecto** desde el
+anuncio, configurable como Presupuesto despierto. El puente responde cuando recibe el
 anuncio, entrega órdenes pendientes y cierra con END. Si no hay respuesta, el
 nodo vuelve a dormir solo. Pulso, ACK y destellos ya iniciados terminan antes de
 dormir; por eso el límite es un presupuesto y no un corte eléctrico abrupto.
@@ -81,23 +107,71 @@ para no tapar ese ACK. El scheduler puede atender otro nodo mientras espera un
 reintento. Prioriza cierre solicitado y órdenes del usuario sobre consultas de
 fondo. No garantiza entrega si no hay enlace.
 
-El estado **Reposo esperado** no equivale a desconexión. Se marca Sin contacto
-tras `max(90, 3*(reposo+10)+10)` segundos sin ACK válido. Las órdenes de LED/válvula
-vencen tras `max(15, reposo+20)` segundos; se muestra el vencimiento y no se
-mantiene una apertura indefinidamente en cola. La configuración espera hasta
-24 horas y sobrevive a reiniciar el puente. Las órdenes de válvula no se guardan
-para ejecutarlas después de reiniciar el puente.
+El estado **Reposo esperado** no equivale a desconexión. Se declara Sin contacto
+si no llega un ACK autenticado durante `tolerancia × período +10` segundos. Con
+reposo positivo, período = reposo + presupuesto despierto/1000 +0,25 s; con
+recepción continua se usan 32 s por los anuncios periódicos con jitter.
+
+Vigencia automática = `max(15, reposo + presupuesto despierto/1000 +10)` segundos.
+Si hay configuración pendiente, se toman conservadoramente los mayores valores
+actuales/solicitados. Una vigencia explícita puede vencer antes del próximo
+despertar: se informa **Vencida sin confirmar** y se deja de transmitir esa orden.
+Un ACK que llega después del vencimiento no cambia esa orden a Confirmada.
+Si hubo transmisión antes de vencer, no es posible asegurar que el GPIO no actuó;
+la consulta siguiente recupera el estado sin reenviar la intención vencida.
+
+La configuración tiene un plazo independiente de24 horas y se conserva al
+reiniciar el puente. Las órdenes de válvula/LED no se guardan para reproducirse
+tras un reinicio. No hay cierre autónomo.
+
+## Potencia del nodo: prueba antes de guardar
+
+Un SET_CONFIG con potencia distinta inicia una prueba de8 segundos en RAM.
+El nodo responde con la potencia nueva y estado TRIAL; todavía no la guarda.
+Solo cuando el puente recibe esa respuesta envía COMMIT_CONFIG. El nodo guarda
+los cinco parámetros juntos y devuelve su confirmación estable. Si no recibe
+COMMIT_CONFIG a tiempo, vuelve a la potencia/configuración anterior sin escribir
+flash. Durante esa prueba queda despierto aunque supere el presupuesto normal.
+
+Si se pierde el ACK final, el puente consulta para averiguar lo que quedó guardado.
+Un reinicio durante la prueba descarta los cambios todavía no guardados. Un fallo
+de escritura conserva la configuración anterior y se informa como error. Esto
+reduce el riesgo de perder un nodo al bajar demasiado la potencia; no garantiza
+que el enlace continúe funcionando ante cambios posteriores del entorno.
+
+## Métricas en Configuración LoRa
+
+- RSSI/SNR nodo→HAT y HAT→nodo: la segunda medición la reporta el propio CubeCell.
+  Corresponden al último intercambio autenticado, no a un promedio ni un margen
+  de enlace. Sin medición disponible se muestra desconocido.
+- Órdenes de válvula/LED aceptadas, confirmadas, vencidas, sustituidas y pendientes.
+  El porcentaje de éxito usa confirmadas/(confirmadas+vencidas); excluye pendientes
+  y sustituidas. No es una tasa de pérdida de paquetes.
+- Intentos TX, errores locales de transmisión, reenvíos de una transacción y
+  respuestas válidas: también cuentan consultas, configuración y END.
+- Última orden finalizada: envíos, espera hasta el primer envío, demora desde
+  primer envío y demora total. Si nunca se transmitió, demora desde envío queda
+  desconocida y la espera es toda su permanencia en cola. Una reconciliación puede
+  confirmar un estado ya alcanzado sin nuevos envíos de esa orden.
+- Tiempo de última respuesta: desde finalizar TX hasta recibir ACK, incluido
+  el pulso GPIO cuando corresponde; con reintentos no identifica a cuál copia
+  respondió el nodo. No confundirlo con la demora total desde el clic.
+
+Los contadores son por sesión del puente y se reinician al arrancarlo. Se muestra
+**Contadores desde**. El histórico de Home Assistant depende de su recorder.
 
 ## Protocolo, persistencia y recuperación
 
-Protocolo v2: 38 bytes, AES-CMAC truncado a 64 bits con clave individual. Incluye
-ID, sesión de arranque persistente, ventana de despertar, secuencia, operación,
-resultado, revisión, reposo, pulso y estados de LED/válvula. Firmware y puente
-0.4.x son compatibles en protocolo; pulsos largos en ambos nodos requieren sus
-perfiles0.4.1 y puente0.4.3 (0.4.2 solo los admitía en nodo1). No hay compatibilidad de radio con0.3.0.
-No se modificó el bootloader y esto no implementa actualización OTA de firmware.
+Protocolo v3: 47 bytes, AES-CMAC truncado a64 bits con clave individual. Incluye
+ID, sesión persistente de arranque, despertar, secuencia, operación, resultado,
+revisión, cinco parámetros, estados LED/válvula, señal recibida y bandera de prueba.
+El bridge0.5.0 también habla v2 (38 bytes) con nodos0.4.x durante la actualización,
+pero rechaza aplicarles los nuevos parámetros. El firmware0.5.0 habla solo v3:
+actualizar primero el puente. Sin compatibilidad con0.3.0.
+Frecuencia916,8MHz, SF7, BW125kHz y CR4/5 se mantienen.47 bytes ocupan nominalmente
+92,416 ms de aire con el perfil actual. No se cambia el bootloader ni se implementa OTA.
 
-SET_CONFIG es independiente de SET_VALVE y SET_LED. Se aplican ambos parámetros
+SET_CONFIG es independiente de SET_VALVE y SET_LED. Se aplican los cinco parámetros
 juntos, con revisión y lectura de verificación. Todos los ACK devuelven la
 configuración completa. Si se pierde un ACK, una consulta permite reconciliar lo
 que realmente quedó aplicado. Reintentos de una misma transacción no repiten
@@ -106,6 +180,11 @@ repite el pulso. Tras reiniciar el nodo la posición vuelve a desconocida.
 
 Tres filas separadas de user flash del ASR6501 contienen registros con CRC y
 contador de generación; se escribe una fila inactiva y se verifica leyéndola.
+El esquema2 de40 bytes migra los registros anteriores de32 bytes conservando
+ID, contador de arranque, revisión, reposo y pulso. Potencia/ventanas nuevas toman
+los valores predeterminados. Después de la migración no instalar firmware antiguo
+que desconozca este registro: podría recuperar datos y contadores obsoletos.
+La recuperación debe hacerse con firmware compatible y las claves/estado vigentes.
 La fila 3 del fabricante no se toca. Un fallo de persistencia del contador de
 arranque impide aceptar órdenes. Hay una escritura por arranque y por cambio de
 configuración, no por despertar. Es flash con desgaste finito; no usar Aplicar

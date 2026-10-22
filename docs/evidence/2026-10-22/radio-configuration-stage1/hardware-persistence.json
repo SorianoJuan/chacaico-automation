@@ -1,0 +1,685 @@
+{
+  "result": "PASS",
+  "nodes": {
+    "1": {
+      "boot_before": 12,
+      "boot_after": 13,
+      "config": {
+        "revision": 15,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678394.156388
+      },
+      "serial": "Copyright @2019-2020 Heltec Automation.All rights reserved.\r\nCHACAICO valve-0.5.0 node=1 boot=13 revision=15 sleep=3 pulse=50 store=1\r\nCMD node=1 boot=13 wake=1 seq=949344020 op=3\r\nCMD node=1 boot=13 wake=1 seq=949344021 op=5\r\nSLEEP node=1 seconds=3 revision=15\r�",
+      "preserved": true
+    },
+    "2": {
+      "boot_before": 18,
+      "boot_after": 19,
+      "config": {
+        "revision": 10,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678413.0509927
+      },
+      "serial": "Copyright @2019-2020 Heltec Automation.All rights reserved.\r\nCHACAICO valve-0.5.0 node=2 boot=19 revision=10 sleep=3 pulse=50 store=1\r\nSLEEP node=2 seconds=3 revision=10\r�",
+      "preserved": true
+    }
+  },
+  "valve_commands_sent": 0,
+  "bridge_restart_preserved_hat_policy_and_node_config": true,
+  "restore_errors": [],
+  "events": [
+    {
+      "time": "2026-10-22T14:13:07.964112+00:00",
+      "topic": "chacaico/lora/node/1/led/command/status",
+      "value": "Confirmada"
+    },
+    {
+      "time": "2026-10-22T14:13:07.964151+00:00",
+      "topic": "chacaico/lora/node/1/config/status",
+      "value": "Confirmada"
+    },
+    {
+      "time": "2026-10-22T14:13:07.964174+00:00",
+      "topic": "chacaico/lora/node/1/config/reported",
+      "value": {
+        "revision": 14,
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 0,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000,
+        "confirmed_at": 1792678367.5664375
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:07.964264+00:00",
+      "topic": "chacaico/lora/node/1/policy/reported",
+      "value": {
+        "command_ttl_s": 0,
+        "missed_contacts": 3
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:07.964310+00:00",
+      "topic": "chacaico/lora/node/2/led/command/status",
+      "value": "Confirmada"
+    },
+    {
+      "time": "2026-10-22T14:13:07.964320+00:00",
+      "topic": "chacaico/lora/node/2/config/status",
+      "value": "Confirmada"
+    },
+    {
+      "time": "2026-10-22T14:13:07.964328+00:00",
+      "topic": "chacaico/lora/node/2/config/reported",
+      "value": {
+        "revision": 9,
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 0,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000,
+        "confirmed_at": 1792678373.9139173
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:07.964451+00:00",
+      "topic": "chacaico/lora/node/2/policy/reported",
+      "value": {
+        "command_ttl_s": 0,
+        "missed_contacts": 3
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:07.964502+00:00",
+      "topic": "chacaico/lora/bridge/power",
+      "value": {
+        "requested": 0,
+        "applied": 0,
+        "status": "Aplicada en el HAT"
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:08.153247+00:00",
+      "topic": "chacaico/lora/bridge/power",
+      "value": {
+        "requested": 14,
+        "applied": 0,
+        "status": "Borrador sin aplicar"
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:08.332926+00:00",
+      "topic": "chacaico/lora/bridge/power",
+      "value": {
+        "requested": 14,
+        "applied": 14,
+        "status": "Aplicada en el HAT"
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:09.597557+00:00",
+      "topic": "chacaico/lora/node/1/config/status",
+      "value": "Pendiente de contacto"
+    },
+    {
+      "time": "2026-10-22T14:13:09.933866+00:00",
+      "topic": "chacaico/lora/node/1/config/status",
+      "value": "Pendiente"
+    },
+    {
+      "time": "2026-10-22T14:13:09.934923+00:00",
+      "topic": "chacaico/lora/node/1/config/reported",
+      "value": {
+        "revision": 14,
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 0,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000,
+        "confirmed_at": 1792678389.9495962
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:10.463231+00:00",
+      "topic": "chacaico/lora/node/1/config/status",
+      "value": "Probando potencia; pendiente de guardar"
+    },
+    {
+      "time": "2026-10-22T14:13:11.059125+00:00",
+      "topic": "chacaico/lora/node/1/config/status",
+      "value": "Confirmada"
+    },
+    {
+      "time": "2026-10-22T14:13:11.059162+00:00",
+      "topic": "chacaico/lora/node/1/config/reported",
+      "value": {
+        "revision": 15,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678391.0638297
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:11.613178+00:00",
+      "topic": "chacaico/lora/node/1/config/reported",
+      "value": {
+        "revision": 15,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678391.5919008
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:11.613214+00:00",
+      "topic": "chacaico/lora/node/1/policy/reported",
+      "value": {
+        "command_ttl_s": 45,
+        "missed_contacts": 4
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:13.625787+00:00",
+      "topic": "chacaico/lora/node/1/config/reported",
+      "value": {
+        "revision": 15,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678393.641353
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:14.140899+00:00",
+      "topic": "chacaico/lora/node/1/config/reported",
+      "value": {
+        "revision": 15,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678394.156388
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:17.109236+00:00",
+      "topic": "chacaico/lora/node/2/config/status",
+      "value": "Pendiente de contacto"
+    },
+    {
+      "time": "2026-10-22T14:13:17.448582+00:00",
+      "topic": "chacaico/lora/node/2/config/status",
+      "value": "Pendiente"
+    },
+    {
+      "time": "2026-10-22T14:13:17.449337+00:00",
+      "topic": "chacaico/lora/node/2/config/reported",
+      "value": {
+        "revision": 9,
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 0,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000,
+        "confirmed_at": 1792678397.4645095
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:18.474071+00:00",
+      "topic": "chacaico/lora/node/1/config/reported",
+      "value": {
+        "revision": 15,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678398.4898136
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:19.566925+00:00",
+      "topic": "chacaico/lora/node/2/config/status",
+      "value": "Probando potencia; pendiente de guardar"
+    },
+    {
+      "time": "2026-10-22T14:13:20.160690+00:00",
+      "topic": "chacaico/lora/node/2/config/status",
+      "value": "Confirmada"
+    },
+    {
+      "time": "2026-10-22T14:13:20.161100+00:00",
+      "topic": "chacaico/lora/node/2/config/reported",
+      "value": {
+        "revision": 10,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678400.1642559
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:20.667499+00:00",
+      "topic": "chacaico/lora/node/2/config/reported",
+      "value": {
+        "revision": 10,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678400.6829526
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:20.800976+00:00",
+      "topic": "chacaico/lora/node/2/policy/reported",
+      "value": {
+        "command_ttl_s": 45,
+        "missed_contacts": 4
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:27.529314+00:00",
+      "topic": "chacaico/lora/node/1/config/reported",
+      "value": {
+        "revision": 15,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678407.5449977
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:28.042126+00:00",
+      "topic": "chacaico/lora/node/1/config/reported",
+      "value": {
+        "revision": 15,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678408.05808
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:32.038235+00:00",
+      "topic": "chacaico/lora/node/1/config/reported",
+      "value": {
+        "revision": 15,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678412.0541928
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:33.034821+00:00",
+      "topic": "chacaico/lora/node/2/config/reported",
+      "value": {
+        "revision": 10,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678413.0509927
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:36.449893+00:00",
+      "topic": "chacaico/lora/bridge/power",
+      "value": {
+        "requested": 14,
+        "applied": 14,
+        "status": "Aplicada en el HAT"
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:36.449917+00:00",
+      "topic": "chacaico/lora/node/1/config/status",
+      "value": "Sin confirmar"
+    },
+    {
+      "time": "2026-10-22T14:13:36.449932+00:00",
+      "topic": "chacaico/lora/node/1/policy/reported",
+      "value": {
+        "command_ttl_s": 45,
+        "missed_contacts": 4
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:36.449946+00:00",
+      "topic": "chacaico/lora/node/1/config/reported",
+      "value": {
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "revision": 15,
+        "confirmed_at": 1792678412.0541928
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:36.449978+00:00",
+      "topic": "chacaico/lora/node/1/led/command/status",
+      "value": "Sin órdenes pendientes"
+    },
+    {
+      "time": "2026-10-22T14:13:36.451001+00:00",
+      "topic": "chacaico/lora/node/2/config/status",
+      "value": "Sin confirmar"
+    },
+    {
+      "time": "2026-10-22T14:13:36.451556+00:00",
+      "topic": "chacaico/lora/node/2/policy/reported",
+      "value": {
+        "command_ttl_s": 45,
+        "missed_contacts": 4
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:36.451767+00:00",
+      "topic": "chacaico/lora/node/2/config/reported",
+      "value": {
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "revision": 10,
+        "confirmed_at": 1792678400.6829526
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:36.453185+00:00",
+      "topic": "chacaico/lora/node/2/led/command/status",
+      "value": "Sin órdenes pendientes"
+    },
+    {
+      "time": "2026-10-22T14:13:37.394234+00:00",
+      "topic": "chacaico/lora/node/2/config/status",
+      "value": "Confirmada"
+    },
+    {
+      "time": "2026-10-22T14:13:37.394313+00:00",
+      "topic": "chacaico/lora/node/2/config/reported",
+      "value": {
+        "revision": 10,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678417.4094625
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:37.907482+00:00",
+      "topic": "chacaico/lora/node/2/config/reported",
+      "value": {
+        "revision": 10,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678417.9232538
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:52.445855+00:00",
+      "topic": "chacaico/lora/node/1/config/status",
+      "value": "Confirmada"
+    },
+    {
+      "time": "2026-10-22T14:13:52.445899+00:00",
+      "topic": "chacaico/lora/node/1/config/reported",
+      "value": {
+        "revision": 15,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678432.4617834
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:52.724244+00:00",
+      "topic": "chacaico/lora/node/1/config/status",
+      "value": "Consultando"
+    },
+    {
+      "time": "2026-10-22T14:13:52.962571+00:00",
+      "topic": "chacaico/lora/node/1/config/status",
+      "value": "Confirmada"
+    },
+    {
+      "time": "2026-10-22T14:13:52.962605+00:00",
+      "topic": "chacaico/lora/node/1/config/reported",
+      "value": {
+        "revision": 15,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678432.9776843
+      }
+    },
+    {
+      "time": "2026-10-22T14:13:53.144701+00:00",
+      "topic": "chacaico/lora/node/2/config/status",
+      "value": "Consultando"
+    },
+    {
+      "time": "2026-10-22T14:14:23.217311+00:00",
+      "topic": "chacaico/lora/node/2/config/status",
+      "value": "Confirmada"
+    },
+    {
+      "time": "2026-10-22T14:14:23.217342+00:00",
+      "topic": "chacaico/lora/node/2/config/reported",
+      "value": {
+        "revision": 10,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678463.2334216
+      }
+    },
+    {
+      "time": "2026-10-22T14:14:23.733003+00:00",
+      "topic": "chacaico/lora/node/2/config/reported",
+      "value": {
+        "revision": 10,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678463.748943
+      }
+    },
+    {
+      "time": "2026-10-22T14:14:23.860756+00:00",
+      "topic": "chacaico/lora/node/1/policy/reported",
+      "value": {
+        "command_ttl_s": 0,
+        "missed_contacts": 3
+      }
+    },
+    {
+      "time": "2026-10-22T14:14:25.236722+00:00",
+      "topic": "chacaico/lora/node/1/config/status",
+      "value": "Pendiente de contacto"
+    },
+    {
+      "time": "2026-10-22T14:14:28.164543+00:00",
+      "topic": "chacaico/lora/node/2/config/reported",
+      "value": {
+        "revision": 10,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678468.1796865
+      }
+    },
+    {
+      "time": "2026-10-22T14:14:28.842043+00:00",
+      "topic": "chacaico/lora/node/1/config/status",
+      "value": "Pendiente"
+    },
+    {
+      "time": "2026-10-22T14:14:28.842079+00:00",
+      "topic": "chacaico/lora/node/1/config/reported",
+      "value": {
+        "revision": 15,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678468.8579252
+      }
+    },
+    {
+      "time": "2026-10-22T14:14:29.371811+00:00",
+      "topic": "chacaico/lora/node/1/config/status",
+      "value": "Probando potencia; pendiente de guardar"
+    },
+    {
+      "time": "2026-10-22T14:14:29.976799+00:00",
+      "topic": "chacaico/lora/node/1/config/status",
+      "value": "Confirmada"
+    },
+    {
+      "time": "2026-10-22T14:14:29.976834+00:00",
+      "topic": "chacaico/lora/node/1/config/reported",
+      "value": {
+        "revision": 16,
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 0,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000,
+        "confirmed_at": 1792678469.9816196
+      }
+    },
+    {
+      "time": "2026-10-22T14:14:30.544814+00:00",
+      "topic": "chacaico/lora/node/2/policy/reported",
+      "value": {
+        "command_ttl_s": 0,
+        "missed_contacts": 3
+      }
+    },
+    {
+      "time": "2026-10-22T14:14:32.228753+00:00",
+      "topic": "chacaico/lora/node/2/config/reported",
+      "value": {
+        "revision": 10,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678472.2082775
+      }
+    },
+    {
+      "time": "2026-10-22T14:14:32.229033+00:00",
+      "topic": "chacaico/lora/node/2/config/status",
+      "value": "Pendiente de contacto"
+    },
+    {
+      "time": "2026-10-22T14:14:36.210013+00:00",
+      "topic": "chacaico/lora/node/2/config/status",
+      "value": "Pendiente"
+    },
+    {
+      "time": "2026-10-22T14:14:36.210055+00:00",
+      "topic": "chacaico/lora/node/2/config/reported",
+      "value": {
+        "revision": 10,
+        "sleep_s": 3,
+        "pulse_ms": 50,
+        "tx_power_dbm": 10,
+        "listen_ms": 1500,
+        "max_awake_ms": 8000,
+        "confirmed_at": 1792678476.2259781
+      }
+    },
+    {
+      "time": "2026-10-22T14:14:36.734578+00:00",
+      "topic": "chacaico/lora/node/2/config/status",
+      "value": "Probando potencia; pendiente de guardar"
+    },
+    {
+      "time": "2026-10-22T14:14:37.328504+00:00",
+      "topic": "chacaico/lora/node/2/config/status",
+      "value": "Confirmada"
+    },
+    {
+      "time": "2026-10-22T14:14:37.328804+00:00",
+      "topic": "chacaico/lora/node/2/config/reported",
+      "value": {
+        "revision": 11,
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 0,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000,
+        "confirmed_at": 1792678477.3343046
+      }
+    },
+    {
+      "time": "2026-10-22T14:14:37.520691+00:00",
+      "topic": "chacaico/lora/bridge/power",
+      "value": {
+        "requested": 0,
+        "applied": 14,
+        "status": "Borrador sin aplicar"
+      }
+    },
+    {
+      "time": "2026-10-22T14:14:37.716670+00:00",
+      "topic": "chacaico/lora/bridge/power",
+      "value": {
+        "requested": 0,
+        "applied": 0,
+        "status": "Aplicada en el HAT"
+      }
+    }
+  ]
+}

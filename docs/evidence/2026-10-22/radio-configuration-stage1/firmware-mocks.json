@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "nodes": [
+    1,
+    2
+  ],
+  "real_firmware": true,
+  "real_aes_cmac": true,
+  "torn_write_cut_points_per_node": 41,
+  "hardware_simulated": true,
+  "results": [
+    "PASS node=1 real CMAC; 41 torn-write points; GPIO timing/LED; dedup; sessions; config; sleep; TX timeout",
+    "PASS node=2 real CMAC; 41 torn-write points; GPIO timing/LED; dedup; sessions; config; sleep; TX timeout"
+  ]
+}
