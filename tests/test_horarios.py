@@ -5,7 +5,9 @@ import importlib.util
 import json
 from pathlib import Path
 import unittest
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
+from zoneinfo import ZoneInfo
+from jinja2 import FileSystemLoader
 from jinja2.nativetypes import NativeEnvironment
 import yaml
 import test_valve_bridge as harness
@@ -21,8 +23,9 @@ class HaPolicy:
     def __init__(self):
         self.clock=1800000000.
         self.states={};self.attrs={};self.commands=[];self.persisted=[]
-        self.env=NativeEnvironment()
-        def from_json(value, default):
+        self.zone=timezone.utc
+        self.env=NativeEnvironment(loader=FileSystemLoader(ROOT/"home-assistant/config/custom_templates"))
+        def from_json(value, default=None):
             try: return json.loads(value)
             except (ValueError,TypeError): return default
         self.env.filters.update(from_json=from_json,to_json=json.dumps)
@@ -34,7 +37,9 @@ class HaPolicy:
         self.env.globals.update(states=lambda e:self.states.get(e,'unknown'),
            is_state=lambda e,v:self.states.get(e,'unknown')==v,
            state_attr=lambda e,a:self.attrs.get(e,{}).get(a),
-           as_timestamp=timestamp,now=lambda:datetime.fromtimestamp(self.clock,timezone.utc))
+           as_timestamp=timestamp,now=lambda:datetime.fromtimestamp(self.clock,self.zone),
+           today_at=lambda value:datetime.combine(datetime.fromtimestamp(self.clock,self.zone).date(),datetime.strptime(value,'%H:%M:%S').time(),tzinfo=self.zone),
+           timedelta=timedelta,as_datetime=lambda value:datetime.fromtimestamp(value,self.zone),as_local=lambda value:value.astimezone(self.zone))
     def render(self,value,variables):
         return self.env.from_string(value).render(**variables) if isinstance(value,str) else value
     def run(self,n=1):
@@ -55,9 +60,12 @@ class HaPolicy:
                     else:raise AssertionError(action)
         sequence(SEQUENCE)
         return context
+    def set_time(self,part,stamp,n=1):
+        self.states[f'input_datetime.chacaico_horario_{part}_{n}']=datetime.fromtimestamp(stamp,self.zone).strftime('%H:%M:%S')
     def enable(self,n=1,end=None):
-        self.states.update({'input_boolean.chacaico_temporada':'on',f'input_boolean.chacaico_horario_{n}':'on',f'schedule.chacaico_horario_valvula_{n}':'on'})
-        self.attrs[f'schedule.chacaico_horario_valvula_{n}']={'next_event':end or self.clock+1800}
+        self.states.update({'input_boolean.chacaico_temporada':'on',f'input_boolean.chacaico_horario_{n}':'on'})
+        self.set_time('desde',self.clock-60,n)
+        self.set_time('hasta',self.clock+1800 if end is None else end,n)
     def report(self,n=1,state='open',status='Confirmada',at=None):
         self.states.update({f'valve.chacaico_node_{n}':state,f'sensor.chacaico_node_{n}_valve_command_status':status})
         self.attrs[f'valve.chacaico_node_{n}']={'confirmation':'confirmed','confirmed_at':at if at is not None else self.clock+1}
@@ -69,7 +77,7 @@ class SchedulePolicyTest(unittest.TestCase):
         for n in VIEW.NODES:self.ha.run(n)
         self.assertEqual(self.ha.commands,[])
     def test_empty_schedule_requests_closed_only_when_enabled(self):
-        self.ha.enable();self.ha.states['schedule.chacaico_horario_valvula_1']='off'
+        self.ha.enable();self.ha.states['input_datetime.chacaico_horario_hasta_1']=self.ha.states['input_datetime.chacaico_horario_desde_1']
         self.ha.run();self.assertEqual(self.ha.commands[-1]['payload'],'CLOSE')
     def test_open_is_nonretained_and_bound_to_current_slot(self):
         self.ha.enable();self.ha.run()
@@ -108,16 +116,16 @@ class SchedulePolicyTest(unittest.TestCase):
         self.assertEqual(self.ha.states['input_boolean.chacaico_horario_responsable_1'],'on')
     def test_restart_after_end_never_replays_open(self):
         self.ha.enable();self.ha.run();self.ha.clock+=1900
-        self.ha.states['schedule.chacaico_horario_valvula_1']='off';self.ha.run()
+        self.ha.run()
         self.assertEqual(self.ha.commands[-1]['payload'],'CLOSE')
     def test_edit_shortens_pending_open_boundary(self):
-        self.ha.enable();self.ha.run();self.ha.attrs['schedule.chacaico_horario_valvula_1']['next_event']=self.ha.clock+20
+        self.ha.enable();self.ha.run();self.ha.set_time('hasta',self.ha.clock+20)
         self.ha.run();self.assertEqual(self.ha.commands[-1]['payload']['valid_until'],self.ha.clock+20)
     def test_edit_does_not_repeat_a_confirmed_open_pulse(self):
         self.ha.enable();self.ha.run();self.ha.report()
-        self.ha.attrs['schedule.chacaico_horario_valvula_1']['next_event']=self.ha.clock+60
+        self.ha.set_time('hasta',self.ha.clock+60)
         self.ha.run();self.assertEqual(len(self.ha.commands),1)
-        self.ha.attrs['schedule.chacaico_horario_valvula_1']['next_event']=self.ha.clock+3600
+        self.ha.set_time('hasta',self.ha.clock+3600)
         self.ha.run();self.assertEqual(len(self.ha.commands),1)
     def test_expired_or_missing_boundary_never_opens(self):
         self.ha.enable(end=self.ha.clock-1);self.ha.run()
@@ -128,14 +136,18 @@ class SchedulePolicyTest(unittest.TestCase):
         self.ha.states['input_boolean.chacaico_horario_2']='off';self.ha.run(2)
         self.assertEqual(self.ha.commands[-1]['topic'],'chacaico/lora/node/2/valve/set')
     def test_helper_values_restore_not_reset_on_boot(self):
-        for domain in ('input_boolean','input_text'):
+        for domain in ('input_boolean','input_text','input_datetime'):
             self.assertTrue(all('initial' not in spec for spec in PACKAGE[domain].values()))
-    def test_view_merge_preserves_other_views_and_seed_is_empty(self):
+    def test_view_merge_preserves_other_views_and_has_two_time_inputs(self):
         original={'data':{'config':{'views':[{'title':'Mi vista','cards':[{'type':'entities'}]}]}}}
         merged=VIEW.merge(original)
         self.assertEqual(merged['data']['config']['views'][0],original['data']['config']['views'][0])
         self.assertEqual(VIEW.merge(merged),merged)
-        self.assertTrue(all(not item['monday'] for item in VIEW.seed()['data']['items']))
+        for n,section in enumerate(VIEW.view()['sections'][1:],1):
+            entities=section['cards'][0]['entities']
+            self.assertEqual([row['name'] for row in entities],['Usar este horario','Desde','Hasta','Estado'])
+            self.assertEqual(entities[1]['entity'],f'input_datetime.chacaico_horario_desde_{n}')
+            self.assertEqual(entities[2]['entity'],f'input_datetime.chacaico_horario_hasta_{n}')
 
     def test_responsibility_and_intent_are_persisted_before_dispatch(self):
         self.ha.enable();self.ha.run()
@@ -161,6 +173,48 @@ class SchedulePolicyTest(unittest.TestCase):
         self.ha.enable();self.ha.states['input_boolean.chacaico_temporada']='off';self.ha.run()
         self.assertEqual(self.ha.commands,[])
         self.assertNotEqual(self.ha.states.get('input_boolean.chacaico_horario_responsable_1'),'on')
+
+    def range_at(self,when,start,stop,zone='America/Argentina/Buenos_Aires'):
+        self.ha.zone=ZoneInfo(zone)
+        self.ha.clock=datetime.fromisoformat(when).replace(tzinfo=self.ha.zone).timestamp()
+        self.ha.enable()
+        self.ha.states['input_datetime.chacaico_horario_desde_1']=start
+        self.ha.states['input_datetime.chacaico_horario_hasta_1']=stop
+        return self.ha.run()
+    def test_daytime_start_inclusive_end_exclusive(self):
+        v=self.range_at('2026-10-24T08:00:00','08:00:00','09:00:00')
+        self.assertEqual(v['desired'],'OPEN')
+        self.ha.clock+=3600
+        v=self.ha.run();self.assertEqual(v['desired'],'CLOSE')
+    def test_window_before_start_does_not_open(self):
+        v=self.range_at('2026-10-24T07:59:59','08:00:00','09:00:00')
+        self.assertEqual(v['desired'],'CLOSE')
+    def test_overnight_bound_stays_same_across_midnight(self):
+        v=self.range_at('2026-10-24T23:00:00','22:00:00','01:00:00')
+        end=v['end'];self.assertEqual(v['desired'],'OPEN')
+        self.ha.report();self.ha.clock+=5400
+        v=self.ha.run();self.assertEqual(v['desired'],'OPEN');self.assertEqual(v['end'],end)
+        self.assertEqual(len(self.ha.commands),1)
+        self.ha.clock=end;self.assertEqual(self.ha.run()['desired'],'CLOSE')
+    def test_same_times_are_off_not_a_24_hour_open(self):
+        v=self.range_at('2026-10-24T08:00:00','08:00:00','08:00:00')
+        self.assertEqual(v['desired'],'CLOSE');self.assertFalse(v['window']['valid'])
+    def test_unavailable_time_fails_closed(self):
+        self.ha.enable();self.ha.states['input_datetime.chacaico_horario_hasta_1']='unavailable'
+        self.assertEqual(self.ha.run()['desired'],'CLOSE')
+    def test_next_day_uses_local_calendar_across_dst(self):
+        v=self.range_at('2026-03-07T23:00:00','22:00:00','04:00:00','America/New_York')
+        close=datetime.fromtimestamp(v['end'],self.ha.zone)
+        self.assertEqual(close.isoformat(),'2026-03-08T04:00:00-04:00')
+        self.assertEqual(v['end']-self.ha.clock,4*3600)
+    def test_old_weekly_helper_cannot_control_the_new_range(self):
+        self.range_at('2026-10-24T08:00:00','00:00:00','00:00:00')
+        self.ha.states['schedule.chacaico_horario_valvula_1']='on'
+        self.assertEqual(self.ha.run()['desired'],'CLOSE')
+    def test_exact_time_triggers_include_every_from_and_until(self):
+        triggers=PACKAGE['automation'][0]['triggers']
+        times=next(t['at'] for t in triggers if t['trigger']=='time')
+        self.assertEqual(set(times),{'input_datetime.'+x for x in PACKAGE['input_datetime']})
 
 class ScheduledDeadlineTest(unittest.TestCase):
     # Reuse radio harness helpers, without rerunning all inherited tests.

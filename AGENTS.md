@@ -57,16 +57,20 @@ confirmación resumida. Ventanas, políticas y diagnóstico van detrás de Más 
 ni explicaciones extensas en la vista inicial. No sustituir estado desconocido por
 cerrado para cambiar la apariencia. Mantener estado pendiente/confirmado separado.
 
-La pestaña **Horarios** (`horarios`) usa cuatro Schedule nativos editables en UI,
-no schedules YAML. Temporada manual con `input_boolean.chacaico_temporada`; cada
-válvula puede excluirse con `chacaico_horario_N`. No inventar franjas ni activar
+La pestaña **Horarios** (`horarios`) tiene dos input_datetime por válvula:
+`chacaico_horario_desde_N` y `chacaico_horario_hasta_N`, un rango diario.
+Temporada manual con `input_boolean.chacaico_temporada`; cada válvula puede
+excluirse con `chacaico_horario_N`. Horas iguales significan sin riego; Hasta
+anterior a Desde cruza medianoche. No volver a mostrar la grilla semanal: el
+usuario pidió campos Desde/Hasta simples. Los Schedule anteriores se conservan
+inactivos; el controlador ya no los consulta. No inventar horarios ni activar
 la temporada durante instalaciones/pruebas. El paquete `chacaico-horarios.yaml`
-persiste propiedad e intención antes de publicar; al suspender conserva los
-cierres pendientes hasta confirmar. OPEN programado lleva `valid_until` al puente
-0.5.1; nunca usar mensajes retained para actuar. No borrar helpers de propiedad
-ni desactivar la automatización mientras haya cierres pendientes. No imponer
-exclusión mutua. La fuente de horarios del usuario es la UI; el seed vacío es
-solo para primera instalación. Ver `docs/valve-schedules.md`.
+y `custom_templates/chacaico_horarios.jinja` calculan el rango; persisten propiedad
+e intención antes de publicar y mantienen cierres pendientes hasta confirmar.
+OPEN programado lleva `valid_until` al puente0.5.1; nunca usar mensajes retained
+para actuar. No borrar helpers de propiedad ni desactivar la automatización
+mientras haya cierres pendientes. No imponer exclusión mutua. Los tiempos se
+restauran, sin `initial` fijo que los resetee. Ver `docs/valve-schedules.md`.
 
 La Pi5 tiene1GB de RAM. Usar `home-assistant/scripts/install-local-app.sh` para
 construir apps con Core detenido y reactivarlo. Puente usa libgpiod2 sobre RP1;

@@ -46,3 +46,9 @@ sin inundación. También ejecuta el Engine real para vencimientos de OPEN,
 reemplazo por CLOSE, límites exactos y saltos de reloj. No es una instancia real
 de Core: la carga del paquete y la edición nativa se verifican por separado en
 la Pi. Ninguna prueba automática de instalación acciona válvulas reales.
+
+El controlador diario Desde/Hasta usa el macro Jinja real en las pruebas:
+inicio inclusivo, final exclusivo, horas iguales deshabilitadas, medianoche,
+próximo día local con cambio horario, inputs no disponibles y persistencia.
+Los helpers Schedule antiguos no afectan la política diaria. Se conserva la
+suite de confirmaciones/reintentos y las pruebas de plazos del bridge.

@@ -1,4 +1,4 @@
-# Native Schedule controller; persist responsibility before publishing any command.
+# Daily Desde/Hasta controller; persist responsibility before any command.
 input_boolean:
   chacaico_temporada:
     name: Temporada de riego
@@ -47,11 +47,11 @@ template:
     default_entity_id: sensor.chacaico_horario_estado_1
     icon: mdi:calendar-clock
     state: |-
+      {% from 'chacaico_horarios.jinja' import daily_window %}
+      {% set window = daily_window('input_datetime.chacaico_horario_desde_1', 'input_datetime.chacaico_horario_hasta_1') | from_json %}
       {% set enabled = is_state('input_boolean.chacaico_temporada', 'on') and is_state('input_boolean.chacaico_horario_1', 'on') %}
       {% set owned = is_state('input_boolean.chacaico_horario_responsable_1', 'on') %}
-      {% set s = states('schedule.chacaico_horario_valvula_1') %}
-      {% set end = as_timestamp(state_attr('schedule.chacaico_horario_valvula_1','next_event'), 0) %}
-      {% set target = 'open' if enabled and s == 'on' and end > as_timestamp(now()) + 2 else 'closed' %}
+      {% set target = 'open' if enabled and window.active and window.end > as_timestamp(now()) + 2 else 'closed' %}
       {% set v = states('valve.chacaico_node_1') %}
       {% set cmd = states('sensor.chacaico_node_1_valve_command_status') %}
       {% set last = states('input_text.chacaico_horario_ultimo_1') | from_json({}) %}
@@ -67,20 +67,21 @@ template:
     default_entity_id: sensor.chacaico_horario_proximo_1
     icon: mdi:clock-outline
     state: |-
-      {% set next = state_attr('schedule.chacaico_horario_valvula_1', 'next_event') %}
+      {% from 'chacaico_horarios.jinja' import daily_window %}
+      {% set window = daily_window('input_datetime.chacaico_horario_desde_1', 'input_datetime.chacaico_horario_hasta_1') | from_json %}
       {% if not is_state('input_boolean.chacaico_temporada','on') or not is_state('input_boolean.chacaico_horario_1','on') %}Suspendido
-      {% elif next %}{{ 'Cierre' if is_state('schedule.chacaico_horario_valvula_1','on') else 'Apertura' }} · {{ as_local(as_datetime(next)).strftime('%d/%m %H:%M') }}
-      {% else %}Sin franjas configuradas{% endif %}
+      {% elif not window.valid %}Sin horario
+      {% else %}{{ 'Cierre' if window.active else 'Apertura' }} · {{ as_local(as_datetime(window.next)).strftime('%d/%m %H:%M') }}{% endif %}
   - name: Chacaico horario estado 2
     unique_id: chacaico_horario_estado_2
     default_entity_id: sensor.chacaico_horario_estado_2
     icon: mdi:calendar-clock
     state: |-
+      {% from 'chacaico_horarios.jinja' import daily_window %}
+      {% set window = daily_window('input_datetime.chacaico_horario_desde_2', 'input_datetime.chacaico_horario_hasta_2') | from_json %}
       {% set enabled = is_state('input_boolean.chacaico_temporada', 'on') and is_state('input_boolean.chacaico_horario_2', 'on') %}
       {% set owned = is_state('input_boolean.chacaico_horario_responsable_2', 'on') %}
-      {% set s = states('schedule.chacaico_horario_valvula_2') %}
-      {% set end = as_timestamp(state_attr('schedule.chacaico_horario_valvula_2','next_event'), 0) %}
-      {% set target = 'open' if enabled and s == 'on' and end > as_timestamp(now()) + 2 else 'closed' %}
+      {% set target = 'open' if enabled and window.active and window.end > as_timestamp(now()) + 2 else 'closed' %}
       {% set v = states('valve.chacaico_node_2') %}
       {% set cmd = states('sensor.chacaico_node_2_valve_command_status') %}
       {% set last = states('input_text.chacaico_horario_ultimo_2') | from_json({}) %}
@@ -96,20 +97,21 @@ template:
     default_entity_id: sensor.chacaico_horario_proximo_2
     icon: mdi:clock-outline
     state: |-
-      {% set next = state_attr('schedule.chacaico_horario_valvula_2', 'next_event') %}
+      {% from 'chacaico_horarios.jinja' import daily_window %}
+      {% set window = daily_window('input_datetime.chacaico_horario_desde_2', 'input_datetime.chacaico_horario_hasta_2') | from_json %}
       {% if not is_state('input_boolean.chacaico_temporada','on') or not is_state('input_boolean.chacaico_horario_2','on') %}Suspendido
-      {% elif next %}{{ 'Cierre' if is_state('schedule.chacaico_horario_valvula_2','on') else 'Apertura' }} · {{ as_local(as_datetime(next)).strftime('%d/%m %H:%M') }}
-      {% else %}Sin franjas configuradas{% endif %}
+      {% elif not window.valid %}Sin horario
+      {% else %}{{ 'Cierre' if window.active else 'Apertura' }} · {{ as_local(as_datetime(window.next)).strftime('%d/%m %H:%M') }}{% endif %}
   - name: Chacaico horario estado 3
     unique_id: chacaico_horario_estado_3
     default_entity_id: sensor.chacaico_horario_estado_3
     icon: mdi:calendar-clock
     state: |-
+      {% from 'chacaico_horarios.jinja' import daily_window %}
+      {% set window = daily_window('input_datetime.chacaico_horario_desde_3', 'input_datetime.chacaico_horario_hasta_3') | from_json %}
       {% set enabled = is_state('input_boolean.chacaico_temporada', 'on') and is_state('input_boolean.chacaico_horario_3', 'on') %}
       {% set owned = is_state('input_boolean.chacaico_horario_responsable_3', 'on') %}
-      {% set s = states('schedule.chacaico_horario_valvula_3') %}
-      {% set end = as_timestamp(state_attr('schedule.chacaico_horario_valvula_3','next_event'), 0) %}
-      {% set target = 'open' if enabled and s == 'on' and end > as_timestamp(now()) + 2 else 'closed' %}
+      {% set target = 'open' if enabled and window.active and window.end > as_timestamp(now()) + 2 else 'closed' %}
       {% set v = states('valve.chacaico_node_3') %}
       {% set cmd = states('sensor.chacaico_node_3_valve_command_status') %}
       {% set last = states('input_text.chacaico_horario_ultimo_3') | from_json({}) %}
@@ -125,20 +127,21 @@ template:
     default_entity_id: sensor.chacaico_horario_proximo_3
     icon: mdi:clock-outline
     state: |-
-      {% set next = state_attr('schedule.chacaico_horario_valvula_3', 'next_event') %}
+      {% from 'chacaico_horarios.jinja' import daily_window %}
+      {% set window = daily_window('input_datetime.chacaico_horario_desde_3', 'input_datetime.chacaico_horario_hasta_3') | from_json %}
       {% if not is_state('input_boolean.chacaico_temporada','on') or not is_state('input_boolean.chacaico_horario_3','on') %}Suspendido
-      {% elif next %}{{ 'Cierre' if is_state('schedule.chacaico_horario_valvula_3','on') else 'Apertura' }} · {{ as_local(as_datetime(next)).strftime('%d/%m %H:%M') }}
-      {% else %}Sin franjas configuradas{% endif %}
+      {% elif not window.valid %}Sin horario
+      {% else %}{{ 'Cierre' if window.active else 'Apertura' }} · {{ as_local(as_datetime(window.next)).strftime('%d/%m %H:%M') }}{% endif %}
   - name: Chacaico horario estado 4
     unique_id: chacaico_horario_estado_4
     default_entity_id: sensor.chacaico_horario_estado_4
     icon: mdi:calendar-clock
     state: |-
+      {% from 'chacaico_horarios.jinja' import daily_window %}
+      {% set window = daily_window('input_datetime.chacaico_horario_desde_4', 'input_datetime.chacaico_horario_hasta_4') | from_json %}
       {% set enabled = is_state('input_boolean.chacaico_temporada', 'on') and is_state('input_boolean.chacaico_horario_4', 'on') %}
       {% set owned = is_state('input_boolean.chacaico_horario_responsable_4', 'on') %}
-      {% set s = states('schedule.chacaico_horario_valvula_4') %}
-      {% set end = as_timestamp(state_attr('schedule.chacaico_horario_valvula_4','next_event'), 0) %}
-      {% set target = 'open' if enabled and s == 'on' and end > as_timestamp(now()) + 2 else 'closed' %}
+      {% set target = 'open' if enabled and window.active and window.end > as_timestamp(now()) + 2 else 'closed' %}
       {% set v = states('valve.chacaico_node_4') %}
       {% set cmd = states('sensor.chacaico_node_4_valve_command_status') %}
       {% set last = states('input_text.chacaico_horario_ultimo_4') | from_json({}) %}
@@ -154,10 +157,11 @@ template:
     default_entity_id: sensor.chacaico_horario_proximo_4
     icon: mdi:clock-outline
     state: |-
-      {% set next = state_attr('schedule.chacaico_horario_valvula_4', 'next_event') %}
+      {% from 'chacaico_horarios.jinja' import daily_window %}
+      {% set window = daily_window('input_datetime.chacaico_horario_desde_4', 'input_datetime.chacaico_horario_hasta_4') | from_json %}
       {% if not is_state('input_boolean.chacaico_temporada','on') or not is_state('input_boolean.chacaico_horario_4','on') %}Suspendido
-      {% elif next %}{{ 'Cierre' if is_state('schedule.chacaico_horario_valvula_4','on') else 'Apertura' }} · {{ as_local(as_datetime(next)).strftime('%d/%m %H:%M') }}
-      {% else %}Sin franjas configuradas{% endif %}
+      {% elif not window.valid %}Sin horario
+      {% else %}{{ 'Cierre' if window.active else 'Apertura' }} · {{ as_local(as_datetime(window.next)).strftime('%d/%m %H:%M') }}{% endif %}
 automation:
 - id: chacaico_horarios_reconcile
   alias: Chacaico · aplicar horarios y confirmar válvulas
@@ -171,18 +175,24 @@ automation:
     event: start
   - trigger: time_pattern
     seconds: /30
+  - trigger: time
+    at:
+    - input_datetime.chacaico_horario_desde_1
+    - input_datetime.chacaico_horario_hasta_1
+    - input_datetime.chacaico_horario_desde_2
+    - input_datetime.chacaico_horario_hasta_2
+    - input_datetime.chacaico_horario_desde_3
+    - input_datetime.chacaico_horario_hasta_3
+    - input_datetime.chacaico_horario_desde_4
+    - input_datetime.chacaico_horario_hasta_4
   - trigger: state
     entity_id:
-    - schedule.chacaico_horario_valvula_1
     - valve.chacaico_node_1
     - sensor.chacaico_node_1_valve_command_status
-    - schedule.chacaico_horario_valvula_2
     - valve.chacaico_node_2
     - sensor.chacaico_node_2_valve_command_status
-    - schedule.chacaico_horario_valvula_3
     - valve.chacaico_node_3
     - sensor.chacaico_node_3_valve_command_status
-    - schedule.chacaico_horario_valvula_4
     - valve.chacaico_node_4
     - sensor.chacaico_node_4_valve_command_status
   - trigger: mqtt
@@ -195,6 +205,14 @@ automation:
     - input_boolean.chacaico_horario_2
     - input_boolean.chacaico_horario_3
     - input_boolean.chacaico_horario_4
+    - input_datetime.chacaico_horario_desde_1
+    - input_datetime.chacaico_horario_hasta_1
+    - input_datetime.chacaico_horario_desde_2
+    - input_datetime.chacaico_horario_hasta_2
+    - input_datetime.chacaico_horario_desde_3
+    - input_datetime.chacaico_horario_hasta_3
+    - input_datetime.chacaico_horario_desde_4
+    - input_datetime.chacaico_horario_hasta_4
     id: controls
   actions:
   - if:
@@ -211,7 +229,8 @@ automation:
       sequence:
       - variables:
           node: '{{ repeat.item }}'
-          schedule_entity: schedule.chacaico_horario_valvula_{{ node }}
+          window: '{% from ''chacaico_horarios.jinja'' import daily_window %}{{ daily_window(''input_datetime.chacaico_horario_desde_''
+            ~ node, ''input_datetime.chacaico_horario_hasta_'' ~ node) | from_json }}'
           valve_entity: valve.chacaico_node_{{ node }}
           owned_entity: input_boolean.chacaico_horario_responsable_{{ node }}
           last_entity: input_text.chacaico_horario_ultimo_{{ node }}
@@ -219,8 +238,8 @@ automation:
             ~ node, ''on'') }}'
           owned: '{{ is_state(owned_entity, "on") }}'
           clock: '{{ as_timestamp(now()) }}'
-          end: '{{ as_timestamp(state_attr(schedule_entity, "next_event"), 0) }}'
-          desired: '{{ "OPEN" if enabled and is_state(schedule_entity, "on") and end > clock + 2 else "CLOSE" }}'
+          end: '{{ window.end }}'
+          desired: '{{ "OPEN" if enabled and window.active and end > clock + 2 else "CLOSE" }}'
           last: '{{ states(last_entity) | from_json({}) }}'
           last_at: '{{ last.get("at", 0) | float(0) }}'
           last_desired: '{{ last.get("desired", "") }}'
@@ -232,8 +251,8 @@ automation:
             == "confirmed" and confirmed_at >= last_at and last_desired == desired and not pending }}'
           retry_s: '{{ [60, (states("sensor.chacaico_node_" ~ node ~ "_metric_command_ttl_s") | float(0)) + 10]
             | max }}'
-          send: '{{ (enabled or owned) and (last_desired != desired or (desired == "OPEN" and not settled and end != last.get("end",
-            0)) or (not settled and (clock - last_at >= retry_s or clock < last_at))) }}'
+          send: '{{ (enabled or owned) and (last_desired != desired or (desired == "OPEN" and not settled and end
+            != last.get("end", 0)) or (not settled and (clock - last_at >= retry_s or clock < last_at))) }}'
       - if:
         - condition: template
           value_template: '{{ enabled and not owned }}'
@@ -271,3 +290,44 @@ automation:
           data:
             value: '{}'
         - action: homeassistant.save_persistent_states
+input_datetime:
+  chacaico_horario_desde_1:
+    name: Desde válvula 1
+    has_date: false
+    has_time: true
+    icon: mdi:clock-start
+  chacaico_horario_hasta_1:
+    name: Hasta válvula 1
+    has_date: false
+    has_time: true
+    icon: mdi:clock-end
+  chacaico_horario_desde_2:
+    name: Desde válvula 2
+    has_date: false
+    has_time: true
+    icon: mdi:clock-start
+  chacaico_horario_hasta_2:
+    name: Hasta válvula 2
+    has_date: false
+    has_time: true
+    icon: mdi:clock-end
+  chacaico_horario_desde_3:
+    name: Desde válvula 3
+    has_date: false
+    has_time: true
+    icon: mdi:clock-start
+  chacaico_horario_hasta_3:
+    name: Hasta válvula 3
+    has_date: false
+    has_time: true
+    icon: mdi:clock-end
+  chacaico_horario_desde_4:
+    name: Desde válvula 4
+    has_date: false
+    has_time: true
+    icon: mdi:clock-start
+  chacaico_horario_hasta_4:
+    name: Hasta válvula 4
+    has_date: false
+    has_time: true
+    icon: mdi:clock-end

@@ -29,7 +29,7 @@
             },
             {
               "type": "markdown",
-              "content": "Al apagar la temporada se solicita el cierre y se guardan los horarios. Mientras esté activa, manda el horario.\n\nTocá **Editar días y horarios**, marcá las franjas y guardá con **Actualizar / Update**."
+              "content": "El rango se repite **todos los días**. Desde y Hasta iguales = sin riego programado."
             }
           ]
         }
@@ -48,17 +48,12 @@
               "name": "Usar este horario"
             },
             {
-              "entity": "schedule.chacaico_horario_valvula_1",
-              "name": "Editar días y horarios",
-              "icon": "mdi:calendar-edit",
-              "tap_action": {
-                "action": "navigate",
-                "navigation_path": "/dashboard-chacaico/horarios?more-info-entity-id=schedule.chacaico_horario_valvula_1&more-info-view=settings"
-              }
+              "entity": "input_datetime.chacaico_horario_desde_1",
+              "name": "Desde"
             },
             {
-              "entity": "sensor.chacaico_horario_proximo_1",
-              "name": "Próximo cambio"
+              "entity": "input_datetime.chacaico_horario_hasta_1",
+              "name": "Hasta"
             },
             {
               "entity": "sensor.chacaico_horario_estado_1",
@@ -81,17 +76,12 @@
               "name": "Usar este horario"
             },
             {
-              "entity": "schedule.chacaico_horario_valvula_2",
-              "name": "Editar días y horarios",
-              "icon": "mdi:calendar-edit",
-              "tap_action": {
-                "action": "navigate",
-                "navigation_path": "/dashboard-chacaico/horarios?more-info-entity-id=schedule.chacaico_horario_valvula_2&more-info-view=settings"
-              }
+              "entity": "input_datetime.chacaico_horario_desde_2",
+              "name": "Desde"
             },
             {
-              "entity": "sensor.chacaico_horario_proximo_2",
-              "name": "Próximo cambio"
+              "entity": "input_datetime.chacaico_horario_hasta_2",
+              "name": "Hasta"
             },
             {
               "entity": "sensor.chacaico_horario_estado_2",
@@ -114,17 +104,12 @@
               "name": "Usar este horario"
             },
             {
-              "entity": "schedule.chacaico_horario_valvula_3",
-              "name": "Editar días y horarios",
-              "icon": "mdi:calendar-edit",
-              "tap_action": {
-                "action": "navigate",
-                "navigation_path": "/dashboard-chacaico/horarios?more-info-entity-id=schedule.chacaico_horario_valvula_3&more-info-view=settings"
-              }
+              "entity": "input_datetime.chacaico_horario_desde_3",
+              "name": "Desde"
             },
             {
-              "entity": "sensor.chacaico_horario_proximo_3",
-              "name": "Próximo cambio"
+              "entity": "input_datetime.chacaico_horario_hasta_3",
+              "name": "Hasta"
             },
             {
               "entity": "sensor.chacaico_horario_estado_3",
@@ -147,17 +132,12 @@
               "name": "Usar este horario"
             },
             {
-              "entity": "schedule.chacaico_horario_valvula_4",
-              "name": "Editar días y horarios",
-              "icon": "mdi:calendar-edit",
-              "tap_action": {
-                "action": "navigate",
-                "navigation_path": "/dashboard-chacaico/horarios?more-info-entity-id=schedule.chacaico_horario_valvula_4&more-info-view=settings"
-              }
+              "entity": "input_datetime.chacaico_horario_desde_4",
+              "name": "Desde"
             },
             {
-              "entity": "sensor.chacaico_horario_proximo_4",
-              "name": "Próximo cambio"
+              "entity": "input_datetime.chacaico_horario_hasta_4",
+              "name": "Hasta"
             },
             {
               "entity": "sensor.chacaico_horario_estado_4",

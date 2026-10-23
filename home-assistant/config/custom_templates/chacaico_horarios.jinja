@@ -1,0 +1,19 @@
+{# Daily half-open interval [Desde, Hasta); equal times mean no watering.
+   Use local calendar days, not +86400 seconds, including across midnight/DST. #}
+{% macro daily_window(start_entity, end_entity) -%}
+  {% set start = states(start_entity) %}
+  {% set stop = states(end_entity) %}
+  {% if start in ['unknown', 'unavailable', ''] or stop in ['unknown', 'unavailable', ''] or start == stop %}
+    {{ {'valid': false, 'active': false, 'end': 0, 'next': 0} | to_json }}
+  {% else %}
+    {% set t = now() %}
+    {% set a = today_at(start) %}
+    {% set b = today_at(stop) %}
+    {% set active = a <= t < b if a < b else t >= a or t < b %}
+    {% set end = b + timedelta(days=1) if a > b and t >= a else b %}
+    {% set upcoming = a if t < a else a + timedelta(days=1) %}
+    {{ {'valid': true, 'active': active,
+        'end': as_timestamp(end) if active else 0,
+        'next': as_timestamp(end if active else upcoming)} | to_json }}
+  {% endif %}
+{%- endmacro %}

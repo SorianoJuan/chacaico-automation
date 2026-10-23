@@ -2,43 +2,43 @@
 
 Implementado el23/10/2026 en Core2026.9.4 y bridge0.5.1. Nodos0.5.0 sin cambios.
 La temporada se habilita y deshabilita **manualmente**, sin fechas de noviembre
-ni marzo. Se usa Schedule nativo; no hay HACS ni otra app de scheduling.
+ni marzo. Se usan controles nativos de hora; no hay HACS ni otra app de scheduling.
 
-## Uso
+## Uso: Desde / Hasta
 
-1. Abrir **Chacaico → Horarios**.
-2. En cada válvula, tocar **Editar días y horarios**. Se abre directamente el
-   editor nativo: arrastrar en la grilla semanal para crear franjas, tocar un
-   bloque para ajustar inicio/fin o quitarlo y guardar con **Actualizar / Update**.
-   Las fechas de la grilla son ilustrativas: las franjas se repiten semanalmente.
-   Para todos los días, definir las franjas en los siete días. No cambiar el ID.
-3. Dejar **Usar este horario** activo en las válvulas incluidas. Este selector
-   permite excluir una válvula sin borrar sus franjas.
-4. Encender **Habilitar los horarios**, dentro de Temporada de riego. Aplica el
-   estado que corresponda **ahora**: abre dentro de una franja y cierra fuera.
-5. Al finalizar la temporada, apagar ese interruptor. Solicita cerrar las
-   válvulas que administraba y conserva los horarios para la próxima temporada.
-   Un cierre sin confirmar permanece pendiente y se reintenta.
+Abrir **Chacaico → Horarios**. Cada tarjeta contiene:
 
-La entrega inicial deja la temporada **OFF**, los cuatro selectores preparados
-**ON** y las franjas **vacías**. No se eligieron horas por el usuario. Una válvula
-con horario vacío permanecerá cerrada cuando se habilite su programación.
-Zona horaria de la Pi verificada: `America/Argentina/Buenos_Aires`.
+- **Usar este horario**: incluye/excluye esa válvula del programa.
+- **Desde**: hora diaria de apertura, editable directamente.
+- **Hasta**: hora diaria de cierre, editable directamente.
+- **Estado**: apertura/cierre pendiente, sin contacto o confirmación reciente.
 
-El estado de cada tarjeta resume apertura/cierre pendiente, falta de contacto,
-reintento o confirmación reciente. **Próximo cambio** muestra inicio o fin de
-franja. La vista principal y sus estados de orden se conservan. No se presenta
-una confirmación antigua como resultado de una nueva orden.
+Las horas se guardan automáticamente. Encender **Habilitar los horarios** en
+Temporada de riego para aplicar los cuatro rangos habilitados. Al terminar la
+temporada, apagarlo: solicita cerrar las válvulas que administraba y conserva
+los horarios. Los cierres sin confirmar siguen pendientes y se reintentan.
 
-Mientras temporada y selector estén ON, manda el horario; una acción manual
-contraria será reconciliada. Para control manual, deshabilitar ese horario y
-esperar a confirmar su cierre. Las válvulas que nunca estuvieron administradas
-por el programa se dejan en control manual cuando temporada está OFF.
+Ejemplos: Desde08:00 / Hasta09:00 abre todos los días de08:00 a09:00;
+Desde22:00 / Hasta01:00 cruza medianoche. **Desde igual a Hasta no programa riego**,
+no significa24 horas de apertura. El inicio está incluido y el final excluido.
+La cuenta admin usa formato24h para mostrar las horas. Zona horaria verificada: `America/Argentina/Buenos_Aires`.
+
+La simplificación del23/10 deja temporada OFF, los cuatro selectores ON y los
+rangos00:00–00:00 (sin riego). Los Schedule semanales estaban vacíos y se
+conservaron en HA, pero ya no intervienen. Se preservaron los cierres que ya
+estaban pendientes antes de la actualización; no se borró su responsabilidad.
+No se eligieron horas de operación por el usuario.
+
+Mientras temporada y selector estén ON, manda el horario. Para cambiar ambas
+horas sin aplicar valores intermedios, apagar ese selector y esperar su cierre
+antes de editar. Para control manual, deshabilitar ese horario y esperar a
+confirmar el cierre. Las válvulas que nunca administró el programa se dejan en
+control manual cuando temporada está OFF. La vista principal se conserva.
 
 ## Confirmaciones y reinicios
 
 - Un controlador común revisa cambios de horarios/controles/estado, arranque de
-  HA, reconexión del puente y cada30s como recuperación.
+  HA, reconexión del puente, las ocho horas exactas Desde/Hasta y cada30s como recuperación.
 - Guarda propiedad e intención antes de publicar por MQTT con QoS1 y retain=false.
   El estado pendiente/confirmado continúa siendo responsabilidad del bridge.
 - Apertura programada: `{"state":"OPEN","valid_until":<fin Unix de la franja>}`.
@@ -49,7 +49,7 @@ por el programa se dejan en control manual cuando temporada está OFF.
 - Cierre: `CLOSE`, reemplaza cualquier apertura pendiente. Si no hay confirmación,
   el controlador vuelve a solicitarlo cada `max(60s, vigencia efectiva + 10s)`,
   sujeto a la revisión de30s. No publica otra orden cada tick ni repite una
-  solicitud ya confirmada.
+  solicitud ya confirmada, tampoco al editar el final de una apertura confirmada.
 - Solo se considera satisfecho el objetivo si coincide el estado del nodo, la
   confirmación es válida y su timestamp es posterior a la intención. Los ACK
   viejos y estados retained no bastan para liberar un nuevo cierre pendiente.
@@ -79,17 +79,17 @@ solapamiento, dejar separación acorde al reposo y al tiempo de entrega. A pedid
 del usuario **no se impone exclusión mutua** entre válvulas; el editor permite
 solapamientos. Para una garantía hidráulica harían falta interbloqueo y sensores.
 
-El editor semanal requiere una cuenta de HA con permisos de administración.
-Los visitantes sin dichos permisos pueden no tener acceso a editar helpers.
-Los nombres e IDs técnicos de los helpers son usados por el controlador y no
-deben modificarse desde el editor.
+Los campos Desde/Hasta son helpers de hora de HA; se editan desde la tarjeta.
+Conservar sus IDs técnicos para que el controlador pueda encontrarlos.
 
 ## Archivos, actualización y reversión
 
 - `home-assistant/config/chacaico-horarios.yaml`: paquete nativo, incluido desde
   `homeassistant.packages` en configuration.yaml.
-- `home-assistant/config/horarios-seed.json`: helpers vacíos de primera instalación.
-  Los horarios vigentes residen en HA y se respaldan con su configuración.
+- `home-assistant/config/custom_templates/chacaico_horarios.jinja`: cálculo común
+  de rango diario y próximo cambio. Usa días locales, no saltos fijos de86400s.
+- Los valores vigentes de los input_datetime residen en HA y se respaldan con su
+  configuración. No agregar `initial`: sobrescribiría valores al reiniciar.
 - `home-assistant/scripts/horarios-view.py`: vista reproducible y combinación que
   preserva las otras pestañas. Para editar el dashboard activo, usar UI; nunca
   escribir `.storage` mientras Core está ejecutándose.
@@ -98,12 +98,14 @@ deben modificarse desde el editor.
 
 Respaldo de despliegue privado en la Pi:
 `/config/chacaico-backups/horarios-20261023T193459Z`, parcial Supervisor `ec419329`.
-Contiene configuración y bridge previos; no copiarlo a Git. Para retirar esta
+La migración a Desde/Hasta tiene además respaldo privado en
+`/config/chacaico-backups/horarios-diario-20261023T201521Z`.
+El respaldo inicial contiene configuración y bridge previos; no copiarlo a Git. Para retirar esta
 función, primero apagar Temporada y confirmar todos los cierres; después retirar
 la inclusión del paquete y la vista, validar Core y reiniciar. Para restaurar
 archivos de `.storage`, detener Core antes; no sobrescribir otros cambios hechos
 después del backup. Se puede conservar bridge0.5.1: mantiene comandos manuales.
 
-Referencia del componente: [Schedule nativo](https://www.home-assistant.io/integrations/schedule/).
+Referencia: [Input Datetime nativo](https://www.home-assistant.io/integrations/input_datetime/).
 La validación registrada separa simulación y funcionamiento real de UI/Core;
 no prueba posición física ni funcionamiento hidráulico.

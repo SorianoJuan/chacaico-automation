@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-23",
+  "unit_tests_passed": 103,
+  "ha_core_check": "passed",
+  "core_restart": "passed",
+  "live_ui": {
+    "native_from_until_fields": 8,
+    "time_format": "24h, admin profile",
+    "direct_edit": "08:00–09:00 on valve1, persisted and restored to 00:00–00:00",
+    "season": "off",
+    "existing_pending_closes_preserved": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "other_views_preserved": 3
+  },
+  "backup": "/config/chacaico-backups/horarios-diario-20261023T201521Z",
+  "sha256": {
+    "home-assistant/config/chacaico-horarios.yaml": "45171ec910a071db48a379387e2a6ad4f3a2ab508d62b68d6b10735e82ee2278",
+    "home-assistant/config/custom_templates/chacaico_horarios.jinja": "d104e3e1ef0af734216f9ee9dcbf4d95c8dfea1543687798f8ac4b3c6b2a600a"
+  },
+  "limits": [
+    "No physical actuator test. Existing pending CLOSE retries were preserved.",
+    "No autonomous closure was added to node firmware."
+  ]
+}

@@ -91,11 +91,11 @@ oculta; las métricas restantes siguen disponibles como entidades.
 La potencia del HAT se aplica con un control independiente. La vista original del usuario se conserva.
 Editar un campo no envía SET_CONFIG hasta pulsar Aplicar.
 
-La pestaña **Horarios** (`dashboard-chacaico/horarios`) permite editar días y franjas
-semanales para las cuatro válvulas. **Temporada de riego** habilita/suspende todo
+La pestaña **Horarios** (`dashboard-chacaico/horarios`) muestra **Desde** y **Hasta**
+para un rango diario por válvula, incluso cruzando medianoche. **Temporada de riego** habilita/suspende todo
 manualmente, conservando la programación; hay un selector por válvula. Las
 aperturas caducan al terminar la franja y los cierres pendientes se recuperan
-tras reinicios. Instalada con temporada apagada y franjas vacías. Detalles y
+tras reinicios. Temporada apagada y tiempos iniciales iguales (sin riego). Detalles y
 límites en [horarios de válvulas](docs/valve-schedules.md).
 
 SSH usa la clave ya existente de Arch. En la LAN: `ssh pi5.chacaico`.

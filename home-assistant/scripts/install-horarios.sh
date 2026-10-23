@@ -11,16 +11,14 @@ api() { curl -fsS --connect-timeout 10 --max-time 600 -H "Authorization: Bearer 
 checked() { result=$(api "$@"); printf '%s' "$result" | jq -e '.result == "ok"' >/dev/null; }
 api http://supervisor/info | jq -e '.data.machine_id == "2e21da3405714e0cba2d890984d6dfa8"' >/dev/null
 test ! -e /config/chacaico-horarios.yaml
-test ! -e /config/.storage/schedule
 ! grep -q '^homeassistant:' /config/configuration.yaml
 jq -e '.data.config.views | map(select(.path == "horarios")) | length == 1' "$stage/dashboard.json" >/dev/null
-jq -e '.key == "schedule" and (.data.items | length == 4)' "$stage/horarios-seed.json" >/dev/null
 backup=/config/chacaico-backups/horarios-$(date -u +%Y%m%dT%H%M%SZ)
 mkdir -p "$backup"
 cp -p /config/configuration.yaml "$backup/configuration.yaml"
 cp -p /config/.storage/lovelace.dashboard_chacaico "$backup/dashboard.json"
 cp -a /local_apps/chacaico_lora_bridge "$backup/bridge"
-checked -X POST http://supervisor/backups/new/partial -d '{"name":"Chacaico before native schedules","addons":["local_chacaico_lora_bridge"],"homeassistant":true}'
+checked -X POST http://supervisor/backups/new/partial -d '{"name":"Chacaico before daily schedules","addons":["local_chacaico_lora_bridge"],"homeassistant":true}'
 printf '%s' "$result" | jq '{result,backup:.data.slug}'
 printf '%s' "$result" | jq -er '.data.slug' > "$backup/supervisor-backup-slug"
 # Stop Core for the 1GB Pi build AND before changing native storage.
@@ -32,6 +30,8 @@ cp "$stage/engine.py" "$stage/config.yaml" "$stage/Dockerfile" /local_apps/chaca
 checked -X POST http://supervisor/store/reload
 checked -X POST http://supervisor/addons/local_chacaico_lora_bridge/update
 api http://supervisor/addons/local_chacaico_lora_bridge/info | jq -e '.data.version == "0.5.1" and .data.state == "started"' >/dev/null
+mkdir -p /config/custom_templates
+cp "$stage/chacaico_horarios.jinja" /config/custom_templates/
 cp "$stage/chacaico-horarios.yaml" /config/chacaico-horarios.yaml
 cat >> /config/configuration.yaml <<'CONFIG'
 
@@ -46,8 +46,7 @@ if ! checked -X POST http://supervisor/core/check; then
     printf 'Configuration rejected; original configuration restored. Backup: %s\n' "$backup" >&2
     exit 1
 fi
-cp "$stage/horarios-seed.json" /config/.storage/schedule
 cp "$stage/dashboard.json" /config/.storage/lovelace.dashboard_chacaico
 checked -X POST http://supervisor/core/start
 trap - EXIT HUP INT TERM
-printf 'Horarios installed with empty schedules and season disabled. Backup: %s\n' "$backup"
+printf 'Horarios installed with equal times (no watering) and season disabled. Backup: %s\n' "$backup"
