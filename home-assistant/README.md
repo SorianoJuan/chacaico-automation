@@ -117,3 +117,12 @@ Agregar las plantillas de válvula y recargar **Template entities** desde las
 herramientas YAML después de `ha core check`. El generador de vistas incluye1–4
 por defecto; verificar que preserve la vista principal antes de guardar desde UI.
 [Alta verificada del23/10/2026](../docs/evidence/2026-10-23/nodes-3-4/README.md).
+
+## Tarjetas de los nodos3 y4 en la vista principal
+
+Agregadas el23/10/2026 a pedido del usuario, copiando el formato de1/2:
+válvula MQTT nativa, Orden de válvula, LED independiente, SNR y RSSI.
+`config/main-view-node-3-4-cards.json` conserva únicamente las dos tarjetas públicas;
+no contiene el dashboard privado. Se agregaron después de Nodo2, preservando las
+otras tarjetas y ambas vistas de configuración. Verificadas en UI con señal real
+para3/4; sin accionar válvulas ni LED como parte de esta edición.

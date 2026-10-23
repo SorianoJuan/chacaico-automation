@@ -43,7 +43,9 @@ SSH entra en la app Terminal & SSH, no en el host HAOS.
 El panel Chacaico es de almacenamiento y lo administra el usuario desde la UI.
 Preservar los controles y demás contenido de la vista original. El usuario autorizó
 la fila Orden de válvula inmediatamente después de cada válvula en esa vista,
-con su estado de orden independiente del LED. También autorizó una pestaña aparte
+con su estado de orden independiente del LED. Las tarjetas de nodos3/4 también
+están en la vista principal, con el mismo formato válvula/orden/LED/SNR/RSSI de1/2.
+También autorizó una pestaña aparte
 Configuración LoRa (`configuracion-lora`) para parámetros/confirmaciones;
 no mezclarla con los controles de válvula ni reemplazar otras vistas.
 Mantener Configuración LoRa minimalista: reposo, pulso, potencia, Aplicar y

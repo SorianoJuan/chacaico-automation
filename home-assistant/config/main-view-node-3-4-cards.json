@@ -1,0 +1,48 @@
+[
+  {
+    "type": "entities",
+    "entities": [
+      {
+        "entity": "valve.chacaico_node_3"
+      },
+      {
+        "entity": "sensor.chacaico_node_3_valve_command_status",
+        "name": "Orden de válvula"
+      },
+      {
+        "entity": "switch.cubecell_3_led_de_prueba"
+      },
+      {
+        "entity": "sensor.cubecell_3_snr"
+      },
+      {
+        "entity": "sensor.cubecell_3_rssi"
+      }
+    ],
+    "title": "Nodo 3",
+    "show_header_toggle": false
+  },
+  {
+    "type": "entities",
+    "entities": [
+      {
+        "entity": "valve.chacaico_node_4"
+      },
+      {
+        "entity": "sensor.chacaico_node_4_valve_command_status",
+        "name": "Orden de válvula"
+      },
+      {
+        "entity": "switch.cubecell_4_led_de_prueba"
+      },
+      {
+        "entity": "sensor.cubecell_4_snr"
+      },
+      {
+        "entity": "sensor.cubecell_4_rssi"
+      }
+    ],
+    "title": "Nodo 4",
+    "show_header_toggle": false
+  }
+]
