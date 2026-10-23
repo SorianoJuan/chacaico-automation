@@ -7,6 +7,7 @@ Guardar aquí desarrollo, configuración reproducible, documentación y evidenci
 
 - `firmware/nodes/node_1/`: sketch/perfil públicos del ID1, firmware0.5.0; máximo configurable3000ms, aplicado50ms.
 - `firmware/nodes/node_2/`: sketch/perfil públicos del ID2, firmware0.5.0; máximo configurable3000ms, aplicado50ms.
+- `firmware/nodes/node_3/` y `node_4/`: firmware0.5.0, claves/IDs3 y4 propios; máximo200ms, aplicado50ms.
 - `firmware/libraries/ChacaicoNode/`: lógica compartida; conservar comportamiento
   consistente entre nodos. Cambiar versión en perfiles/librería/banner cuando proceda.
 - `bridge/chacaico_lora_bridge/`: app0.5.0 de HAOS, driver SX1262 y protocolo MQTT/LoRa.
@@ -15,10 +16,10 @@ Guardar aquí desarrollo, configuración reproducible, documentación y evidenci
 - `tests/`: pruebas offline; `docs/`: operación, ideas y diagnósticos.
 
 Original HTCC-AB01/ASR6501, core oficial CubeCell1.6.0. PCB V1.2 confirmada para el
-nodo1; verificar por separado la del nodo2. Usar `firmware/build-node.py --id N`
+nodo1; verificar por separado las de nodos2/3/4. Usar `firmware/build-node.py --id N`
 y `firmware/flash-node.sh --id N /dev/serial/by-path/PUERTO-port0`.
 Cada ID tiene su propio `node_config.h`, build y clave. El helper verifica identidad,
-fuentes y checksum antes de subir. Ambos CP2102 tienen serial0001: nunca usar
+fuentes y checksum antes de subir. Los CP2102 tienen serial0001: nunca usar
 ese `by-id` para decidir qué placa programar; identificar físicamente el nodo.
 
 GPIO2 abre, GPIO1 cierra, pulso configurable10–3000ms en nodos1/2 (predeterminado y aplicado50ms) y ambos LOW al terminar. No pulso al arrancar.

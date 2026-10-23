@@ -12,7 +12,7 @@ case "$1" in
  sub) exec mosquitto_sub -h "$host" -p "$port" -u "$user" -P "$password" -q 1 -t 'chacaico/lora/#' -F '%t\t%p' ;;
  pub)
   case "$2" in
-   chacaico/lora/bridge/power/set|chacaico/lora/bridge/power/apply|chacaico/lora/node/[12]/led/set|chacaico/lora/node/[12]/config/*|chacaico/lora/node/[12]/policy/*) ;;
+   chacaico/lora/bridge/power/set|chacaico/lora/bridge/power/apply|chacaico/lora/node/[1234]/led/set|chacaico/lora/node/[1234]/config/*|chacaico/lora/node/[1234]/policy/*) ;;
    *) echo 'Topic refused by bench helper' >&2; exit 1 ;;
   esac
   exec mosquitto_pub -h "$host" -p "$port" -u "$user" -P "$password" -q 1 -t "$2" -m "$3" ;;

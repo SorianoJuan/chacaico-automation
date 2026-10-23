@@ -239,6 +239,240 @@
           ]
         }
       ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "entities",
+          "title": "Nodo 3 · Escucha",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "number.chacaico_node_3_listen_ms_requested",
+              "name": "Ventana de escucha"
+            },
+            {
+              "entity": "number.chacaico_node_3_max_awake_ms_requested",
+              "name": "Máximo despierto"
+            },
+            {
+              "entity": "button.chacaico_node_3_config_apply",
+              "name": "Aplicar al nodo"
+            },
+            {
+              "entity": "sensor.chacaico_node_3_config_status",
+              "name": "Última aplicación"
+            }
+          ]
+        },
+        {
+          "type": "markdown",
+          "content": "En uso: {{ states('sensor.chacaico_node_3_listen_ms_confirmed') }} ms de escucha · {{ states('sensor.chacaico_node_3_max_awake_ms_confirmed') }} ms despierto"
+        },
+        {
+          "type": "conditional",
+          "conditions": [
+            {
+              "condition": "state",
+              "entity": "sensor.chacaico_node_3_config_input_error",
+              "state_not": "Sin errores"
+            },
+            {
+              "condition": "state",
+              "entity": "sensor.chacaico_node_3_config_input_error",
+              "state_not": "unknown"
+            },
+            {
+              "condition": "state",
+              "entity": "sensor.chacaico_node_3_config_input_error",
+              "state_not": "unavailable"
+            }
+          ],
+          "card": {
+            "type": "entities",
+            "title": "Revisá los valores",
+            "show_header_toggle": false,
+            "entities": [
+              {
+                "entity": "sensor.chacaico_node_3_config_input_error",
+                "name": "Aviso"
+              }
+            ]
+          }
+        },
+        {
+          "type": "entities",
+          "title": "Entrega de órdenes",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "number.chacaico_node_3_command_ttl_s_requested",
+              "name": "Vigencia (0 = automática)"
+            },
+            {
+              "entity": "number.chacaico_node_3_missed_contacts_requested",
+              "name": "Contactos perdidos tolerados"
+            },
+            {
+              "entity": "button.chacaico_node_3_policy_apply",
+              "name": "Aplicar política"
+            },
+            {
+              "entity": "sensor.chacaico_node_3_policy_status",
+              "name": "Estado"
+            }
+          ]
+        },
+        {
+          "type": "markdown",
+          "content": "En uso: {{ states('sensor.chacaico_node_3_command_ttl_s_confirmed') }} s de vigencia · {{ states('sensor.chacaico_node_3_missed_contacts_confirmed') }} contactos"
+        },
+        {
+          "type": "entities",
+          "title": "Diagnóstico",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "sensor.chacaico_node_3_link",
+              "name": "Comunicación"
+            },
+            {
+              "entity": "sensor.chacaico_node_3_metric_uplink_rssi",
+              "name": "Señal recibida por HAT"
+            },
+            {
+              "entity": "sensor.chacaico_node_3_metric_downlink_rssi",
+              "name": "Señal recibida por nodo"
+            },
+            {
+              "entity": "sensor.chacaico_node_3_metric_last_total_s",
+              "name": "Demora de última orden"
+            },
+            {
+              "entity": "button.chacaico_node_3_config_query",
+              "name": "Consultar al nodo"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "entities",
+          "title": "Nodo 4 · Escucha",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "number.chacaico_node_4_listen_ms_requested",
+              "name": "Ventana de escucha"
+            },
+            {
+              "entity": "number.chacaico_node_4_max_awake_ms_requested",
+              "name": "Máximo despierto"
+            },
+            {
+              "entity": "button.chacaico_node_4_config_apply",
+              "name": "Aplicar al nodo"
+            },
+            {
+              "entity": "sensor.chacaico_node_4_config_status",
+              "name": "Última aplicación"
+            }
+          ]
+        },
+        {
+          "type": "markdown",
+          "content": "En uso: {{ states('sensor.chacaico_node_4_listen_ms_confirmed') }} ms de escucha · {{ states('sensor.chacaico_node_4_max_awake_ms_confirmed') }} ms despierto"
+        },
+        {
+          "type": "conditional",
+          "conditions": [
+            {
+              "condition": "state",
+              "entity": "sensor.chacaico_node_4_config_input_error",
+              "state_not": "Sin errores"
+            },
+            {
+              "condition": "state",
+              "entity": "sensor.chacaico_node_4_config_input_error",
+              "state_not": "unknown"
+            },
+            {
+              "condition": "state",
+              "entity": "sensor.chacaico_node_4_config_input_error",
+              "state_not": "unavailable"
+            }
+          ],
+          "card": {
+            "type": "entities",
+            "title": "Revisá los valores",
+            "show_header_toggle": false,
+            "entities": [
+              {
+                "entity": "sensor.chacaico_node_4_config_input_error",
+                "name": "Aviso"
+              }
+            ]
+          }
+        },
+        {
+          "type": "entities",
+          "title": "Entrega de órdenes",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "number.chacaico_node_4_command_ttl_s_requested",
+              "name": "Vigencia (0 = automática)"
+            },
+            {
+              "entity": "number.chacaico_node_4_missed_contacts_requested",
+              "name": "Contactos perdidos tolerados"
+            },
+            {
+              "entity": "button.chacaico_node_4_policy_apply",
+              "name": "Aplicar política"
+            },
+            {
+              "entity": "sensor.chacaico_node_4_policy_status",
+              "name": "Estado"
+            }
+          ]
+        },
+        {
+          "type": "markdown",
+          "content": "En uso: {{ states('sensor.chacaico_node_4_command_ttl_s_confirmed') }} s de vigencia · {{ states('sensor.chacaico_node_4_missed_contacts_confirmed') }} contactos"
+        },
+        {
+          "type": "entities",
+          "title": "Diagnóstico",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "sensor.chacaico_node_4_link",
+              "name": "Comunicación"
+            },
+            {
+              "entity": "sensor.chacaico_node_4_metric_uplink_rssi",
+              "name": "Señal recibida por HAT"
+            },
+            {
+              "entity": "sensor.chacaico_node_4_metric_downlink_rssi",
+              "name": "Señal recibida por nodo"
+            },
+            {
+              "entity": "sensor.chacaico_node_4_metric_last_total_s",
+              "name": "Demora de última orden"
+            },
+            {
+              "entity": "button.chacaico_node_4_config_query",
+              "name": "Consultar al nodo"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

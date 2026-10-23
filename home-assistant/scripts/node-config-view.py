@@ -29,7 +29,7 @@ def validation(node):
         "card": entities("Revisá los valores", [(entity, "Aviso")])}
 
 
-def view(nodes=(1, 2)):
+def view(nodes=(1, 2, 3, 4)):
     sections = []
     for node in nodes:
         prefix = f"chacaico_node_{node}"
@@ -56,7 +56,7 @@ def view(nodes=(1, 2)):
             "type": "sections", "max_columns": 2, "show_icon_and_title": True, "sections": sections}
 
 
-def advanced_view(nodes=(1, 2)):
+def advanced_view(nodes=(1, 2, 3, 4)):
     sections = []
     for node in nodes:
         prefix = f"chacaico_node_{node}"
@@ -86,7 +86,7 @@ def advanced_view(nodes=(1, 2)):
             "sections": sections}
 
 
-def merge(document, nodes=(1, 2)):
+def merge(document, nodes=(1, 2, 3, 4)):
     result = copy.deepcopy(document)
     if result.get("key") != "lovelace.dashboard_chacaico":
         raise ValueError("Unexpected dashboard storage key")
@@ -110,7 +110,7 @@ def main():
     parser.add_argument("--storage", type=Path)
     parser.add_argument("--advanced", action="store_true", help="Export the hidden advanced subview")
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--nodes", type=int, nargs="+", default=[1, 2])
+    parser.add_argument("--nodes", type=int, nargs="+", default=[1, 2, 3, 4])
     args = parser.parse_args()
     if len(args.nodes) != len(set(args.nodes)) or any(not 1 <= n <= 65534 for n in args.nodes):
         parser.error("Node IDs must be unique and between 1 and 65534")

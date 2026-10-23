@@ -21,7 +21,7 @@ with patch.dict(sys.modules, {'radio': types.SimpleNamespace(Radio=object),
 class ConfigurationUiTest(unittest.TestCase):
     def test_every_dashboard_entity_exists_and_ids_are_unique(self):
         discovery = list(bridge.bridge_discovery())
-        for node in (1, 2): discovery += list(bridge.discovery(node))
+        for node in (1, 2, 3, 4): discovery += list(bridge.discovery(node))
         identifiers = [p['unique_id'] for _, p in discovery]
         self.assertEqual(len(identifiers), len(set(identifiers)))
         entities = {p['default_entity_id'] for _, p in discovery if 'default_entity_id' in p}
@@ -46,13 +46,15 @@ class ConfigurationUiTest(unittest.TestCase):
 
     def test_limits_match_protocol_and_commands_are_not_retained(self):
         from protocol import CONFIG_LIMITS
-        rows = dict(bridge.discovery(1))
-        for key, (minimum, maximum) in CONFIG_LIMITS.items():
-            row = rows[f'homeassistant/number/chacaico_node_1/{key}_requested/config']
-            self.assertEqual(row['min'], minimum)
-            self.assertEqual(row['max'], 3000 if key == 'pulse_ms' else maximum)
-            self.assertFalse(row['retain'])
-            self.assertFalse(row['optimistic'])
+        for node in (1, 2, 3, 4):
+            rows = dict(bridge.discovery(node))
+            for key, (minimum, maximum) in CONFIG_LIMITS.items():
+                row = rows[f'homeassistant/number/chacaico_node_{node}/{key}_requested/config']
+                self.assertEqual(row['min'], minimum)
+                pulse_max = 3000 if node in (1, 2) else 200
+                self.assertEqual(row['max'], pulse_max if key == 'pulse_ms' else maximum)
+                self.assertFalse(row['retain'])
+                self.assertFalse(row['optimistic'])
         for topic, payload in list(rows.items()) + list(bridge.bridge_discovery()):
             if 'command_topic' in payload:
                 self.assertFalse(payload['retain'])

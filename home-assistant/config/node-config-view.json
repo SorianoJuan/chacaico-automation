@@ -145,6 +145,140 @@
       "cards": [
         {
           "type": "entities",
+          "title": "Nodo 3",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "number.chacaico_node_3_sleep_s_requested",
+              "name": "Reposo (0 = continuo)"
+            },
+            {
+              "entity": "number.chacaico_node_3_pulse_ms_requested",
+              "name": "Pulso"
+            },
+            {
+              "entity": "number.chacaico_node_3_tx_power_dbm_requested",
+              "name": "Potencia"
+            },
+            {
+              "entity": "button.chacaico_node_3_config_apply",
+              "name": "Aplicar"
+            },
+            {
+              "entity": "sensor.chacaico_node_3_config_status",
+              "name": "Última aplicación"
+            }
+          ]
+        },
+        {
+          "type": "markdown",
+          "content": "En uso: {{ states('sensor.chacaico_node_3_sleep_s_confirmed') }} s · {{ states('sensor.chacaico_node_3_pulse_ms_confirmed') }} ms · {{ states('sensor.chacaico_node_3_tx_power_dbm_confirmed') }} dBm"
+        },
+        {
+          "type": "conditional",
+          "conditions": [
+            {
+              "condition": "state",
+              "entity": "sensor.chacaico_node_3_config_input_error",
+              "state_not": "Sin errores"
+            },
+            {
+              "condition": "state",
+              "entity": "sensor.chacaico_node_3_config_input_error",
+              "state_not": "unknown"
+            },
+            {
+              "condition": "state",
+              "entity": "sensor.chacaico_node_3_config_input_error",
+              "state_not": "unavailable"
+            }
+          ],
+          "card": {
+            "type": "entities",
+            "title": "Revisá los valores",
+            "show_header_toggle": false,
+            "entities": [
+              {
+                "entity": "sensor.chacaico_node_3_config_input_error",
+                "name": "Aviso"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "entities",
+          "title": "Nodo 4",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "number.chacaico_node_4_sleep_s_requested",
+              "name": "Reposo (0 = continuo)"
+            },
+            {
+              "entity": "number.chacaico_node_4_pulse_ms_requested",
+              "name": "Pulso"
+            },
+            {
+              "entity": "number.chacaico_node_4_tx_power_dbm_requested",
+              "name": "Potencia"
+            },
+            {
+              "entity": "button.chacaico_node_4_config_apply",
+              "name": "Aplicar"
+            },
+            {
+              "entity": "sensor.chacaico_node_4_config_status",
+              "name": "Última aplicación"
+            }
+          ]
+        },
+        {
+          "type": "markdown",
+          "content": "En uso: {{ states('sensor.chacaico_node_4_sleep_s_confirmed') }} s · {{ states('sensor.chacaico_node_4_pulse_ms_confirmed') }} ms · {{ states('sensor.chacaico_node_4_tx_power_dbm_confirmed') }} dBm"
+        },
+        {
+          "type": "conditional",
+          "conditions": [
+            {
+              "condition": "state",
+              "entity": "sensor.chacaico_node_4_config_input_error",
+              "state_not": "Sin errores"
+            },
+            {
+              "condition": "state",
+              "entity": "sensor.chacaico_node_4_config_input_error",
+              "state_not": "unknown"
+            },
+            {
+              "condition": "state",
+              "entity": "sensor.chacaico_node_4_config_input_error",
+              "state_not": "unavailable"
+            }
+          ],
+          "card": {
+            "type": "entities",
+            "title": "Revisá los valores",
+            "show_header_toggle": false,
+            "entities": [
+              {
+                "entity": "sensor.chacaico_node_4_config_input_error",
+                "name": "Aviso"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "entities",
           "title": "Raspberry · HAT",
           "show_header_toggle": false,
           "entities": [

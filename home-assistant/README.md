@@ -29,7 +29,7 @@ La vista original se preserva. El generador reproducible es
 `config/node-config-advanced-view.json` (exportar con `--advanced`).
 `deploy-config-view.sh` instala con respaldo privado y control SHA256 de edición
 concurrente. Ver [operación de configuración](../docs/node-configuration.md). Las plantillas de
-`config/chacaico-controls.yaml` agregan switches para los IDs1/2, sin editarlo.
+`config/chacaico-controls.yaml` agregan switches para los IDs1/2/3/4, sin editarlo.
 El instalador de plantillas es
 `scripts/install-control-switches.sh`. No ejecutar `legacy/install-valve-panel.sh`.
 
@@ -102,3 +102,18 @@ si falla una prueba; informa errores de restauración si el enlace se pierde.
 El transporte `mqtt-bench-transport.sh` rechaza temas de válvula y mantiene las
 credenciales MQTT en la Pi. Es una prueba que modifica el banco, no un diagnóstico
 pasivo. No lanzarla durante el uso de las válvulas.
+
+## Agregar nodos conservando los existentes
+
+Crear el sketch y perfil público, compilar con `firmware/build-node.py --id N` y
+cargar únicamente la placa identificada. `configure-node.py` conserva claves
+existentes y genera `.secrets/bridge-options.json`. Copiar este archivo privado a
+`/tmp/chacaico-bridge-options.json` de la Pi y ejecutar allí `register-nodes.sh 3 4`
+para esta ampliación. El script compara todas las identidades existentes, solo
+admite los IDs explícitos, conserva otras opciones y respalda/restaura ante fallo.
+Reinicia solo el puente; no recompila la app ni reinicia Core.
+
+Agregar las plantillas de válvula y recargar **Template entities** desde las
+herramientas YAML después de `ha core check`. El generador de vistas incluye1–4
+por defecto; verificar que preserve la vista principal antes de guardar desde UI.
+[Alta verificada del23/10/2026](../docs/evidence/2026-10-23/nodes-3-4/README.md).

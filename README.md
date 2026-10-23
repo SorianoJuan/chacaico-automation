@@ -10,6 +10,8 @@ Carpeta de trabajo: `/home/torce/work/chacaico/chacaico-automation`.
 firmware/
   nodes/node_1/          Firmware Arduino, perfil y evidencia del nodo 1
   nodes/node_2/          Firmware Arduino, perfil y evidencia del nodo 2
+  nodes/node_3/          Firmware Arduino y perfil del nodo 3
+  nodes/node_4/          Firmware Arduino y perfil del nodo 4
   libraries/ChacaicoNode/ Lógica compartida de los nodos
   configure-node.py     Genera encabezados privados conservando las claves
   build-node.py         Compila un ID explícito en su propia carpeta build/
@@ -39,6 +41,8 @@ claves y **no se publican**.
 | --- | --- | --- |
 | Nodo 1 | Firmware0.5.0, ID1, HTCC-AB01/ASR6501, PCB V1.2 confirmada | [firmware/nodes/node_1](firmware/nodes/node_1/README.md) |
 | Nodo 2 | Firmware0.5.0, ID2, HTCC-AB01/ASR6501; revisión de PCB por verificar | [firmware/nodes/node_2](firmware/nodes/node_2/README.md) |
+| Nodo 3 | Firmware0.5.0, ID3, HTCC-AB01/ASR6501; revisión de PCB por verificar | [firmware/nodes/node_3](firmware/nodes/node_3/README.md) |
+| Nodo 4 | Firmware0.5.0, ID4, HTCC-AB01/ASR6501; revisión de PCB por verificar | [firmware/nodes/node_4](firmware/nodes/node_4/README.md) |
 | Puente | App0.5.0, Python, MQTT ↔ LoRa | [bridge](bridge/README.md) |
 | Home Assistant | Core2026.9.4, verificación22/10/2026 | [home-assistant](home-assistant/README.md) |
 
@@ -59,7 +63,7 @@ preámbulo8, CRC, IQ normal, sync privado0x1424 y TX0dBm**.
 - ID y AES-CMAC se validan antes de actuar. Los reintentos de una misma secuencia
   no repiten el pulso. Se validan también sesión persistente de arranque y despertar.
 - El ACK confirma la ejecución lógica/GPIO, no la posición física ni el caudal.
-- Reposo configurable0–3600s:0 es escucha continua. Pulso configurable10–3000ms en nodos1/2; ambos aplicados a50ms. Pulsos largos solo para banco aislado.
+- Reposo configurable0–3600s:0 es escucha continua. Pulso configurable10–3000ms en nodos1/2; nodos3/4 permiten10–200ms; todos aplicados a50ms. Pulsos largos solo para banco aislado.
 - Cierre autónomo, sensor de posición y OTA de firmware no están implementados.
 
 ## Home Assistant y acceso
@@ -68,7 +72,7 @@ Pi operativa: `pi5.chacaico`, Home Assistant en `http://pi5.chacaico/` (puerto80
 El panel **Chacaico** se administra desde la UI del usuario:
 `http://pi5.chacaico/dashboard-chacaico/`. No instalar el panel retirado de `legacy/`.
 
-Entidades, con `N` igual a1 o2:
+Entidades, con `N` igual a1,2,3 o4:
 
 - `switch.chacaico_node_N_valve`: adaptador on/off del estado confirmado.
 - `valve.chacaico_node_N`: válvula MQTT nativa y sus atributos de confirmación.
@@ -100,13 +104,15 @@ otra red pendiente. La caducidad de clave y los detalles están en
 sh firmware/setup-toolchain.sh
 python3 firmware/build-node.py --id 1
 python3 firmware/build-node.py --id 2
+python3 firmware/build-node.py --id 3
+python3 firmware/build-node.py --id 4
 ```
 
 El core está fijado a **CubeCell:CubeCell1.6.0**. Se compila con la librería local
 y el FQBN guardado en cada `profile.json`; los resultados quedan en
-`firmware/nodes/node_1/build/` y `firmware/nodes/node_2/build/`.
+`firmware/nodes/node_N/build/` para cada uno de los cuatro IDs.
 
-La configuración se toma de `.secrets/node-1.json` y `.secrets/node-2.json`.
+La configuración se toma de `.secrets/node-N.json`, por separado para cada ID.
 Las claves existentes se conservan. En un clon nuevo se generan claves nuevas:
 para actualizar placas existentes, recuperar primero su configuración privada
 vigente. El puente debe usar las mismas claves que cada nodo.
@@ -118,7 +124,7 @@ sh firmware/flash-node.sh --id 1 /dev/serial/by-path/PUERTO_FISICO-port0
 ```
 
 La carga exige un ID y un puerto físico, y comprueba el manifiesto, encabezado,
-fuentes y checksum de la imagen. Ambos CP2102 reportan serial0001; no usar `by-id`
+fuentes y checksum de la imagen. Los CP2102 reportan serial0001; no usar `by-id`
 para distinguir placas. El puerto no prueba el ID: identificar físicamente el nodo.
 Las ACL del puerto USB pueden perderse al desconectarlo.
 
@@ -170,3 +176,5 @@ Diagnóstico histórico:
 `.secrets/`, `.tools/`, `node_config.h`, builds y estado privado de VPN están fuera
 de Git. El último build anterior a la separación se conserva localmente en
 `firmware/build-legacy-node-1/`, también ignorado.
+
+Alta y prueba de los nodos3/4: [evidencia del23/10/2026](docs/evidence/2026-10-23/nodes-3-4/README.md).

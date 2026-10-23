@@ -1,7 +1,8 @@
 # Firmware CubeCell
 
-Entradas separadas en `nodes/node_1/` y `nodes/node_2/`, cada una con su ID,
-perfil público y build privado. Firmware0.5.0 para ambas; máximo configurable3000ms, pulso aplicado50ms. La aplicación compartida
+Entradas separadas en `nodes/node_1/`, `node_2/`, `node_3/` y `node_4/`, cada una
+con su ID, perfil público, clave y build privado. Firmware0.5.0 en los cuatro;
+máximo configurable3000ms para1/2 y200ms para3/4, pulso aplicado50ms. La aplicación compartida
 está en `libraries/ChacaicoNode/src/ChacaicoNode.h`; los encabezados ChacaicoProtocol.h y ChacaicoStorage.h contienen protocolo y persistencia.
 
 `configure-node.py --id N` conserva `.secrets/node-N.json`, verifica ID/clave
