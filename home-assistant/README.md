@@ -126,3 +126,17 @@ válvula MQTT nativa, Orden de válvula, LED independiente, SNR y RSSI.
 no contiene el dashboard privado. Se agregaron después de Nodo2, preservando las
 otras tarjetas y ambas vistas de configuración. Verificadas en UI con señal real
 para3/4; sin accionar válvulas ni LED como parte de esta edición.
+
+## Web pública con Tailscale Funnel
+
+Desde el23/10/2026: https://homeassistant.tail3610a7.ts.net/, con cuenta de HA
+y sin VPN en el navegador visitante. SSH sigue usando la VPN y la clave existente.
+`share_homeassistant: funnel` y `share_on_port: "443"` quedan en la app Tailscale;
+HA confía únicamente en el proxy127.0.0.1/32. Core2026.9.4 configura HTTP desde
+la UI de Red, no mediante YAML.
+
+`scripts/enable-funnel.sh` comprueba máquina/configuración previa, respalda
+opciones y activa el Funnel desde una sesión LAN. Solo primera activación después
+de autorizar HTTPS y el atributo de Funnel para la Pi. No volver a ejecutarlo
+como diagnóstico ni habilitar el permiso para todo el tailnet.
+Ver [configuración, validación pública y reversión](../docs/remote-access.md).

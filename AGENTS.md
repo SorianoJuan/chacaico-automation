@@ -36,7 +36,10 @@ Destino `pi5.chacaico`, usando `/home/torce/.ssh/config`, HA en
 `http://pi5.chacaico/` (puerto80). `/home/torce/ha-config` y
 `/home/torce/haconfig-repo` pertenecen a otro sistema.
 Alias VPN `pi5.chacaico.remoto` (IP100.117.24.7), misma clave y HostKeyAlias.
-Web `http://homeassistant.tail3610a7.ts.net/`; VPN requiere Internet.
+Web pública HTTPS por Funnel: `https://homeassistant.tail3610a7.ts.net/`, con login de HA.
+SSH sigue privado por VPN. Funnel/VPN requieren Internet; ver `docs/remote-access.md`.
+Core2026.9.4 administra HTTP desde UI, proxy confiable solo127.0.0.1/32; no editar
+`.storage` en caliente ni agregar `http:` YAML para estos ajustes.
 Verificar Supervisor machine_id **2e21da3405714e0cba2d890984d6dfa8** antes de cambios.
 SSH entra en la app Terminal & SSH, no en el host HAOS.
 

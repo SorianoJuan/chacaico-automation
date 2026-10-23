@@ -1,0 +1,66 @@
+{
+  "checked_at_utc": "2026-10-23T14:12:04.438478+00:00",
+  "url": "https://homeassistant.tail3610a7.ts.net",
+  "dns_resolver": "https://dns.google/resolve",
+  "route": "Forced public IPv4 connection, original Host and TLS SNI; no VPN destination",
+  "tls_certificate_verification": true,
+  "results": [
+    {
+      "public_ip": "209.177.145.137",
+      "certificate_not_after": "Jan 21 13:12:27 2027 GMT",
+      "tls_version": "TLSv1.3",
+      "homepage_http": 200,
+      "unauthenticated_api_http": 401,
+      "websocket_http": 101,
+      "websocket_first_message": {
+        "type": "auth_required",
+        "ha_version": "2026.9.4"
+      },
+      "verified": true
+    },
+    {
+      "public_ip": "199.38.181.54",
+      "certificate_not_after": "Jan 21 13:12:27 2027 GMT",
+      "tls_version": "TLSv1.3",
+      "homepage_http": 200,
+      "unauthenticated_api_http": 401,
+      "websocket_http": 101,
+      "websocket_first_message": {
+        "type": "auth_required",
+        "ha_version": "2026.9.4"
+      },
+      "verified": true
+    }
+  ],
+  "machine_id": "2e21da3405714e0cba2d890984d6dfa8",
+  "tailscale_app": {
+    "version": "0.30.1",
+    "state": "started",
+    "share_homeassistant": "funnel",
+    "share_on_port": "443",
+    "boot": "auto",
+    "watchdog": true,
+    "protected": true,
+    "full_access": false
+  },
+  "funnel_policy_target": "100.117.24.7",
+  "trusted_proxies": [
+    "127.0.0.1/32"
+  ],
+  "external_url": "https://homeassistant.tail3610a7.ts.net",
+  "private_ssh_public_key_verified": true,
+  "bridge": {
+    "version": "0.5.0",
+    "state": "started"
+  },
+  "unchanged_hashes": [
+    "configuration.yaml",
+    "chacaico-controls.yaml",
+    ".storage/lovelace.dashboard_chacaico"
+  ],
+  "valve_commands_sent": false,
+  "ui_login_verified": true,
+  "cold_boot_tested": false,
+  "field_router_tested": false,
+  "public_authenticated_session_tested": false
+}
