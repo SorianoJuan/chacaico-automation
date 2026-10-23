@@ -1,0 +1,273 @@
+# Native Schedule controller; persist responsibility before publishing any command.
+input_boolean:
+  chacaico_temporada:
+    name: Temporada de riego
+    icon: mdi:sprinkler-variant
+  chacaico_horario_1:
+    name: Usar horario válvula 1
+    icon: mdi:calendar-check
+  chacaico_horario_responsable_1:
+    name: Riego pendiente de cierre 1
+    icon: mdi:lock-clock
+  chacaico_horario_2:
+    name: Usar horario válvula 2
+    icon: mdi:calendar-check
+  chacaico_horario_responsable_2:
+    name: Riego pendiente de cierre 2
+    icon: mdi:lock-clock
+  chacaico_horario_3:
+    name: Usar horario válvula 3
+    icon: mdi:calendar-check
+  chacaico_horario_responsable_3:
+    name: Riego pendiente de cierre 3
+    icon: mdi:lock-clock
+  chacaico_horario_4:
+    name: Usar horario válvula 4
+    icon: mdi:calendar-check
+  chacaico_horario_responsable_4:
+    name: Riego pendiente de cierre 4
+    icon: mdi:lock-clock
+input_text:
+  chacaico_horario_ultimo_1:
+    name: Última intención de horario 1
+    max: 255
+  chacaico_horario_ultimo_2:
+    name: Última intención de horario 2
+    max: 255
+  chacaico_horario_ultimo_3:
+    name: Última intención de horario 3
+    max: 255
+  chacaico_horario_ultimo_4:
+    name: Última intención de horario 4
+    max: 255
+template:
+- sensor:
+  - name: Chacaico horario estado 1
+    unique_id: chacaico_horario_estado_1
+    default_entity_id: sensor.chacaico_horario_estado_1
+    icon: mdi:calendar-clock
+    state: |-
+      {% set enabled = is_state('input_boolean.chacaico_temporada', 'on') and is_state('input_boolean.chacaico_horario_1', 'on') %}
+      {% set owned = is_state('input_boolean.chacaico_horario_responsable_1', 'on') %}
+      {% set s = states('schedule.chacaico_horario_valvula_1') %}
+      {% set end = as_timestamp(state_attr('schedule.chacaico_horario_valvula_1','next_event'), 0) %}
+      {% set target = 'open' if enabled and s == 'on' and end > as_timestamp(now()) + 2 else 'closed' %}
+      {% set v = states('valve.chacaico_node_1') %}
+      {% set cmd = states('sensor.chacaico_node_1_valve_command_status') %}
+      {% set last = states('input_text.chacaico_horario_ultimo_1') | from_json({}) %}
+      {% set pending = cmd in ['Pendiente', 'Sin confirmación; consultando'] %}
+      {% set fresh = v == target and state_attr('valve.chacaico_node_1', 'confirmation') == 'confirmed' and (state_attr('valve.chacaico_node_1', 'confirmed_at') | float(0)) >= (last.get('at', 0) | float(0)) and last.get('desired') == ('OPEN' if target == 'open' else 'CLOSE') and not pending %}
+      {% if not enabled and not owned %}Suspendido · control manual
+      {% elif fresh %}{{ 'Apertura confirmada' if target == 'open' else 'Cierre confirmado' }}
+      {% elif v in ['unavailable', 'unknown'] %}{{ 'Cierre pendiente · sin contacto' if target == 'closed' else 'Apertura pendiente · sin contacto' }}
+      {% elif cmd == 'Vencida sin confirmar' %}Sin confirmar · reintentando
+      {% else %}{{ 'Cierre pendiente' if target == 'closed' else 'Apertura pendiente' }}{% endif %}
+  - name: Chacaico horario próximo 1
+    unique_id: chacaico_horario_proximo_1
+    default_entity_id: sensor.chacaico_horario_proximo_1
+    icon: mdi:clock-outline
+    state: |-
+      {% set next = state_attr('schedule.chacaico_horario_valvula_1', 'next_event') %}
+      {% if not is_state('input_boolean.chacaico_temporada','on') or not is_state('input_boolean.chacaico_horario_1','on') %}Suspendido
+      {% elif next %}{{ 'Cierre' if is_state('schedule.chacaico_horario_valvula_1','on') else 'Apertura' }} · {{ as_local(as_datetime(next)).strftime('%d/%m %H:%M') }}
+      {% else %}Sin franjas configuradas{% endif %}
+  - name: Chacaico horario estado 2
+    unique_id: chacaico_horario_estado_2
+    default_entity_id: sensor.chacaico_horario_estado_2
+    icon: mdi:calendar-clock
+    state: |-
+      {% set enabled = is_state('input_boolean.chacaico_temporada', 'on') and is_state('input_boolean.chacaico_horario_2', 'on') %}
+      {% set owned = is_state('input_boolean.chacaico_horario_responsable_2', 'on') %}
+      {% set s = states('schedule.chacaico_horario_valvula_2') %}
+      {% set end = as_timestamp(state_attr('schedule.chacaico_horario_valvula_2','next_event'), 0) %}
+      {% set target = 'open' if enabled and s == 'on' and end > as_timestamp(now()) + 2 else 'closed' %}
+      {% set v = states('valve.chacaico_node_2') %}
+      {% set cmd = states('sensor.chacaico_node_2_valve_command_status') %}
+      {% set last = states('input_text.chacaico_horario_ultimo_2') | from_json({}) %}
+      {% set pending = cmd in ['Pendiente', 'Sin confirmación; consultando'] %}
+      {% set fresh = v == target and state_attr('valve.chacaico_node_2', 'confirmation') == 'confirmed' and (state_attr('valve.chacaico_node_2', 'confirmed_at') | float(0)) >= (last.get('at', 0) | float(0)) and last.get('desired') == ('OPEN' if target == 'open' else 'CLOSE') and not pending %}
+      {% if not enabled and not owned %}Suspendido · control manual
+      {% elif fresh %}{{ 'Apertura confirmada' if target == 'open' else 'Cierre confirmado' }}
+      {% elif v in ['unavailable', 'unknown'] %}{{ 'Cierre pendiente · sin contacto' if target == 'closed' else 'Apertura pendiente · sin contacto' }}
+      {% elif cmd == 'Vencida sin confirmar' %}Sin confirmar · reintentando
+      {% else %}{{ 'Cierre pendiente' if target == 'closed' else 'Apertura pendiente' }}{% endif %}
+  - name: Chacaico horario próximo 2
+    unique_id: chacaico_horario_proximo_2
+    default_entity_id: sensor.chacaico_horario_proximo_2
+    icon: mdi:clock-outline
+    state: |-
+      {% set next = state_attr('schedule.chacaico_horario_valvula_2', 'next_event') %}
+      {% if not is_state('input_boolean.chacaico_temporada','on') or not is_state('input_boolean.chacaico_horario_2','on') %}Suspendido
+      {% elif next %}{{ 'Cierre' if is_state('schedule.chacaico_horario_valvula_2','on') else 'Apertura' }} · {{ as_local(as_datetime(next)).strftime('%d/%m %H:%M') }}
+      {% else %}Sin franjas configuradas{% endif %}
+  - name: Chacaico horario estado 3
+    unique_id: chacaico_horario_estado_3
+    default_entity_id: sensor.chacaico_horario_estado_3
+    icon: mdi:calendar-clock
+    state: |-
+      {% set enabled = is_state('input_boolean.chacaico_temporada', 'on') and is_state('input_boolean.chacaico_horario_3', 'on') %}
+      {% set owned = is_state('input_boolean.chacaico_horario_responsable_3', 'on') %}
+      {% set s = states('schedule.chacaico_horario_valvula_3') %}
+      {% set end = as_timestamp(state_attr('schedule.chacaico_horario_valvula_3','next_event'), 0) %}
+      {% set target = 'open' if enabled and s == 'on' and end > as_timestamp(now()) + 2 else 'closed' %}
+      {% set v = states('valve.chacaico_node_3') %}
+      {% set cmd = states('sensor.chacaico_node_3_valve_command_status') %}
+      {% set last = states('input_text.chacaico_horario_ultimo_3') | from_json({}) %}
+      {% set pending = cmd in ['Pendiente', 'Sin confirmación; consultando'] %}
+      {% set fresh = v == target and state_attr('valve.chacaico_node_3', 'confirmation') == 'confirmed' and (state_attr('valve.chacaico_node_3', 'confirmed_at') | float(0)) >= (last.get('at', 0) | float(0)) and last.get('desired') == ('OPEN' if target == 'open' else 'CLOSE') and not pending %}
+      {% if not enabled and not owned %}Suspendido · control manual
+      {% elif fresh %}{{ 'Apertura confirmada' if target == 'open' else 'Cierre confirmado' }}
+      {% elif v in ['unavailable', 'unknown'] %}{{ 'Cierre pendiente · sin contacto' if target == 'closed' else 'Apertura pendiente · sin contacto' }}
+      {% elif cmd == 'Vencida sin confirmar' %}Sin confirmar · reintentando
+      {% else %}{{ 'Cierre pendiente' if target == 'closed' else 'Apertura pendiente' }}{% endif %}
+  - name: Chacaico horario próximo 3
+    unique_id: chacaico_horario_proximo_3
+    default_entity_id: sensor.chacaico_horario_proximo_3
+    icon: mdi:clock-outline
+    state: |-
+      {% set next = state_attr('schedule.chacaico_horario_valvula_3', 'next_event') %}
+      {% if not is_state('input_boolean.chacaico_temporada','on') or not is_state('input_boolean.chacaico_horario_3','on') %}Suspendido
+      {% elif next %}{{ 'Cierre' if is_state('schedule.chacaico_horario_valvula_3','on') else 'Apertura' }} · {{ as_local(as_datetime(next)).strftime('%d/%m %H:%M') }}
+      {% else %}Sin franjas configuradas{% endif %}
+  - name: Chacaico horario estado 4
+    unique_id: chacaico_horario_estado_4
+    default_entity_id: sensor.chacaico_horario_estado_4
+    icon: mdi:calendar-clock
+    state: |-
+      {% set enabled = is_state('input_boolean.chacaico_temporada', 'on') and is_state('input_boolean.chacaico_horario_4', 'on') %}
+      {% set owned = is_state('input_boolean.chacaico_horario_responsable_4', 'on') %}
+      {% set s = states('schedule.chacaico_horario_valvula_4') %}
+      {% set end = as_timestamp(state_attr('schedule.chacaico_horario_valvula_4','next_event'), 0) %}
+      {% set target = 'open' if enabled and s == 'on' and end > as_timestamp(now()) + 2 else 'closed' %}
+      {% set v = states('valve.chacaico_node_4') %}
+      {% set cmd = states('sensor.chacaico_node_4_valve_command_status') %}
+      {% set last = states('input_text.chacaico_horario_ultimo_4') | from_json({}) %}
+      {% set pending = cmd in ['Pendiente', 'Sin confirmación; consultando'] %}
+      {% set fresh = v == target and state_attr('valve.chacaico_node_4', 'confirmation') == 'confirmed' and (state_attr('valve.chacaico_node_4', 'confirmed_at') | float(0)) >= (last.get('at', 0) | float(0)) and last.get('desired') == ('OPEN' if target == 'open' else 'CLOSE') and not pending %}
+      {% if not enabled and not owned %}Suspendido · control manual
+      {% elif fresh %}{{ 'Apertura confirmada' if target == 'open' else 'Cierre confirmado' }}
+      {% elif v in ['unavailable', 'unknown'] %}{{ 'Cierre pendiente · sin contacto' if target == 'closed' else 'Apertura pendiente · sin contacto' }}
+      {% elif cmd == 'Vencida sin confirmar' %}Sin confirmar · reintentando
+      {% else %}{{ 'Cierre pendiente' if target == 'closed' else 'Apertura pendiente' }}{% endif %}
+  - name: Chacaico horario próximo 4
+    unique_id: chacaico_horario_proximo_4
+    default_entity_id: sensor.chacaico_horario_proximo_4
+    icon: mdi:clock-outline
+    state: |-
+      {% set next = state_attr('schedule.chacaico_horario_valvula_4', 'next_event') %}
+      {% if not is_state('input_boolean.chacaico_temporada','on') or not is_state('input_boolean.chacaico_horario_4','on') %}Suspendido
+      {% elif next %}{{ 'Cierre' if is_state('schedule.chacaico_horario_valvula_4','on') else 'Apertura' }} · {{ as_local(as_datetime(next)).strftime('%d/%m %H:%M') }}
+      {% else %}Sin franjas configuradas{% endif %}
+automation:
+- id: chacaico_horarios_reconcile
+  alias: Chacaico · aplicar horarios y confirmar válvulas
+  description: Recalcula el estado vigente; nunca reproduce aperturas históricas. Propiedad y cierre pendiente sobreviven
+    reinicios.
+  mode: queued
+  max: 10
+  max_exceeded: silent
+  triggers:
+  - trigger: homeassistant
+    event: start
+  - trigger: time_pattern
+    seconds: /30
+  - trigger: state
+    entity_id:
+    - schedule.chacaico_horario_valvula_1
+    - valve.chacaico_node_1
+    - sensor.chacaico_node_1_valve_command_status
+    - schedule.chacaico_horario_valvula_2
+    - valve.chacaico_node_2
+    - sensor.chacaico_node_2_valve_command_status
+    - schedule.chacaico_horario_valvula_3
+    - valve.chacaico_node_3
+    - sensor.chacaico_node_3_valve_command_status
+    - schedule.chacaico_horario_valvula_4
+    - valve.chacaico_node_4
+    - sensor.chacaico_node_4_valve_command_status
+  - trigger: mqtt
+    topic: chacaico/lora/bridge/availability
+    payload: online
+  - trigger: state
+    entity_id:
+    - input_boolean.chacaico_temporada
+    - input_boolean.chacaico_horario_1
+    - input_boolean.chacaico_horario_2
+    - input_boolean.chacaico_horario_3
+    - input_boolean.chacaico_horario_4
+    id: controls
+  actions:
+  - if:
+    - condition: template
+      value_template: '{{ trigger is defined and trigger.id == "controls" }}'
+    then:
+    - action: homeassistant.save_persistent_states
+  - repeat:
+      for_each:
+      - 1
+      - 2
+      - 3
+      - 4
+      sequence:
+      - variables:
+          node: '{{ repeat.item }}'
+          schedule_entity: schedule.chacaico_horario_valvula_{{ node }}
+          valve_entity: valve.chacaico_node_{{ node }}
+          owned_entity: input_boolean.chacaico_horario_responsable_{{ node }}
+          last_entity: input_text.chacaico_horario_ultimo_{{ node }}
+          enabled: '{{ is_state(''input_boolean.chacaico_temporada'', ''on'') and is_state(''input_boolean.chacaico_horario_''
+            ~ node, ''on'') }}'
+          owned: '{{ is_state(owned_entity, "on") }}'
+          clock: '{{ as_timestamp(now()) }}'
+          end: '{{ as_timestamp(state_attr(schedule_entity, "next_event"), 0) }}'
+          desired: '{{ "OPEN" if enabled and is_state(schedule_entity, "on") and end > clock + 2 else "CLOSE" }}'
+          last: '{{ states(last_entity) | from_json({}) }}'
+          last_at: '{{ last.get("at", 0) | float(0) }}'
+          last_desired: '{{ last.get("desired", "") }}'
+          actual: '{{ states(valve_entity) }}'
+          confirmed_at: '{{ state_attr(valve_entity, "confirmed_at") | float(0) }}'
+          command: '{{ states("sensor.chacaico_node_" ~ node ~ "_valve_command_status") }}'
+          pending: '{{ command in ["Pendiente", "Sin confirmación; consultando"] }}'
+          settled: '{{ actual == ("open" if desired == "OPEN" else "closed") and state_attr(valve_entity, "confirmation")
+            == "confirmed" and confirmed_at >= last_at and last_desired == desired and not pending }}'
+          retry_s: '{{ [60, (states("sensor.chacaico_node_" ~ node ~ "_metric_command_ttl_s") | float(0)) + 10]
+            | max }}'
+          send: '{{ (enabled or owned) and (last_desired != desired or (desired == "OPEN" and not settled and end != last.get("end",
+            0)) or (not settled and (clock - last_at >= retry_s or clock < last_at))) }}'
+      - if:
+        - condition: template
+          value_template: '{{ enabled and not owned }}'
+        then:
+        - action: input_boolean.turn_on
+          target:
+            entity_id: '{{ owned_entity }}'
+      - if:
+        - condition: template
+          value_template: '{{ send }}'
+        then:
+        - action: input_text.set_value
+          target:
+            entity_id: '{{ last_entity }}'
+          data:
+            value: '{{ {"desired": desired, "at": clock, "end": end if desired == "OPEN" else 0} | to_json }}'
+        - action: homeassistant.save_persistent_states
+        - action: mqtt.publish
+          data:
+            topic: chacaico/lora/node/{{ node }}/valve/set
+            payload: '{{ {"state": "OPEN", "valid_until": end} | to_json if desired == "OPEN" else "CLOSE" }}'
+            qos: 1
+            retain: false
+          continue_on_error: true
+      - if:
+        - condition: template
+          value_template: '{{ not enabled and owned and settled and not send }}'
+        then:
+        - action: input_boolean.turn_off
+          target:
+            entity_id: '{{ owned_entity }}'
+        - action: input_text.set_value
+          target:
+            entity_id: '{{ last_entity }}'
+          data:
+            value: '{}'
+        - action: homeassistant.save_persistent_states

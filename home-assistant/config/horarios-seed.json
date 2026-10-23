@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "schedule",
+  "data": {
+    "items": [
+      {
+        "id": "chacaico_horario_valvula_1",
+        "name": "Chacaico horario válvula 1",
+        "icon": "mdi:calendar-clock",
+        "monday": [],
+        "tuesday": [],
+        "wednesday": [],
+        "thursday": [],
+        "friday": [],
+        "saturday": [],
+        "sunday": []
+      },
+      {
+        "id": "chacaico_horario_valvula_2",
+        "name": "Chacaico horario válvula 2",
+        "icon": "mdi:calendar-clock",
+        "monday": [],
+        "tuesday": [],
+        "wednesday": [],
+        "thursday": [],
+        "friday": [],
+        "saturday": [],
+        "sunday": []
+      },
+      {
+        "id": "chacaico_horario_valvula_3",
+        "name": "Chacaico horario válvula 3",
+        "icon": "mdi:calendar-clock",
+        "monday": [],
+        "tuesday": [],
+        "wednesday": [],
+        "thursday": [],
+        "friday": [],
+        "saturday": [],
+        "sunday": []
+      },
+      {
+        "id": "chacaico_horario_valvula_4",
+        "name": "Chacaico horario válvula 4",
+        "icon": "mdi:calendar-clock",
+        "monday": [],
+        "tuesday": [],
+        "wednesday": [],
+        "thursday": [],
+        "friday": [],
+        "saturday": [],
+        "sunday": []
+      }
+    ]
+  }
+}

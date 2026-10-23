@@ -36,3 +36,13 @@ C++ del firmware incluye migración de flash,41 cortes de escritura por nodo,
 rollback/commit de potencia, persistencia, ventanas y deduplicación.
 Las pruebas de campo y el benchmark MQTT/LED se documentan separadamente de estas
 simulaciones; un mock no prueba corriente, RF radiada ni posición física.
+
+## Horarios y puente0.5.1
+
+`test_horarios.py` ejecuta la política del YAML real con un entorno Jinja y bus
+HA modelados; prueba aislamiento manual, temporada, franjas, expiración,
+confirmación reciente, propiedad persistente, cierre tras reinicio y reintentos
+sin inundación. También ejecuta el Engine real para vencimientos de OPEN,
+reemplazo por CLOSE, límites exactos y saltos de reloj. No es una instancia real
+de Core: la carga del paquete y la edición nativa se verifican por separado en
+la Pi. Ninguna prueba automática de instalación acciona válvulas reales.

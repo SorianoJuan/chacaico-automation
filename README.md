@@ -43,8 +43,8 @@ claves y **no se publican**.
 | Nodo 2 | Firmware0.5.0, ID2, HTCC-AB01/ASR6501; revisión de PCB por verificar | [firmware/nodes/node_2](firmware/nodes/node_2/README.md) |
 | Nodo 3 | Firmware0.5.0, ID3, HTCC-AB01/ASR6501; revisión de PCB por verificar | [firmware/nodes/node_3](firmware/nodes/node_3/README.md) |
 | Nodo 4 | Firmware0.5.0, ID4, HTCC-AB01/ASR6501; revisión de PCB por verificar | [firmware/nodes/node_4](firmware/nodes/node_4/README.md) |
-| Puente | App0.5.0, Python, MQTT ↔ LoRa | [bridge](bridge/README.md) |
-| Home Assistant | Core2026.9.4, verificación22/10/2026 | [home-assistant](home-assistant/README.md) |
+| Puente | App0.5.1, Python, MQTT ↔ LoRa | [bridge](bridge/README.md) |
+| Home Assistant | Core2026.9.4, verificación23/10/2026 | [home-assistant](home-assistant/README.md) |
 
 La versión0.5.0 agrega potencia HAT/nodos, ventanas configurables, vigencia de
 órdenes, tolerancia a contactos perdidos y métricas. El cambio de potencia del nodo
@@ -90,6 +90,13 @@ reposo, pulso y potencia solicitados, **Aplicar** y confirmación resumida.
 oculta; las métricas restantes siguen disponibles como entidades.
 La potencia del HAT se aplica con un control independiente. La vista original del usuario se conserva.
 Editar un campo no envía SET_CONFIG hasta pulsar Aplicar.
+
+La pestaña **Horarios** (`dashboard-chacaico/horarios`) permite editar días y franjas
+semanales para las cuatro válvulas. **Temporada de riego** habilita/suspende todo
+manualmente, conservando la programación; hay un selector por válvula. Las
+aperturas caducan al terminar la franja y los cierres pendientes se recuperan
+tras reinicios. Instalada con temporada apagada y franjas vacías. Detalles y
+límites en [horarios de válvulas](docs/valve-schedules.md).
 
 SSH usa la clave ya existente de Arch. En la LAN: `ssh pi5.chacaico`.
 Por Tailscale: `ssh pi5.chacaico.remoto`, web

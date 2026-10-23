@@ -10,7 +10,7 @@ Guardar aquí desarrollo, configuración reproducible, documentación y evidenci
 - `firmware/nodes/node_3/` y `node_4/`: firmware0.5.0, claves/IDs3 y4 propios; máximo200ms, aplicado50ms.
 - `firmware/libraries/ChacaicoNode/`: lógica compartida; conservar comportamiento
   consistente entre nodos. Cambiar versión en perfiles/librería/banner cuando proceda.
-- `bridge/chacaico_lora_bridge/`: app0.5.0 de HAOS, driver SX1262 y protocolo MQTT/LoRa.
+- `bridge/chacaico_lora_bridge/`: app0.5.1 de HAOS, driver SX1262 y protocolo MQTT/LoRa.
 - `home-assistant/config/`, `scripts/`, `apps/`, `evidence/`: HAOS y auxiliares.
 - `home-assistant/legacy/`: panel retirado; no ejecutarlo ni reinstalarlo.
 - `tests/`: pruebas offline; `docs/`: operación, ideas y diagnósticos.
@@ -56,6 +56,17 @@ confirmación resumida. Ventanas, políticas y diagnóstico van detrás de Más 
 (subvista `configuracion-lora-avanzada`). No volver a mostrar todos los contadores
 ni explicaciones extensas en la vista inicial. No sustituir estado desconocido por
 cerrado para cambiar la apariencia. Mantener estado pendiente/confirmado separado.
+
+La pestaña **Horarios** (`horarios`) usa cuatro Schedule nativos editables en UI,
+no schedules YAML. Temporada manual con `input_boolean.chacaico_temporada`; cada
+válvula puede excluirse con `chacaico_horario_N`. No inventar franjas ni activar
+la temporada durante instalaciones/pruebas. El paquete `chacaico-horarios.yaml`
+persiste propiedad e intención antes de publicar; al suspender conserva los
+cierres pendientes hasta confirmar. OPEN programado lleva `valid_until` al puente
+0.5.1; nunca usar mensajes retained para actuar. No borrar helpers de propiedad
+ni desactivar la automatización mientras haya cierres pendientes. No imponer
+exclusión mutua. La fuente de horarios del usuario es la UI; el seed vacío es
+solo para primera instalación. Ver `docs/valve-schedules.md`.
 
 La Pi5 tiene1GB de RAM. Usar `home-assistant/scripts/install-local-app.sh` para
 construir apps con Core detenido y reactivarlo. Puente usa libgpiod2 sobre RP1;

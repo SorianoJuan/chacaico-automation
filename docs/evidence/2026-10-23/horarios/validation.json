@@ -1,0 +1,85 @@
+{
+  "date": "2026-10-23",
+  "core_version": "2026.9.4",
+  "bridge_version": "0.5.1",
+  "unit_tests": {
+    "passed": 95,
+    "hardware": false
+  },
+  "startup_simulation": {
+    "seeds": [
+      1,
+      7,
+      42,
+      91,
+      137
+    ],
+    "passed": true,
+    "physical_hardware": false
+  },
+  "live": {
+    "core_check": "passed",
+    "core_restart": "passed",
+    "season_after_restart": "off",
+    "per_valve_enabled_after_restart": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "ownership_after_restart": "all off",
+    "schedule_blocks_per_node": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "native_schedule_edit_save_reopen_remove": "passed on node1, season off",
+    "direct_editor_navigation": "passed",
+    "original_views_preserved": 3,
+    "mqtt_metrics": {
+      "1": {
+        "orders": 0,
+        "confirmed": 0,
+        "expired": 0,
+        "pending": 0,
+        "tx_attempts": 0,
+        "started_at": 1792784134.5789657
+      },
+      "2": {
+        "orders": 0,
+        "confirmed": 0,
+        "expired": 0,
+        "pending": 0,
+        "tx_attempts": 0,
+        "started_at": 1792784134.5789657
+      },
+      "3": {
+        "orders": 0,
+        "confirmed": 0,
+        "expired": 0,
+        "pending": 0,
+        "tx_attempts": 0,
+        "started_at": 1792784134.5789657
+      },
+      "4": {
+        "orders": 0,
+        "confirmed": 0,
+        "expired": 0,
+        "pending": 0,
+        "tx_attempts": 0,
+        "started_at": 1792784134.5789657
+      }
+    },
+    "actuator_commands_for_validation": 0
+  },
+  "source_sha256": {
+    "home-assistant/config/chacaico-horarios.yaml": "d977f8c5dd92d529362d602047eb39561fe0d97674a75f3e279f5e41c8a0b126",
+    "bridge/chacaico_lora_bridge/engine.py": "166fd6b3eae6df76a7d62a73629b1a25a0a52a51418ec0361acd4b5e8aef0309"
+  },
+  "limitations": [
+    "No physical valve or RF delivery test in this deployment.",
+    "No autonomous closure in node firmware.",
+    "ACK confirms GPIO execution, not hydraulic position."
+  ]
+}

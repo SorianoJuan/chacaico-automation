@@ -1,0 +1,171 @@
+{
+  "title": "Horarios",
+  "path": "horarios",
+  "icon": "mdi:calendar-clock",
+  "type": "sections",
+  "max_columns": 2,
+  "show_icon_and_title": true,
+  "sections": [
+    {
+      "type": "grid",
+      "column_span": 2,
+      "cards": [
+        {
+          "type": "vertical-stack",
+          "grid_options": {
+            "columns": "full"
+          },
+          "cards": [
+            {
+              "type": "entities",
+              "title": "Temporada de riego",
+              "show_header_toggle": false,
+              "entities": [
+                {
+                  "entity": "input_boolean.chacaico_temporada",
+                  "name": "Habilitar los horarios"
+                }
+              ]
+            },
+            {
+              "type": "markdown",
+              "content": "Al apagar la temporada se solicita el cierre y se guardan los horarios. Mientras esté activa, manda el horario.\n\nTocá **Editar días y horarios**, marcá las franjas y guardá con **Actualizar / Update**."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "entities",
+          "title": "Válvula 1",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "input_boolean.chacaico_horario_1",
+              "name": "Usar este horario"
+            },
+            {
+              "entity": "schedule.chacaico_horario_valvula_1",
+              "name": "Editar días y horarios",
+              "icon": "mdi:calendar-edit",
+              "tap_action": {
+                "action": "navigate",
+                "navigation_path": "/dashboard-chacaico/horarios?more-info-entity-id=schedule.chacaico_horario_valvula_1&more-info-view=settings"
+              }
+            },
+            {
+              "entity": "sensor.chacaico_horario_proximo_1",
+              "name": "Próximo cambio"
+            },
+            {
+              "entity": "sensor.chacaico_horario_estado_1",
+              "name": "Estado"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "entities",
+          "title": "Válvula 2",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "input_boolean.chacaico_horario_2",
+              "name": "Usar este horario"
+            },
+            {
+              "entity": "schedule.chacaico_horario_valvula_2",
+              "name": "Editar días y horarios",
+              "icon": "mdi:calendar-edit",
+              "tap_action": {
+                "action": "navigate",
+                "navigation_path": "/dashboard-chacaico/horarios?more-info-entity-id=schedule.chacaico_horario_valvula_2&more-info-view=settings"
+              }
+            },
+            {
+              "entity": "sensor.chacaico_horario_proximo_2",
+              "name": "Próximo cambio"
+            },
+            {
+              "entity": "sensor.chacaico_horario_estado_2",
+              "name": "Estado"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "entities",
+          "title": "Válvula 3",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "input_boolean.chacaico_horario_3",
+              "name": "Usar este horario"
+            },
+            {
+              "entity": "schedule.chacaico_horario_valvula_3",
+              "name": "Editar días y horarios",
+              "icon": "mdi:calendar-edit",
+              "tap_action": {
+                "action": "navigate",
+                "navigation_path": "/dashboard-chacaico/horarios?more-info-entity-id=schedule.chacaico_horario_valvula_3&more-info-view=settings"
+              }
+            },
+            {
+              "entity": "sensor.chacaico_horario_proximo_3",
+              "name": "Próximo cambio"
+            },
+            {
+              "entity": "sensor.chacaico_horario_estado_3",
+              "name": "Estado"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "entities",
+          "title": "Válvula 4",
+          "show_header_toggle": false,
+          "entities": [
+            {
+              "entity": "input_boolean.chacaico_horario_4",
+              "name": "Usar este horario"
+            },
+            {
+              "entity": "schedule.chacaico_horario_valvula_4",
+              "name": "Editar días y horarios",
+              "icon": "mdi:calendar-edit",
+              "tap_action": {
+                "action": "navigate",
+                "navigation_path": "/dashboard-chacaico/horarios?more-info-entity-id=schedule.chacaico_horario_valvula_4&more-info-view=settings"
+              }
+            },
+            {
+              "entity": "sensor.chacaico_horario_proximo_4",
+              "name": "Próximo cambio"
+            },
+            {
+              "entity": "sensor.chacaico_horario_estado_4",
+              "name": "Estado"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

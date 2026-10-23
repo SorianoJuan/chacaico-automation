@@ -254,6 +254,19 @@ class Engine:
             n.config_status = "Consultando" if not n.config_job else "Pendiente de contacto"
             self.config_view(n)
             return
+        # Scheduled OPEN commands carry an absolute boundary. Manual commands remain
+        # the original strings. Do not let a queued opening outlive its time slot.
+        valid_until = None
+        if resource == "valve/set" and payload.startswith("{"):
+            try:
+                command = json.loads(payload)
+                valid_until = command["valid_until"]
+                if (command["state"] != "OPEN" or type(valid_until) not in (int, float)
+                        or not math.isfinite(valid_until) or valid_until <= self.wall()):
+                    return
+            except (ValueError, KeyError, TypeError):
+                return
+            payload = "OPEN"
         choices = {"led/set": (SET_LED, {"ON": 1, "OFF": 0}), "valve/set": (SET_VALVE, {"OPEN": 1, "CLOSE": 0})}
         if resource not in choices or payload not in choices[resource][1]:
             return
@@ -261,6 +274,10 @@ class Engine:
         value = values[payload]
         prior = n.actions.get(op)
         if prior and prior["value"] == value:
+            if valid_until is not None:
+                # Edits may shorten a pending slot, never extend an existing retry.
+                prior["valid_until"] = min(prior.get("valid_until", valid_until), valid_until)
+                prior["deadline"] = min(prior["deadline"], self.now() + valid_until - self.wall())
             return
         sleep = max(n.advertised["sleep_s"], (n.config_job or {}).get("sleep_s", 0))
         # Latest intent replaces an unsent opposite command, including a queued OPEN.
@@ -269,6 +286,9 @@ class Engine:
         n.metrics["orders"] += 1
         n.actions[op] = {"value": value, "deadline": self.now() + self.command_ttl(n, sleep),
                          "queued_at": self.now(), "first_sent_at": None, "attempts": 0}
+        if valid_until is not None:
+            n.actions[op]["valid_until"] = valid_until
+            n.actions[op]["deadline"] = min(n.actions[op]["deadline"], self.now() + valid_until - self.wall())
         if n.pending and n.pending["frame"].op == op:
             n.pending = None  # Old ACK is no longer evidence for the current intent.
         self.emit(node, "valve/status" if op == SET_VALVE else "led/status",
@@ -396,7 +416,7 @@ class Engine:
             return
         # MQTT/run polls RX before tick: an ACK received after the order deadline
         # must not turn an already expired intent into a confirmed command.
-        if (any(now > job["deadline"] for job in n.actions.values())
+        if (any(now >= job["deadline"] or self.wall() >= job.get("valid_until", math.inf) for job in n.actions.values())
                 or (n.config_job and self.wall() > n.config_job["deadline"])):
             self.tick()
             if n.pending is not p:
@@ -515,7 +535,7 @@ class Engine:
                 else "Escuchando")
             self.emit(n.ident, "link/state", state)
             for op, job in list(n.actions.items()):
-                if now > job["deadline"]:
+                if now >= job["deadline"] or self.wall() >= job.get("valid_until", math.inf):
                     self.finish_action(n, op, "expired")
                     if n.pending and n.pending["frame"].op == op:
                         n.pending = None

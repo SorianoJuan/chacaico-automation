@@ -1,4 +1,4 @@
-# Puente LoRa ↔ MQTT 0.5.0
+# Puente LoRa ↔ MQTT 0.5.1
 
 - `chacaico_lora_bridge/bridge.py`: MQTT, discovery y transporte.
 - `engine.py`: scheduler, ventanas, colas, confirmaciones y persistencia.
@@ -36,3 +36,13 @@ si no se confirma en8s. La política de entrega reside en el puente. Los contado
 son de sesión; no reproducir órdenes de válvula/LED tras reiniciar. El archivo
 runtime-v2.json conserva el nombre, pero migra su esquema interno de1 a2.
 La frecuencia y el perfil de modulación no cambian.
+
+0.5.1 agrega apertura programada en el tema habitual `node/N/valve/set`:
+`{"state":"OPEN","valid_until":1800000000}` (ejemplo de timestamp Unix en segundos).
+El plazo efectivo es el menor entre la vigencia normal y ese fin de franja.
+Un mismo OPEN pendiente solo puede acortarse, nunca extenderse por repetición.
+Un CLOSE cancela/reemplaza el OPEN pendiente. Se rechazan fechas vencidas,
+valores no numéricos/no finitos y mensajes retained. Se comprueba el límite
+antes de transmitir y al recibir ACK; saltos hacia adelante del reloj también
+vencen la orden. Los strings manuales OPEN/CLOSE no cambian. No requiere
+reprogramar nodos ni cambia la trama de radio. [Control de horarios](../docs/valve-schedules.md).

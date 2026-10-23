@@ -140,3 +140,23 @@ opciones y activa el Funnel desde una sesión LAN. Solo primera activación desp
 de autorizar HTTPS y el atributo de Funnel para la Pi. No volver a ejecutarlo
 como diagnóstico ni habilitar el permiso para todo el tailnet.
 Ver [configuración, validación pública y reversión](../docs/remote-access.md).
+
+## Horarios semanales y temporada manual
+
+`config/chacaico-horarios.yaml` es un paquete nativo con habilitación general,
+selectores por nodo, sensores resumidos y reconciliación de los cuatro Schedule.
+`config/horarios-seed.json` inicializa cuatro helpers editables **vacíos** solo en
+primera instalación. Nunca sobrescribir los horarios del usuario con ese seed.
+`scripts/horarios-view.py` genera `config/horarios-view.json`; `--merge` preserva
+las demás vistas de una copia privada del dashboard. Cada fila Editar abre el
+editor nativo del helper. Los nombres/IDs de los helpers deben conservarse.
+
+`scripts/install-horarios.sh STAGE SHA_CONFIG SHA_DASHBOARD` se ejecuta en la Pi;
+STAGE debe contener los archivos públicos del paquete, seed, bridge0.5.1
+(engine.py, config.yaml y Dockerfile), y dashboard.json combinado privadamente.
+Verifica identidad, exige primera instalación, respalda Core/bridge y archivos,
+detiene Core, comprueba edición concurrente, actualiza el bridge, valida YAML,
+instala helpers/vista y reinicia Core. La temporada arranca apagada. No ejecutar
+ese instalador de nuevo para actualizar el diseño o cambiar franjas.
+
+[Operación, confirmaciones, reinicios y reversión](../docs/valve-schedules.md).
