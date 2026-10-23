@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Daily From/Until controls. Preserve all other dashboard views."""
+"""Daily schedule controls, visible in season. Preserve other dashboard views."""
 import argparse
 import copy
 import json
@@ -7,15 +7,15 @@ import json
 NODES = (1, 2, 3, 4)
 
 def view():
-    header = {'type':'vertical-stack', 'grid_options':{'columns':'full'}, 'cards':[
-        {'type':'entities','title':'Temporada de riego','show_header_toggle':False,
-         'entities':[{'entity':'input_boolean.chacaico_temporada','name':'Habilitar los horarios'}]},
-        {'type':'markdown','content':'El rango se repite **todos los días**. Si inicio y corte coinciden, no se programa riego.'}]}
+    header = {'type':'entities', 'grid_options':{'columns':'full'},
+              'title':'Temporada de riego', 'show_header_toggle':False,
+              'entities':[{'entity':'input_boolean.chacaico_temporada','name':'Habilitar los horarios'}]}
     sections = [{'type':'grid', 'column_span':2, 'cards':[header]}]
     for n in NODES:
-        sections.append({'type':'grid', 'cards':[{'type':'entities','title':f'Válvula {n}',
+        sections.append({'type':'grid', 'visibility':[
+          {'condition':'state','entity':'input_boolean.chacaico_temporada','state':'on'}], 'cards':[{'type':'entities','title':f'Válvula {n}',
           'show_header_toggle':False, 'entities':[
-            {'entity':f'input_boolean.chacaico_horario_{n}','name':'Usar este horario'},
+            {'entity':f'input_boolean.chacaico_horario_{n}','name':'Habilitar riego por horarios'},
             {'entity':f'input_datetime.chacaico_horario_desde_{n}','name':'Horario de inicio'},
             {'entity':f'input_datetime.chacaico_horario_hasta_{n}','name':'Horario de corte'},
             {'entity':f'sensor.chacaico_horario_estado_{n}','name':'Estado'}]}]})

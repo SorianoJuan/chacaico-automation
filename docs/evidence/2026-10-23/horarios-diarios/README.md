@@ -32,3 +32,18 @@ a pedido del usuario. Verificadas completas en las cuatro tarjetas; misma lógic
 entidades y valores.
 
 ![Etiquetas de inicio y corte](horarios-inicio-corte.png)
+
+## Tarjetas visibles solo durante la temporada
+
+Se retiró la tarjeta explicativa de horas iguales. Las cuatro secciones de
+válvula tienen visibilidad nativa condicionada a temporada ON y su selector
+se rotula **Habilitar riego por horarios**.
+
+Verificado en HA: temporada OFF muestra solo la tarjeta de temporada; el editor
+permite comprobar las cuatro etiquetas nuevas sin activar el riego. Prueba
+existente de combinación de vistas aprobada (1 test); las otras tres vistas
+se preservaron idénticas al respaldo previo. Cambio visual, sin reiniciar Core,
+modificar horarios ni enviar acciones a las válvulas. Los cierres pendientes
+siguen bajo el mismo controlador.
+
+![Temporada apagada: tarjetas de válvula ocultas](horarios-temporada-off.png)

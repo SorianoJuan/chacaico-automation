@@ -145,7 +145,7 @@ class SchedulePolicyTest(unittest.TestCase):
         self.assertEqual(VIEW.merge(merged),merged)
         for n,section in enumerate(VIEW.view()['sections'][1:],1):
             entities=section['cards'][0]['entities']
-            self.assertEqual([row['name'] for row in entities],['Usar este horario','Horario de inicio','Horario de corte','Estado'])
+            self.assertEqual([row['name'] for row in entities],['Habilitar riego por horarios','Horario de inicio','Horario de corte','Estado'])
             self.assertEqual(entities[1]['entity'],f'input_datetime.chacaico_horario_desde_{n}')
             self.assertEqual(entities[2]['entity'],f'input_datetime.chacaico_horario_hasta_{n}')
 

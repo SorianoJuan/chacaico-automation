@@ -6,9 +6,10 @@ ni marzo. Se usan controles nativos de hora; no hay HACS ni otra app de scheduli
 
 ## Uso: Horario de inicio / Horario de corte
 
-Abrir **Chacaico → Horarios**. Cada tarjeta contiene:
+Abrir **Chacaico → Horarios**. Con la temporada apagada solo se muestra su
+interruptor. Al habilitarla aparecen las cuatro tarjetas de válvula, cada una con:
 
-- **Usar este horario**: incluye/excluye esa válvula del programa.
+- **Habilitar riego por horarios**: incluye/excluye esa válvula del programa.
 - **Horario de inicio**: hora diaria de apertura, editable directamente.
 - **Horario de corte**: hora diaria de cierre, editable directamente.
 - **Estado**: apertura/cierre pendiente, sin contacto o confirmación reciente.
@@ -16,7 +17,8 @@ Abrir **Chacaico → Horarios**. Cada tarjeta contiene:
 Las horas se guardan automáticamente. Encender **Habilitar los horarios** en
 Temporada de riego para aplicar los cuatro rangos habilitados. Al terminar la
 temporada, apagarlo: solicita cerrar las válvulas que administraba y conserva
-los horarios. Los cierres sin confirmar siguen pendientes y se reintentan.
+los horarios y oculta las tarjetas de válvula. Los cierres sin confirmar siguen
+pendientes y se reintentan; su orden sigue visible en la vista principal.
 
 Ejemplos: Desde08:00 / Hasta09:00 abre todos los días de08:00 a09:00;
 Desde22:00 / Hasta01:00 cruza medianoche. **Desde igual a Hasta no programa riego**,
@@ -109,3 +111,5 @@ después del backup. Se puede conservar bridge0.5.1: mantiene comandos manuales.
 Referencia: [Input Datetime nativo](https://www.home-assistant.io/integrations/input_datetime/).
 La validación registrada separa simulación y funcionamiento real de UI/Core;
 no prueba posición física ni funcionamiento hidráulico.
+
+La visibilidad usa condiciones nativas de [secciones](https://www.home-assistant.io/dashboards/sections/#show-or-hide-section-conditionally), sin modificar la lógica del controlador.

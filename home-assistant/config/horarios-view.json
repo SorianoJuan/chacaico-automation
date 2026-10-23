@@ -11,25 +11,16 @@
       "column_span": 2,
       "cards": [
         {
-          "type": "vertical-stack",
+          "type": "entities",
           "grid_options": {
             "columns": "full"
           },
-          "cards": [
+          "title": "Temporada de riego",
+          "show_header_toggle": false,
+          "entities": [
             {
-              "type": "entities",
-              "title": "Temporada de riego",
-              "show_header_toggle": false,
-              "entities": [
-                {
-                  "entity": "input_boolean.chacaico_temporada",
-                  "name": "Habilitar los horarios"
-                }
-              ]
-            },
-            {
-              "type": "markdown",
-              "content": "El rango se repite **todos los días**. Si inicio y corte coinciden, no se programa riego."
+              "entity": "input_boolean.chacaico_temporada",
+              "name": "Habilitar los horarios"
             }
           ]
         }
@@ -37,6 +28,13 @@
     },
     {
       "type": "grid",
+      "visibility": [
+        {
+          "condition": "state",
+          "entity": "input_boolean.chacaico_temporada",
+          "state": "on"
+        }
+      ],
       "cards": [
         {
           "type": "entities",
@@ -45,7 +43,7 @@
           "entities": [
             {
               "entity": "input_boolean.chacaico_horario_1",
-              "name": "Usar este horario"
+              "name": "Habilitar riego por horarios"
             },
             {
               "entity": "input_datetime.chacaico_horario_desde_1",
@@ -65,6 +63,13 @@
     },
     {
       "type": "grid",
+      "visibility": [
+        {
+          "condition": "state",
+          "entity": "input_boolean.chacaico_temporada",
+          "state": "on"
+        }
+      ],
       "cards": [
         {
           "type": "entities",
@@ -73,7 +78,7 @@
           "entities": [
             {
               "entity": "input_boolean.chacaico_horario_2",
-              "name": "Usar este horario"
+              "name": "Habilitar riego por horarios"
             },
             {
               "entity": "input_datetime.chacaico_horario_desde_2",
@@ -93,6 +98,13 @@
     },
     {
       "type": "grid",
+      "visibility": [
+        {
+          "condition": "state",
+          "entity": "input_boolean.chacaico_temporada",
+          "state": "on"
+        }
+      ],
       "cards": [
         {
           "type": "entities",
@@ -101,7 +113,7 @@
           "entities": [
             {
               "entity": "input_boolean.chacaico_horario_3",
-              "name": "Usar este horario"
+              "name": "Habilitar riego por horarios"
             },
             {
               "entity": "input_datetime.chacaico_horario_desde_3",
@@ -121,6 +133,13 @@
     },
     {
       "type": "grid",
+      "visibility": [
+        {
+          "condition": "state",
+          "entity": "input_boolean.chacaico_temporada",
+          "state": "on"
+        }
+      ],
       "cards": [
         {
           "type": "entities",
@@ -129,7 +148,7 @@
           "entities": [
             {
               "entity": "input_boolean.chacaico_horario_4",
-              "name": "Usar este horario"
+              "name": "Habilitar riego por horarios"
             },
             {
               "entity": "input_datetime.chacaico_horario_desde_4",
