@@ -4,13 +4,13 @@ Implementado el23/10/2026 en Core2026.9.4 y bridge0.5.1. Nodos0.5.0 sin cambios.
 La temporada se habilita y deshabilita **manualmente**, sin fechas de noviembre
 ni marzo. Se usan controles nativos de hora; no hay HACS ni otra app de scheduling.
 
-## Uso: Desde / Hasta
+## Uso: Horario de inicio / Horario de corte
 
 Abrir **Chacaico → Horarios**. Cada tarjeta contiene:
 
 - **Usar este horario**: incluye/excluye esa válvula del programa.
-- **Desde**: hora diaria de apertura, editable directamente.
-- **Hasta**: hora diaria de cierre, editable directamente.
+- **Horario de inicio**: hora diaria de apertura, editable directamente.
+- **Horario de corte**: hora diaria de cierre, editable directamente.
 - **Estado**: apertura/cierre pendiente, sin contacto o confirmación reciente.
 
 Las horas se guardan automáticamente. Encender **Habilitar los horarios** en

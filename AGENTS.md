@@ -62,7 +62,7 @@ La pestaña **Horarios** (`horarios`) tiene dos input_datetime por válvula:
 Temporada manual con `input_boolean.chacaico_temporada`; cada válvula puede
 excluirse con `chacaico_horario_N`. Horas iguales significan sin riego; Hasta
 anterior a Desde cruza medianoche. No volver a mostrar la grilla semanal: el
-usuario pidió campos Desde/Hasta simples. Los Schedule anteriores se conservan
+usuario pidió campos simples, rotulados **Horario de inicio** y **Horario de corte**. Los Schedule anteriores se conservan
 inactivos; el controlador ya no los consulta. No inventar horarios ni activar
 la temporada durante instalaciones/pruebas. El paquete `chacaico-horarios.yaml`
 y `custom_templates/chacaico_horarios.jinja` calculan el rango; persisten propiedad

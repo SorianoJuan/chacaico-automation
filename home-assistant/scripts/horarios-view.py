@@ -10,14 +10,14 @@ def view():
     header = {'type':'vertical-stack', 'grid_options':{'columns':'full'}, 'cards':[
         {'type':'entities','title':'Temporada de riego','show_header_toggle':False,
          'entities':[{'entity':'input_boolean.chacaico_temporada','name':'Habilitar los horarios'}]},
-        {'type':'markdown','content':'El rango se repite **todos los días**. Desde y Hasta iguales = sin riego programado.'}]}
+        {'type':'markdown','content':'El rango se repite **todos los días**. Si inicio y corte coinciden, no se programa riego.'}]}
     sections = [{'type':'grid', 'column_span':2, 'cards':[header]}]
     for n in NODES:
         sections.append({'type':'grid', 'cards':[{'type':'entities','title':f'Válvula {n}',
           'show_header_toggle':False, 'entities':[
             {'entity':f'input_boolean.chacaico_horario_{n}','name':'Usar este horario'},
-            {'entity':f'input_datetime.chacaico_horario_desde_{n}','name':'Desde'},
-            {'entity':f'input_datetime.chacaico_horario_hasta_{n}','name':'Hasta'},
+            {'entity':f'input_datetime.chacaico_horario_desde_{n}','name':'Horario de inicio'},
+            {'entity':f'input_datetime.chacaico_horario_hasta_{n}','name':'Horario de corte'},
             {'entity':f'sensor.chacaico_horario_estado_{n}','name':'Estado'}]}]})
     return {'title':'Horarios','path':'horarios','icon':'mdi:calendar-clock', 'type':'sections',
             'max_columns':2, 'show_icon_and_title':True, 'sections':sections}

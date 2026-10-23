@@ -26,3 +26,9 @@ sin referencia en el controlador diario. Respaldo privado indicado en validation
 no contiene el dashboard ni estados privados completos en Git.
 
 ![Campos diarios Desde y Hasta](horarios-desde-hasta.png)
+
+Las etiquetas visibles se cambiaron a **Horario de inicio** y **Horario de corte**,
+a pedido del usuario. Verificadas completas en las cuatro tarjetas; misma lógica,
+entidades y valores.
+
+![Etiquetas de inicio y corte](horarios-inicio-corte.png)

@@ -29,7 +29,7 @@
             },
             {
               "type": "markdown",
-              "content": "El rango se repite **todos los días**. Desde y Hasta iguales = sin riego programado."
+              "content": "El rango se repite **todos los días**. Si inicio y corte coinciden, no se programa riego."
             }
           ]
         }
@@ -49,11 +49,11 @@
             },
             {
               "entity": "input_datetime.chacaico_horario_desde_1",
-              "name": "Desde"
+              "name": "Horario de inicio"
             },
             {
               "entity": "input_datetime.chacaico_horario_hasta_1",
-              "name": "Hasta"
+              "name": "Horario de corte"
             },
             {
               "entity": "sensor.chacaico_horario_estado_1",
@@ -77,11 +77,11 @@
             },
             {
               "entity": "input_datetime.chacaico_horario_desde_2",
-              "name": "Desde"
+              "name": "Horario de inicio"
             },
             {
               "entity": "input_datetime.chacaico_horario_hasta_2",
-              "name": "Hasta"
+              "name": "Horario de corte"
             },
             {
               "entity": "sensor.chacaico_horario_estado_2",
@@ -105,11 +105,11 @@
             },
             {
               "entity": "input_datetime.chacaico_horario_desde_3",
-              "name": "Desde"
+              "name": "Horario de inicio"
             },
             {
               "entity": "input_datetime.chacaico_horario_hasta_3",
-              "name": "Hasta"
+              "name": "Horario de corte"
             },
             {
               "entity": "sensor.chacaico_horario_estado_3",
@@ -133,11 +133,11 @@
             },
             {
               "entity": "input_datetime.chacaico_horario_desde_4",
-              "name": "Desde"
+              "name": "Horario de inicio"
             },
             {
               "entity": "input_datetime.chacaico_horario_hasta_4",
-              "name": "Hasta"
+              "name": "Horario de corte"
             },
             {
               "entity": "sensor.chacaico_horario_estado_4",
