@@ -5,20 +5,24 @@ import copy
 import json
 
 NODES = (1, 2, 3, 4)
+DAYS = (('lunes', 'Lun'), ('martes', 'Mar'), ('miercoles', 'Mié'), ('jueves', 'Jue'), ('viernes', 'Vie'), ('sabado', 'Sáb'), ('domingo', 'Dom'))
 
 def view():
     header = {'type':'entities', 'grid_options':{'columns':'full'},
               'title':'Temporada de riego', 'show_header_toggle':False,
               'entities':[{'entity':'input_boolean.chacaico_temporada','name':'Habilitar los horarios'}]}
-    sections = [{'type':'grid', 'column_span':2, 'cards':[header]}]
+    days = {'type':'glance', 'title':'Días de riego', 'columns':7,
+            'grid_options':{'columns':'full'}, 'show_state':False, 'state_color':True,
+            'entities':[{'entity':f'input_boolean.chacaico_dia_{day}', 'name':label,
+                         'tap_action':{'action':'toggle'}} for day,label in DAYS]}
+    sections = [{'type':'grid', 'column_span':2, 'cards':[header, days]}]
     for n in NODES:
         sections.append({'type':'grid', 'visibility':[
           {'condition':'state','entity':'input_boolean.chacaico_temporada','state':'on'}], 'cards':[{'type':'entities','title':f'Válvula {n}',
           'show_header_toggle':False, 'entities':[
             {'entity':f'input_boolean.chacaico_horario_{n}','name':'Habilitar riego por horarios'},
             {'entity':f'input_datetime.chacaico_horario_desde_{n}','name':'Horario de inicio'},
-            {'entity':f'input_datetime.chacaico_horario_hasta_{n}','name':'Horario de corte'},
-            {'entity':f'sensor.chacaico_horario_estado_{n}','name':'Estado'}]}]})
+            {'entity':f'input_datetime.chacaico_horario_hasta_{n}','name':'Horario de corte'}]}]})
     return {'title':'Horarios','path':'horarios','icon':'mdi:calendar-clock', 'type':'sections',
             'max_columns':2, 'show_icon_and_title':True, 'sections':sections}
 

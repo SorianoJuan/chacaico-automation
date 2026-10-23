@@ -1,5 +1,26 @@
-# Daily Desde/Hasta controller; persist responsibility before any command.
+# Shared weekdays and per-valve time range; persist responsibility before any command.
 input_boolean:
+  chacaico_dia_lunes:
+    name: Riego lunes
+    icon: mdi:calendar-check
+  chacaico_dia_martes:
+    name: Riego martes
+    icon: mdi:calendar-check
+  chacaico_dia_miercoles:
+    name: Riego miércoles
+    icon: mdi:calendar-check
+  chacaico_dia_jueves:
+    name: Riego jueves
+    icon: mdi:calendar-check
+  chacaico_dia_viernes:
+    name: Riego viernes
+    icon: mdi:calendar-check
+  chacaico_dia_sabado:
+    name: Riego sábado
+    icon: mdi:calendar-check
+  chacaico_dia_domingo:
+    name: Riego domingo
+    icon: mdi:calendar-check
   chacaico_temporada:
     name: Temporada de riego
     icon: mdi:sprinkler-variant
@@ -71,6 +92,7 @@ template:
       {% set window = daily_window('input_datetime.chacaico_horario_desde_1', 'input_datetime.chacaico_horario_hasta_1') | from_json %}
       {% if not is_state('input_boolean.chacaico_temporada','on') or not is_state('input_boolean.chacaico_horario_1','on') %}Suspendido
       {% elif not window.valid %}Sin horario
+      {% elif window.next == 0 %}Sin días seleccionados
       {% else %}{{ 'Cierre' if window.active else 'Apertura' }} · {{ as_local(as_datetime(window.next)).strftime('%d/%m %H:%M') }}{% endif %}
   - name: Chacaico horario estado 2
     unique_id: chacaico_horario_estado_2
@@ -101,6 +123,7 @@ template:
       {% set window = daily_window('input_datetime.chacaico_horario_desde_2', 'input_datetime.chacaico_horario_hasta_2') | from_json %}
       {% if not is_state('input_boolean.chacaico_temporada','on') or not is_state('input_boolean.chacaico_horario_2','on') %}Suspendido
       {% elif not window.valid %}Sin horario
+      {% elif window.next == 0 %}Sin días seleccionados
       {% else %}{{ 'Cierre' if window.active else 'Apertura' }} · {{ as_local(as_datetime(window.next)).strftime('%d/%m %H:%M') }}{% endif %}
   - name: Chacaico horario estado 3
     unique_id: chacaico_horario_estado_3
@@ -131,6 +154,7 @@ template:
       {% set window = daily_window('input_datetime.chacaico_horario_desde_3', 'input_datetime.chacaico_horario_hasta_3') | from_json %}
       {% if not is_state('input_boolean.chacaico_temporada','on') or not is_state('input_boolean.chacaico_horario_3','on') %}Suspendido
       {% elif not window.valid %}Sin horario
+      {% elif window.next == 0 %}Sin días seleccionados
       {% else %}{{ 'Cierre' if window.active else 'Apertura' }} · {{ as_local(as_datetime(window.next)).strftime('%d/%m %H:%M') }}{% endif %}
   - name: Chacaico horario estado 4
     unique_id: chacaico_horario_estado_4
@@ -161,6 +185,7 @@ template:
       {% set window = daily_window('input_datetime.chacaico_horario_desde_4', 'input_datetime.chacaico_horario_hasta_4') | from_json %}
       {% if not is_state('input_boolean.chacaico_temporada','on') or not is_state('input_boolean.chacaico_horario_4','on') %}Suspendido
       {% elif not window.valid %}Sin horario
+      {% elif window.next == 0 %}Sin días seleccionados
       {% else %}{{ 'Cierre' if window.active else 'Apertura' }} · {{ as_local(as_datetime(window.next)).strftime('%d/%m %H:%M') }}{% endif %}
 automation:
 - id: chacaico_horarios_reconcile
@@ -201,6 +226,13 @@ automation:
   - trigger: state
     entity_id:
     - input_boolean.chacaico_temporada
+    - input_boolean.chacaico_dia_lunes
+    - input_boolean.chacaico_dia_martes
+    - input_boolean.chacaico_dia_miercoles
+    - input_boolean.chacaico_dia_jueves
+    - input_boolean.chacaico_dia_viernes
+    - input_boolean.chacaico_dia_sabado
+    - input_boolean.chacaico_dia_domingo
     - input_boolean.chacaico_horario_1
     - input_boolean.chacaico_horario_2
     - input_boolean.chacaico_horario_3

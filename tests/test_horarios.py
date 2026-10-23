@@ -22,7 +22,8 @@ VIEW=importlib.util.module_from_spec(spec);spec.loader.exec_module(VIEW)
 class HaPolicy:
     def __init__(self):
         self.clock=1800000000.
-        self.states={};self.attrs={};self.commands=[];self.persisted=[]
+        self.states={f'input_boolean.chacaico_dia_{day}':'on' for day,_ in VIEW.DAYS}
+        self.attrs={};self.commands=[];self.persisted=[]
         self.zone=timezone.utc
         self.env=NativeEnvironment(loader=FileSystemLoader(ROOT/"home-assistant/config/custom_templates"))
         def from_json(value, default=None):
@@ -145,7 +146,7 @@ class SchedulePolicyTest(unittest.TestCase):
         self.assertEqual(VIEW.merge(merged),merged)
         for n,section in enumerate(VIEW.view()['sections'][1:],1):
             entities=section['cards'][0]['entities']
-            self.assertEqual([row['name'] for row in entities],['Habilitar riego por horarios','Horario de inicio','Horario de corte','Estado'])
+            self.assertEqual([row['name'] for row in entities],['Habilitar riego por horarios','Horario de inicio','Horario de corte'])
             self.assertEqual(entities[1]['entity'],f'input_datetime.chacaico_horario_desde_{n}')
             self.assertEqual(entities[2]['entity'],f'input_datetime.chacaico_horario_hasta_{n}')
 
@@ -215,6 +216,69 @@ class SchedulePolicyTest(unittest.TestCase):
         triggers=PACKAGE['automation'][0]['triggers']
         times=next(t['at'] for t in triggers if t['trigger']=='time')
         self.assertEqual(set(times),{'input_datetime.'+x for x in PACKAGE['input_datetime']})
+
+    def select_days(self,*selected):
+        for day,_ in VIEW.DAYS:
+            self.ha.states[f'input_boolean.chacaico_dia_{day}']='on' if day in selected else 'off'
+    def test_shared_day_selection_applies_to_all_four_valves(self):
+        self.range_at('2026-10-26T08:30:00','08:00:00','09:00:00')  # Monday
+        self.select_days('lunes')
+        for n in VIEW.NODES:
+            self.ha.enable(n)
+            self.assertEqual(self.ha.run(n)['desired'],'OPEN')
+        self.select_days('martes')
+        for n in VIEW.NODES:
+            self.assertEqual(self.ha.run(n)['desired'],'CLOSE')
+            self.assertEqual(self.ha.commands[-1]['payload'],'CLOSE')
+    def test_no_days_or_unknown_day_never_opens(self):
+        self.range_at('2026-10-26T08:30:00','08:00:00','09:00:00')
+        self.select_days()
+        for state in ('off','unknown','unavailable'):
+            self.ha.states['input_boolean.chacaico_dia_lunes']=state
+            v=self.ha.run()
+            self.assertEqual(v['desired'],'CLOSE')
+            self.assertEqual(v['window']['next'],0)
+            next_state=self.ha.render(PACKAGE['template'][0]['sensor'][1]['state'],{}).strip()
+            self.assertEqual(next_state,'Sin días seleccionados')
+    def test_next_start_skips_unselected_days_and_wraps_week(self):
+        self.range_at('2026-10-26T09:00:00','08:00:00','09:00:00')
+        self.select_days('lunes')
+        v=self.ha.run()
+        self.assertEqual(datetime.fromtimestamp(v['window']['next'],self.ha.zone).isoformat(),'2026-11-02T08:00:00-03:00')
+    def test_overnight_uses_start_day_not_current_day(self):
+        self.range_at('2026-10-26T23:30:00','22:00:00','01:00:00')
+        self.select_days('lunes')
+        v=self.ha.run();end=v['end'];self.ha.report()
+        self.ha.clock+=3600
+        v=self.ha.run()
+        self.assertEqual(v['desired'],'OPEN')
+        self.assertEqual(v['end'],end)
+        self.ha.clock=end
+        self.assertEqual(self.ha.run()['desired'],'CLOSE')
+        self.range_at('2026-10-27T00:30:00','22:00:00','01:00:00')
+        self.select_days('martes')
+        self.assertEqual(self.ha.run()['desired'],'CLOSE')
+    def test_overnight_sunday_to_monday(self):
+        self.range_at('2026-10-26T00:30:00','22:00:00','01:00:00')
+        self.select_days('domingo')
+        self.assertEqual(self.ha.run()['desired'],'OPEN')
+    def test_removing_active_day_keeps_pending_close_through_restart(self):
+        self.range_at('2026-10-26T08:30:00','08:00:00','09:00:00');self.ha.report()
+        self.select_days('martes');self.ha.run()
+        self.assertEqual(self.ha.commands[-1]['payload'],'CLOSE')
+        restarted=HaPolicy();restarted.states=self.ha.states.copy();restarted.attrs=self.ha.attrs.copy()
+        restarted.clock=self.ha.clock+90;restarted.zone=self.ha.zone
+        self.assertEqual(restarted.run()['desired'],'CLOSE')
+        self.assertEqual(restarted.commands[-1]['payload'],'CLOSE')
+        self.assertEqual(restarted.states['input_boolean.chacaico_dia_lunes'],'off')
+    def test_day_changes_trigger_reconcile_and_persistence(self):
+        controls=next(t for t in PACKAGE['automation'][0]['triggers'] if t.get('id')=='controls')
+        self.assertTrue({f'input_boolean.chacaico_dia_{day}' for day,_ in VIEW.DAYS} <= set(controls['entity_id']))
+    def test_selecting_days_with_master_off_does_not_open(self):
+        self.range_at('2026-10-26T08:30:00','08:00:00','09:00:00')
+        self.ha.states['input_boolean.chacaico_temporada']='off'
+        self.select_days('lunes')
+        self.assertEqual(self.ha.run()['desired'],'CLOSE')
 
 class ScheduledDeadlineTest(unittest.TestCase):
     # Reuse radio harness helpers, without rerunning all inherited tests.

@@ -1,0 +1,82 @@
+{
+  "offline_tests": 111,
+  "core_check": "passed",
+  "reload": "input_boolean, custom_templates, automation, template; no restart",
+  "backup": "/config/chacaico-backups/horarios-dias-20261023T203500Z",
+  "other_views_preserved": 3,
+  "valve_actuation_test": false,
+  "live_macro_calculation": "active=true with test-only time inputs; seven real weekday dependencies",
+  "files": {
+    "home-assistant/config/chacaico-horarios.yaml": "0545e439187609dbde98cc06603b89c72d61280ad5b2723fdf737a453fa128b5",
+    "home-assistant/config/custom_templates/chacaico_horarios.jinja": "d7b8d53442a3c3785844c3561a665e8fc63db12693a1a4372c2c0e3cf60013ef"
+  },
+  "persisted": {
+    "days": [
+      {
+        "entity_id": "input_boolean.chacaico_dia_lunes",
+        "state": "on"
+      },
+      {
+        "entity_id": "input_boolean.chacaico_dia_martes",
+        "state": "on"
+      },
+      {
+        "entity_id": "input_boolean.chacaico_dia_miercoles",
+        "state": "on"
+      },
+      {
+        "entity_id": "input_boolean.chacaico_dia_jueves",
+        "state": "on"
+      },
+      {
+        "entity_id": "input_boolean.chacaico_dia_viernes",
+        "state": "on"
+      },
+      {
+        "entity_id": "input_boolean.chacaico_dia_sabado",
+        "state": "on"
+      },
+      {
+        "entity_id": "input_boolean.chacaico_dia_domingo",
+        "state": "on"
+      }
+    ],
+    "season": [
+      "on"
+    ],
+    "times": [
+      {
+        "entity_id": "input_datetime.chacaico_horario_desde_1",
+        "state": "00:00:00"
+      },
+      {
+        "entity_id": "input_datetime.chacaico_horario_hasta_1",
+        "state": "00:00:00"
+      },
+      {
+        "entity_id": "input_datetime.chacaico_horario_desde_2",
+        "state": "00:00:00"
+      },
+      {
+        "entity_id": "input_datetime.chacaico_horario_hasta_2",
+        "state": "00:00:00"
+      },
+      {
+        "entity_id": "input_datetime.chacaico_horario_desde_3",
+        "state": "00:00:00"
+      },
+      {
+        "entity_id": "input_datetime.chacaico_horario_hasta_3",
+        "state": "00:00:00"
+      },
+      {
+        "entity_id": "input_datetime.chacaico_horario_desde_4",
+        "state": "00:00:00"
+      },
+      {
+        "entity_id": "input_datetime.chacaico_horario_hasta_4",
+        "state": "00:00:00"
+      }
+    ]
+  }
+}

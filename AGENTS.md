@@ -58,14 +58,20 @@ ni explicaciones extensas en la vista inicial. No sustituir estado desconocido p
 cerrado para cambiar la apariencia. Mantener estado pendiente/confirmado separado.
 
 La pestaña **Horarios** (`horarios`) tiene dos input_datetime por válvula:
-`chacaico_horario_desde_N` y `chacaico_horario_hasta_N`, un rango diario.
+`chacaico_horario_desde_N` y `chacaico_horario_hasta_N`, un rango por válvula.
+Los siete `input_boolean.chacaico_dia_<lunes..domingo>` eligen días comunes;
+el día es el de inicio (lunes22–martes01 pertenece al lunes). Sin días no abre.
+La fila compacta Días de riego queda visible aun con temporada OFF. No agregar
+Estado a las tarjetas de Horarios; conservar diagnósticos y confirmaciones en
+la vista principal. Los días se restauran sin `initial` fijo; nunca resetearlos.
 Temporada manual con `input_boolean.chacaico_temporada`; cada válvula puede
 excluirse con `chacaico_horario_N`. Horas iguales significan sin riego; Hasta
 anterior a Desde cruza medianoche. No volver a mostrar la grilla semanal: el
 usuario pidió campos simples, rotulados **Horario de inicio** y **Horario de corte**.
 Ocultar las cuatro secciones de válvula si temporada no está ON; su selector se
 rotula **Habilitar riego por horarios**. No agregar la tarjeta explicativa de horas
-iguales. Los Schedule anteriores se conservan inactivos; el controlador ya no los consulta. No inventar horarios ni activar
+iguales. Los Schedule anteriores se conservan inactivos; el controlador ya no
+los consulta. No inventar horarios ni activar
 la temporada durante instalaciones/pruebas. El paquete `chacaico-horarios.yaml`
 y `custom_templates/chacaico_horarios.jinja` calculan el rango; persisten propiedad
 e intención antes de publicar y mantienen cierres pendientes hasta confirmar.

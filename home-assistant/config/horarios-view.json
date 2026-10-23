@@ -23,6 +23,67 @@
               "name": "Habilitar los horarios"
             }
           ]
+        },
+        {
+          "type": "glance",
+          "title": "Días de riego",
+          "columns": 7,
+          "grid_options": {
+            "columns": "full"
+          },
+          "show_state": false,
+          "state_color": true,
+          "entities": [
+            {
+              "entity": "input_boolean.chacaico_dia_lunes",
+              "name": "Lun",
+              "tap_action": {
+                "action": "toggle"
+              }
+            },
+            {
+              "entity": "input_boolean.chacaico_dia_martes",
+              "name": "Mar",
+              "tap_action": {
+                "action": "toggle"
+              }
+            },
+            {
+              "entity": "input_boolean.chacaico_dia_miercoles",
+              "name": "Mié",
+              "tap_action": {
+                "action": "toggle"
+              }
+            },
+            {
+              "entity": "input_boolean.chacaico_dia_jueves",
+              "name": "Jue",
+              "tap_action": {
+                "action": "toggle"
+              }
+            },
+            {
+              "entity": "input_boolean.chacaico_dia_viernes",
+              "name": "Vie",
+              "tap_action": {
+                "action": "toggle"
+              }
+            },
+            {
+              "entity": "input_boolean.chacaico_dia_sabado",
+              "name": "Sáb",
+              "tap_action": {
+                "action": "toggle"
+              }
+            },
+            {
+              "entity": "input_boolean.chacaico_dia_domingo",
+              "name": "Dom",
+              "tap_action": {
+                "action": "toggle"
+              }
+            }
+          ]
         }
       ]
     },
@@ -52,10 +113,6 @@
             {
               "entity": "input_datetime.chacaico_horario_hasta_1",
               "name": "Horario de corte"
-            },
-            {
-              "entity": "sensor.chacaico_horario_estado_1",
-              "name": "Estado"
             }
           ]
         }
@@ -87,10 +144,6 @@
             {
               "entity": "input_datetime.chacaico_horario_hasta_2",
               "name": "Horario de corte"
-            },
-            {
-              "entity": "sensor.chacaico_horario_estado_2",
-              "name": "Estado"
             }
           ]
         }
@@ -122,10 +175,6 @@
             {
               "entity": "input_datetime.chacaico_horario_hasta_3",
               "name": "Horario de corte"
-            },
-            {
-              "entity": "sensor.chacaico_horario_estado_3",
-              "name": "Estado"
             }
           ]
         }
@@ -157,10 +206,6 @@
             {
               "entity": "input_datetime.chacaico_horario_hasta_4",
               "name": "Horario de corte"
-            },
-            {
-              "entity": "sensor.chacaico_horario_estado_4",
-              "name": "Estado"
             }
           ]
         }
