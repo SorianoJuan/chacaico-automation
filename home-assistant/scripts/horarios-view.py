@@ -9,9 +9,10 @@ DAYS = (('lunes', 'Lun'), ('martes', 'Mar'), ('miercoles', 'Mié'), ('jueves', '
 
 def view():
     header = {'type':'entities', 'grid_options':{'columns':'full'},
-              'title':'Temporada de riego', 'show_header_toggle':False,
-              'entities':[{'entity':'input_boolean.chacaico_temporada','name':'Habilitar los horarios'}]}
+              'show_header_toggle':False,
+              'entities':[{'entity':'input_boolean.chacaico_temporada','name':'Habilitar riego por horarios'}]}
     days = {'type':'glance', 'title':'Días de riego', 'columns':7,
+            'visibility':[{'condition':'state','entity':'input_boolean.chacaico_temporada','state':'on'}],
             'grid_options':{'columns':'full'}, 'show_state':False, 'state_color':True,
             'entities':[{'entity':f'input_boolean.chacaico_dia_{day}', 'name':label,
                          'tap_action':{'action':'toggle'}} for day,label in DAYS]}

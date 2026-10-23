@@ -15,12 +15,11 @@
           "grid_options": {
             "columns": "full"
           },
-          "title": "Temporada de riego",
           "show_header_toggle": false,
           "entities": [
             {
               "entity": "input_boolean.chacaico_temporada",
-              "name": "Habilitar los horarios"
+              "name": "Habilitar riego por horarios"
             }
           ]
         },
@@ -28,6 +27,13 @@
           "type": "glance",
           "title": "Días de riego",
           "columns": 7,
+          "visibility": [
+            {
+              "condition": "state",
+              "entity": "input_boolean.chacaico_temporada",
+              "state": "on"
+            }
+          ],
           "grid_options": {
             "columns": "full"
           },

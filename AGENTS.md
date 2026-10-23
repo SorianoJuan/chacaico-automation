@@ -61,7 +61,9 @@ La pestaña **Horarios** (`horarios`) tiene dos input_datetime por válvula:
 `chacaico_horario_desde_N` y `chacaico_horario_hasta_N`, un rango por válvula.
 Los siete `input_boolean.chacaico_dia_<lunes..domingo>` eligen días comunes;
 el día es el de inicio (lunes22–martes01 pertenece al lunes). Sin días no abre.
-La fila compacta Días de riego queda visible aun con temporada OFF. No agregar
+La tarjeta superior muestra solo **Habilitar riego por horarios**, sin título
+Temporada de riego. Días de riego y las cuatro válvulas se ocultan con el control
+general OFF. Conservar el ID técnico `chacaico_temporada`. No agregar
 Estado a las tarjetas de Horarios; conservar diagnósticos y confirmaciones en
 la vista principal. Los días se restauran sin `initial` fijo; nunca resetearlos.
 Temporada manual con `input_boolean.chacaico_temporada`; cada válvula puede

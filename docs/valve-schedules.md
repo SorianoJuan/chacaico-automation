@@ -6,22 +6,23 @@ ni marzo. Se usan controles nativos de hora; no hay HACS ni otra app de scheduli
 
 ## Uso: Horario de inicio / Horario de corte
 
-Abrir **Chacaico → Horarios**. Arriba están la temporada y **Días de riego**:
+Abrir **Chacaico → Horarios**. Arriba está **Habilitar riego por horarios**.
+Cuando está activado aparece **Días de riego**:
 tocar Lun, Mar, Mié, Jue, Vie, Sáb o Dom para incluir o excluir ese día. Los iconos
 resaltados indican los días seleccionados. La selección es común a las cuatro
 válvulas y se guarda automáticamente, también para los reinicios.
 
-Con la temporada apagada se pueden preparar los días; las tarjetas de válvula
-permanecen ocultas. Al habilitarla aparecen las cuatro, cada una con:
+Con el control general apagado se ocultan tanto los días como las tarjetas de
+válvula. Al habilitarlo aparecen las cuatro, cada una con:
 
 - **Habilitar riego por horarios**: incluye/excluye esa válvula del programa.
 - **Horario de inicio**: hora diaria de apertura, editable directamente.
 - **Horario de corte**: hora diaria de cierre, editable directamente.
 
-Las horas se guardan automáticamente. Encender **Habilitar los horarios** en
-Temporada de riego para aplicar los rangos habilitados en los días seleccionados. Al terminar la
-temporada, apagarlo: solicita cerrar las válvulas que administraba y conserva
-los horarios y oculta las tarjetas de válvula. Los cierres sin confirmar siguen
+Las horas se guardan automáticamente. Encender el control general **Habilitar
+riego por horarios** para aplicar los rangos habilitados en los días seleccionados.
+Al terminar la temporada, apagarlo: solicita cerrar las válvulas que administraba y conserva
+los horarios y días elegidos, y oculta sus tarjetas. Los cierres sin confirmar siguen
 pendientes y se reintentan; su orden sigue visible en la vista principal.
 
 Ejemplos: inicio08:00 / corte09:00 abre de08:00 a09:00 en los días seleccionados.
@@ -78,8 +79,8 @@ control manual cuando temporada está OFF. La vista principal se conserva.
   autenticación y deduplicación. No hay protocolo de horarios en los nodos.
 
 No borrar los helpers `chacaico_horario_responsable_N` / `chacaico_horario_ultimo_N`
-ni desactivar la automatización para suspender el riego. Usar el switch de
-Temporada. Si se eliminara el controlador durante un cierre pendiente, no podría
+ni desactivar la automatización para suspender el riego. Usar el control general
+**Habilitar riego por horarios** (ID técnico `input_boolean.chacaico_temporada`). Si se eliminara el controlador durante un cierre pendiente, no podría
 reintentarlo.
 
 ## Límites

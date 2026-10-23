@@ -26,3 +26,16 @@ Backup privado y hashes desplegados en validation.json. Los archivos completos
 del dashboard privado no se incluyen en Git.
 
 ![Horarios con selección compartida de días](horarios-dias.png)
+
+## Control general simplificado
+
+A pedido del usuario, la tarjeta superior ahora muestra únicamente **Habilitar
+riego por horarios**, sin el título Temporada de riego. También se oculta Días
+de riego cuando el control general está apagado.
+
+Verificado en la UI con el control ya OFF: solo se muestra el interruptor general.
+Los días y cuatro tarjetas permanecen en el editor y conservan sus entidades.
+Prueba existente de combinación de vistas aprobada (1 test); las otras tres vistas
+quedaron idénticas. No se cambiaron estados, horarios ni lógica del controlador.
+
+![Control general apagado](horarios-deshabilitado.png)
