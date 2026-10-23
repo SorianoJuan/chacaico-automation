@@ -1,4 +1,4 @@
-# Puente LoRa ↔ MQTT 0.5.1
+# Puente LoRa ↔ MQTT 0.5.2
 
 - `chacaico_lora_bridge/bridge.py`: MQTT, discovery y transporte.
 - `engine.py`: scheduler, ventanas, colas, confirmaciones y persistencia.
@@ -46,3 +46,10 @@ valores no numéricos/no finitos y mensajes retained. Se comprueba el límite
 antes de transmitir y al recibir ACK; saltos hacia adelante del reloj también
 vencen la orden. Los strings manuales OPEN/CLOSE no cambian. No requiere
 reprogramar nodos ni cambia la trama de radio. [Control de horarios](../docs/valve-schedules.md).
+
+0.5.2 permite encolar potencia y ventanas antes del primer contacto tras reiniciar
+el puente. El protocolo empieza desconocido y se muestra **Pendiente de contacto**,
+en lugar de atribuir v2 al nodo desconectado. Al recibir READY autenticado se
+comprueba la compatibilidad: v3 aplica mediante TRIAL/COMMIT; v2 sigue rechazando
+los parámetros que no soporta. El pedido persiste con su plazo original de24h;
+no requiere cambiar firmware, esquema de persistencia ni mensajes de radio.

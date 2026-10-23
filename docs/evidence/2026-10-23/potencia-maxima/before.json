@@ -1,0 +1,93 @@
+{
+  "hat": {
+    "requested": 0,
+    "applied": 0,
+    "status": "Aplicada en el HAT"
+  },
+  "nodes": {
+    "1": {
+      "config/draft": {
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 0,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000
+      },
+      "config/reported": {
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 0,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000,
+        "revision": 16,
+        "confirmed_at": 1792678620.659818
+      },
+      "config/status": "Sin confirmar",
+      "config/protocol": "v2 / actualizar firmware",
+      "link/state": "Sin contacto"
+    },
+    "2": {
+      "config/draft": {
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 0,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000
+      },
+      "config/reported": {
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 0,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000,
+        "revision": 11,
+        "confirmed_at": 1792678628.0282176
+      },
+      "config/status": "Sin confirmar",
+      "config/protocol": "v2 / actualizar firmware",
+      "link/state": "Sin contacto"
+    },
+    "3": {
+      "config/draft": {
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 0,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000
+      },
+      "config/reported": {
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 0,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000,
+        "revision": 1,
+        "confirmed_at": 1792782613.4981732
+      },
+      "config/status": "Sin confirmar",
+      "config/protocol": "v2 / actualizar firmware",
+      "link/state": "Sin contacto"
+    },
+    "4": {
+      "config/draft": {
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 0,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000
+      },
+      "config/reported": {
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 0,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000,
+        "revision": 1,
+        "confirmed_at": 1792782595.5564265
+      },
+      "config/status": "Sin confirmar",
+      "config/protocol": "v2 / actualizar firmware",
+      "link/state": "Sin contacto"
+    }
+  }
+}

@@ -43,7 +43,7 @@ claves y **no se publican**.
 | Nodo 2 | Firmware0.5.0, ID2, HTCC-AB01/ASR6501; revisión de PCB por verificar | [firmware/nodes/node_2](firmware/nodes/node_2/README.md) |
 | Nodo 3 | Firmware0.5.0, ID3, HTCC-AB01/ASR6501; revisión de PCB por verificar | [firmware/nodes/node_3](firmware/nodes/node_3/README.md) |
 | Nodo 4 | Firmware0.5.0, ID4, HTCC-AB01/ASR6501; revisión de PCB por verificar | [firmware/nodes/node_4](firmware/nodes/node_4/README.md) |
-| Puente | App0.5.1, Python, MQTT ↔ LoRa | [bridge](bridge/README.md) |
+| Puente | App0.5.2, Python, MQTT ↔ LoRa | [bridge](bridge/README.md) |
 | Home Assistant | Core2026.9.4, verificación23/10/2026 | [home-assistant](home-assistant/README.md) |
 
 La versión0.5.0 agrega potencia HAT/nodos, ventanas configurables, vigencia de

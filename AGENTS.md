@@ -10,7 +10,7 @@ Guardar aquí desarrollo, configuración reproducible, documentación y evidenci
 - `firmware/nodes/node_3/` y `node_4/`: firmware0.5.0, claves/IDs3 y4 propios; máximo200ms, aplicado50ms.
 - `firmware/libraries/ChacaicoNode/`: lógica compartida; conservar comportamiento
   consistente entre nodos. Cambiar versión en perfiles/librería/banner cuando proceda.
-- `bridge/chacaico_lora_bridge/`: app0.5.1 de HAOS, driver SX1262 y protocolo MQTT/LoRa.
+- `bridge/chacaico_lora_bridge/`: app0.5.2 de HAOS, driver SX1262 y protocolo MQTT/LoRa.
 - `home-assistant/config/`, `scripts/`, `apps/`, `evidence/`: HAOS y auxiliares.
 - `home-assistant/legacy/`: panel retirado; no ejecutarlo ni reinstalarlo.
 - `tests/`: pruebas offline; `docs/`: operación, ideas y diagnósticos.
@@ -106,7 +106,11 @@ con RX continuo. Políticas nuevas no alteran plazos de órdenes ya encoladas.
 Métricas se reinician con el bridge y distinguen espera en cola, entrega, RX en ambos
 sentidos, intentos, confirmaciones y vencimientos. No confundir porcentaje de órdenes
 con pérdida de paquetes, ni potencia configurada con RF medida.
-Defaults0s/50ms/0dBm; detalles en `docs/node-configuration.md`.
+Defaults de fábrica0s/50ms/0dBm. El23/10/2026 se aplicó22dBm al HAT y se
+encoló22dBm para nodos1–4, todavía desconectados al validar. Comprobar el valor
+confirmado al reconectarlos; la solicitud vence a las24h. Puente0.5.2 distingue
+protocolo desconocido de v2 y permite encolar antes del primer contacto. Ver
+`docs/node-configuration.md` y `docs/evidence/2026-10-23/potencia-maxima/`.
 El ACK incluye estado/config completos. Mantener error/pendiente/confirmado visibles;
 Reposo esperado no es offline. Las órdenes de válvula vencen y no se persisten para
 reproducirse al reiniciar el bridge. No hay cierre autónomo ni OTA de firmware.

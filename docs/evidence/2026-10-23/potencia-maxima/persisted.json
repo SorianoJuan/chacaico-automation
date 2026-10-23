@@ -1,0 +1,116 @@
+{
+  "version": 2,
+  "bridge_power": 22,
+  "bridge_power_draft": 22,
+  "nodes": {
+    "1": {
+      "confirmed": {
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 0,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000,
+        "revision": 16,
+        "confirmed_at": 1792678620.659818
+      },
+      "draft": {
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 22,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000
+      },
+      "config_job": {
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 22,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000,
+        "revision": null,
+        "deadline": 1792875327.0942764
+      }
+    },
+    "2": {
+      "confirmed": {
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 0,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000,
+        "revision": 11,
+        "confirmed_at": 1792678628.0282176
+      },
+      "draft": {
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 22,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000
+      },
+      "config_job": {
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 22,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000,
+        "revision": null,
+        "deadline": 1792875327.2794535
+      }
+    },
+    "3": {
+      "confirmed": {
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 0,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000,
+        "revision": 1,
+        "confirmed_at": 1792782613.4981732
+      },
+      "draft": {
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 22,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000
+      },
+      "config_job": {
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 22,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000,
+        "revision": null,
+        "deadline": 1792875327.4670641
+      }
+    },
+    "4": {
+      "confirmed": {
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 0,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000,
+        "revision": 1,
+        "confirmed_at": 1792782595.5564265
+      },
+      "draft": {
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 22,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000
+      },
+      "config_job": {
+        "sleep_s": 0,
+        "pulse_ms": 50,
+        "tx_power_dbm": 22,
+        "listen_ms": 3000,
+        "max_awake_ms": 10000,
+        "revision": null,
+        "deadline": 1792875327.6545534
+      }
+    }
+  },
+  "captured_at": "2026-10-23T20:56:00.407976+00:00"
+}

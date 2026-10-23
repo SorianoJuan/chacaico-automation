@@ -188,6 +188,54 @@ class ConfigurationStageOneTest(baseline.EngineTest):
         self.assertIsNone(self.engine.nodes[1].config_job)
         self.assertEqual(self.engine.nodes[1].config_status, 'Requiere firmware 0.5.0')
 
+    def test_offline_power_request_after_restart_waits_then_commits_on_v3(self):
+        self.connect()
+        self.engine = self.create()  # Persistent config is known; protocol is not yet verified.
+        self.assertEqual(self.engine.nodes[1].protocol_version, 0)
+        self.engine.reconnect()
+        self.assertEqual(self.engine.published[f'{ROOT}/node/1/config/protocol'], 'Pendiente de contacto')
+        self.change(tx_power_dbm=22)
+        n = self.engine.nodes[1]
+        self.assertEqual(n.config_status, 'Pendiente de contacto')
+        self.assertEqual(n.config_job['tx_power_dbm'], 22)
+        deadline = n.config_job['deadline']
+        self.assertIsNone(self.engine.next_frame())
+        self.engine = self.create()
+        self.assertEqual(self.engine.nodes[1].config_job['deadline'], deadline)
+        self.ready(wake=2)
+        self.config_reply(self.request())
+        trial = self.request(); self.assertEqual(trial.op, SET_CONFIG)
+        self.assertEqual(trial.tx_power_dbm, 22)
+        self.config_reply(trial, status=TRIAL, flags=1)
+        commit = self.request(); self.assertEqual(commit.op, COMMIT_CONFIG)
+        self.config_reply(commit)
+        self.assertEqual(self.engine.nodes[1].confirmed['tx_power_dbm'], 22)
+        self.assertEqual(self.engine.nodes[1].config_status, 'Confirmada')
+        self.assertIsNone(self.engine.nodes[1].config_job)
+
+    def test_queued_radio_change_never_transmits_to_legacy_node(self):
+        self.change(tx_power_dbm=22)
+        self.assertIsNotNone(self.engine.nodes[1].config_job)
+        ready = Frame(READY, 1, 1, 1, 0, revision=1, pulse_ms=50, version=2)
+        self.engine.receive(encode(self.keys[1], ready), -50, 10); self.clock += .2
+        query = self.request(); self.assertEqual(query.op, GET_CONFIG)
+        self.config_reply(query)
+        self.assertEqual(self.engine.nodes[1].config_status, 'Requiere firmware 0.5.0')
+        for _ in range(3):
+            self.clock += 31
+            query = self.request(); self.assertEqual(query.op, GET_CONFIG)
+            self.config_reply(query)
+        self.assertEqual(self.engine.nodes[1].confirmed['tx_power_dbm'], 0)
+
+    def test_offline_power_request_expires_in_24_hours(self):
+        self.change(tx_power_dbm=22)
+        self.clock += 86401
+        self.engine.tick()
+        self.assertIsNone(self.engine.nodes[1].config_job)
+        self.assertEqual(self.engine.nodes[1].config_status, 'Vencida sin confirmar')
+        self.ready(); self.config_reply(self.request())
+        self.assertIsNone(self.engine.next_frame())
+
     def test_invalid_configuration_combinations_are_not_applied(self):
         self.connect()
         for cfg in ({'tx_power_dbm': 23}, {'listen_ms': 999}, {'max_awake_ms': 4999},

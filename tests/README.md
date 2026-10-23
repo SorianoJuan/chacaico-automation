@@ -52,3 +52,9 @@ inicio inclusivo, final exclusivo, horas iguales deshabilitadas, medianoche,
 próximo día local con cambio horario, inputs no disponibles y persistencia.
 Los helpers Schedule antiguos no afectan la política diaria. Se conserva la
 suite de confirmaciones/reintentos y las pruebas de plazos del bridge.
+
+## Configuración pendiente y puente0.5.2
+
+`test_stage1_configuration.py` comprueba que un cambio22dBm encolado sin contacto
+sobrevive al reinicio con el mismo plazo, se confirma mediante TRIAL/COMMIT al
+reconectar un v3, no transmite parámetros incompatibles a un v2 y vence a las24h.

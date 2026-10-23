@@ -1,4 +1,4 @@
-# Configuración remota y ventanas de escucha — firmware y puente 0.5.0
+# Configuración remota y ventanas de escucha — firmware 0.5.0 / puente 0.5.2
 
 ## Operación desde Home Assistant
 
@@ -123,9 +123,30 @@ Un ACK que llega después del vencimiento no cambia esa orden a Confirmada.
 Si hubo transmisión antes de vencer, no es posible asegurar que el GPIO no actuó;
 la consulta siguiente recupera el estado sin reenviar la intención vencida.
 
-La configuración tiene un plazo independiente de24 horas y se conserva al
-reiniciar el puente. Las órdenes de válvula/LED no se guardan para reproducirse
+La configuración tiene un plazo independiente de24 horas desde Aplicar y se
+conserva al reiniciar el puente, sin renovar ese plazo. Desde puente0.5.2 puede
+encolarse incluso antes del primer contacto: aparece **Pendiente de contacto**.
+El protocolo se identifica con el siguiente READY autenticado; un nodo v2
+confirma que requiere actualizar firmware si se pidieron parámetros exclusivos
+de v3. **En uso** conserva la última configuración confirmada hasta recibir
+una respuesta nueva; no significa que el pedido pendiente ya esté aplicado. Las órdenes de válvula/LED no se guardan para reproducirse
 tras un reinicio. No hay cierre autónomo.
+
+## Potencia máxima solicitada el23/10/2026
+
+El máximo nominal configurado es **22 dBm (aproximadamente158 mW)** para el
+[HAT Waveshare SX1262](https://www.waveshare.com/wiki/SX1262_XXXM_LoRaWAN/GNSS_HAT)
+y el [CubeCell HTCC-AB01 original](https://resource.heltec.cn/download/CubeCell/HTCC-AB01/AB01.pdf).
+La ficha original especifica22 dBm con tolerancia±1 dB. No trasladar la ficha del
+HTCC-AB01 V2 al ASR6501 original de este proyecto.
+
+Se verificó HAT22 dBm aplicado y conservado tras actualizar el puente. Para los
+nodos1–4 se dejaron solicitudes22 dBm persistentes, pendientes de contacto;
+la última lectura confirmada seguía en0 dBm porque estaban desconectados.
+El plazo vence el24/10/2026 a las17:55 ART. Si se conectan después, volver a pulsar
+Aplicar. No necesitan flasheo: el firmware0.5.0 ya admite el cambio por radio.
+Se conservaron reposo0s, pulso50ms, escucha3000ms y presupuesto10000ms.
+[Evidencia y validación](evidence/2026-10-23/potencia-maxima/README.md).
 
 ## Potencia del nodo: prueba antes de guardar
 

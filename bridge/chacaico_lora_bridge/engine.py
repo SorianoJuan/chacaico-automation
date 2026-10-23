@@ -72,7 +72,7 @@ class Node:
     action_status: dict = field(default_factory=dict)
     backoff: float = 0
     last_tx: float = -math.inf
-    protocol_version: int = 2
+    protocol_version: int = 0  # Unknown until an authenticated READY in this session.
     trial_config: dict | None = None
     policy: dict = field(default_factory=lambda: dict(POLICY_DEFAULTS))
     policy_draft: dict = field(default_factory=lambda: dict(POLICY_DEFAULTS))
@@ -163,7 +163,7 @@ class Engine:
         draft = n.draft or n.confirmed or CONFIG_DEFAULTS
         self.emit(n.ident, "config/draft", {k: draft[k] for k in CONFIG_KEYS})
         self.emit(n.ident, "config/status", n.config_status)
-        self.emit(n.ident, "config/protocol", "v3" if n.protocol_version == 3 else "v2 / actualizar firmware")
+        self.emit(n.ident, "config/protocol", {0: "Pendiente de contacto", 2: "v2 / actualizar firmware", 3: "v3"}[n.protocol_version])
         self.emit(n.ident, "policy/draft", n.policy_draft)
         self.emit(n.ident, "policy/reported", n.policy)
         self.emit(n.ident, "policy/status", "Aplicada en el puente" if n.policy == n.policy_draft else "Borrador sin aplicar")
@@ -229,7 +229,7 @@ class Engine:
             self.config_view(n)
             return
         if resource == "config/apply" and payload == "APPLY":
-            if n.protocol_version != 3 and any((n.draft or n.advertised)[k] != CONFIG_DEFAULTS[k]
+            if n.protocol_version == 2 and any((n.draft or n.advertised)[k] != CONFIG_DEFAULTS[k]
                     for k in ("tx_power_dbm", "listen_ms", "max_awake_ms")):
                 n.config_error = n.config_status = "Requiere firmware 0.5.0"
                 self.persist(); self.config_view(n); return
@@ -507,7 +507,10 @@ class Engine:
             if job["revision"] is None or cfg["revision"] >= job["revision"]:
                 n.config_job = None
                 changed = True
-        n.config_status = n.config_error or ("Confirmada" if not n.config_job else "Pendiente")
+        unsupported = n.config_job and n.protocol_version == 2 and any(
+            n.config_job[k] != CONFIG_DEFAULTS[k] for k in ("tx_power_dbm", "listen_ms", "max_awake_ms"))
+        n.config_status = n.config_error or ("Requiere firmware 0.5.0" if unsupported else
+                                             "Confirmada" if not n.config_job else "Pendiente")
         if changed:
             self.persist()
         for op, actual in ((SET_LED, f.led), (SET_VALVE, f.valve)):

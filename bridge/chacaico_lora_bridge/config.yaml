@@ -1,5 +1,5 @@
 name: Chacaico LoRa bridge
-version: "0.5.1"
+version: "0.5.2"
 slug: chacaico_lora_bridge
 description: Control de electroválvulas CubeCell por LoRa con confirmación de ejecución.
 arch:
